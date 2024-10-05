@@ -628,7 +628,7 @@ __pcstackCOMRAM:
 
 ;; *************** function _main *****************
 ;; Defined at:
-;;		line 24 in file "main.c"
+;;		line 25 in file "main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -655,29 +655,29 @@ __pcstackCOMRAM:
 ;;
 psect	text0,class=CODE,space=0,reloc=2,group=0
 	file	"main.c"
-	line	24
+	line	25
 global __ptext0
 __ptext0:
 psect	text0
 	file	"main.c"
-	line	24
+	line	25
 	
 _main:
 ;incstack = 0
 	callstack 31
-	line	25
+	line	26
 	
 l763:
 	movlw	low(0Fh)
 	movwf	((c:4033))^0f00h,c	;volatile
-	line	26
+	line	27
 	movlw	low(0)
 	movwf	((c:3986))^0f00h,c	;volatile
-	line	29
+	line	30
 	
 l765:
 	setf	((c:3977))^0f00h,c	;volatile
-	line	30
+	line	31
 	
 l767:
 	asmopt push
@@ -697,12 +697,12 @@ decfsz	wreg,f
 	nop2
 asmopt pop
 
-	line	31
+	line	32
 	
 l769:
 	movlw	low(0)
 	movwf	((c:3977))^0f00h,c	;volatile
-	line	32
+	line	33
 	asmopt push
 asmopt off
 movlw  13
@@ -720,12 +720,12 @@ decfsz	wreg,f
 	nop2
 asmopt pop
 
-	line	33
+	line	34
 	goto	l765
 	global	start
 	goto	start
 	callstack 0
-	line	35
+	line	36
 GLOBAL	__end_of_main
 	__end_of_main:
 	signat	_main,90

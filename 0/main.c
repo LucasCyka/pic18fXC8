@@ -20,6 +20,7 @@
 #define _XTAL_FREQ 20000000 //20mhz
 
 #include<xc.h>
+#include <proc/pic18f4550.h>
 
 int main(){
     ADCON1 = 0x0F;

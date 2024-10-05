@@ -62,14 +62,14 @@ MEDIUMCONST 848-7FFF 1
 # All other numeric values are in decimal.
 %LINETAB
 $main.obj
-802 text0 CODE >24:/home/lucas/PIC/C/0/main.c
 802 text0 CODE >25:/home/lucas/PIC/C/0/main.c
-806 text0 CODE >26:/home/lucas/PIC/C/0/main.c
-80A text0 CODE >29:/home/lucas/PIC/C/0/main.c
-80C text0 CODE >30:/home/lucas/PIC/C/0/main.c
-824 text0 CODE >31:/home/lucas/PIC/C/0/main.c
-828 text0 CODE >32:/home/lucas/PIC/C/0/main.c
-840 text0 CODE >33:/home/lucas/PIC/C/0/main.c
+802 text0 CODE >26:/home/lucas/PIC/C/0/main.c
+806 text0 CODE >27:/home/lucas/PIC/C/0/main.c
+80A text0 CODE >30:/home/lucas/PIC/C/0/main.c
+80C text0 CODE >31:/home/lucas/PIC/C/0/main.c
+824 text0 CODE >32:/home/lucas/PIC/C/0/main.c
+828 text0 CODE >33:/home/lucas/PIC/C/0/main.c
+840 text0 CODE >34:/home/lucas/PIC/C/0/main.c
 842 cinit CODE >477:/home/lucas/PIC/C/0/main.as
 842 cinit CODE >479:/home/lucas/PIC/C/0/main.as
 842 cinit CODE >482:/home/lucas/PIC/C/0/main.as

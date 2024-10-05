@@ -4,7 +4,7 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/opt/microchip/xc8/v2.45/pic/include/"
+                "/opt/microchip/xc8/v2.45/pic/include/**"
             ],
             "defines": [],
             "compilerPath": "/opt/microchip/xc8/v2.45/pic/bin/xc8",

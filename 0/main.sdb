@@ -25,7 +25,7 @@
 [v ___lmul __lmul `(ul  1 e 4 0 ]
 "91 /opt/microchip/xc8/v2.45/pic/sources/c90/common/Umul64.c
 [v ___omul __omul `(ul  1 e 4 0 ]
-"24 /home/lucas/PIC/C/0/main.c
+"25 /home/lucas/PIC/C/0/main.c
 [v _main main `(i  1 e 2 0 ]
 "2973 /opt/microchip/xc8/v2.45/pic/include/proc/pic18f4550.h
 [v _LATA LATA `VEuc  1 e 1 @3977 ]
@@ -33,8 +33,8 @@
 [v _TRISA TRISA `VEuc  1 e 1 @3986 ]
 "6581
 [v _ADCON1 ADCON1 `VEuc  1 e 1 @4033 ]
-"24 /home/lucas/PIC/C/0/main.c
+"25 /home/lucas/PIC/C/0/main.c
 [v _main main `(i  1 e 2 0 ]
 {
-"35
+"36
 } 0

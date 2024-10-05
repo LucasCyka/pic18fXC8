@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "xc.h": "c",
+        "pic18.h": "c",
+        "pic18f4550.h": "c"
+    }
+}
