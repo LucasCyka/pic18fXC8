@@ -22,7 +22,48 @@
 #include<xc.h>
 #include <proc/pic18f4550.h>
 
-int main(){
+//*********function prototypes*********//
+void init_interrupts();
 
-    return 0;
+//************************************//
+
+int main(){
+    ADCON1 = 0x0F; 
+    TRISA &= 252;  //two ouputs
+    TRISB |= 2;    //one input
+
+    init_interrupts();
+
+    for(;;){ //loop
+        //RA0 is toggled every 2000ms
+        LATA ^= 1;
+        __delay_ms(2000); 
+        
+    }
+
+
+    //return 0;
+}
+
+//initialize interrupts
+void init_interrupts(){
+    INTCON2bits.RBPU = 1; //disable internal pull ups for portb
+
+    INTCON2bits.INTEDG0 = 1; //external interrupt 0 triggered on falling edge
+
+    INTCONbits.INT0E = 1; //enables INT0 external interrupt
+
+    INTCONbits.INT0F = 0; //clear interrupt flag
+
+    INTCONbits.GIE = 1; //enables all global interrupts
+
+}
+
+void __interrupt isr_routine(void){
+    if(INTCONbits.INT0F == 1){
+        LATA ^= 2;
+        __delay_ms(30);
+        INTCONbits.INT0F = 0;
+    }
+
 }
