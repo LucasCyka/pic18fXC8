@@ -1,0 +1,17 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/microchip/xc8/v2.45/pic/include/"
+            ],
+            "defines": [],
+            "compilerPath": "/opt/microchip/xc8/v2.45/pic/bin/xc8",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
