@@ -28,7 +28,7 @@ int main(){
 
     init_lcd();
     char txt[] = "My library ;)";
-    lcd_write(1,1,txt);
+    lcd_write(4,1,txt);
 
     for(;;){
 

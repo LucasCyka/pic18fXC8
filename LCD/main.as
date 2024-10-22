@@ -797,6 +797,7 @@ TOSU equ 0FFFh ;#
 	FNCALL	_main,_init_lcd
 	FNCALL	_main,_lcd_write
 	FNCALL	_lcd_write,_enable_pulse
+	FNCALL	_lcd_write,_lcd_send_cmd
 	FNCALL	_init_lcd,_lcd_send_cmd
 	FNCALL	_lcd_send_cmd,_enable_pulse
 	FNROOT	_main
@@ -903,28 +904,30 @@ __pcstackCOMRAM:
 ??_enable_pulse:	; 1 bytes @ 0x0
 ?_main:	; 2 bytes @ 0x0
 	ds   1
-?_lcd_write:	; 1 bytes @ 0x1
 ?_lcd_send_cmd:	; 1 bytes @ 0x1
 	global	lcd_send_cmd@cmd
 lcd_send_cmd@cmd:	; 2 bytes @ 0x1
-	global	lcd_write@row
-lcd_write@row:	; 2 bytes @ 0x1
 	ds   2
 ??_init_lcd:	; 1 bytes @ 0x3
+?_lcd_write:	; 1 bytes @ 0x3
 ??_lcd_send_cmd:	; 1 bytes @ 0x3
+	global	lcd_write@row
+lcd_write@row:	; 2 bytes @ 0x3
+	ds   2
 	global	lcd_write@line
-lcd_write@line:	; 2 bytes @ 0x3
+lcd_write@line:	; 2 bytes @ 0x5
 	ds   2
 	global	lcd_write@txt
-lcd_write@txt:	; 1 bytes @ 0x5
+lcd_write@txt:	; 1 bytes @ 0x7
 	ds   1
-??_lcd_write:	; 1 bytes @ 0x6
-	global	lcd_write@index
-lcd_write@index:	; 2 bytes @ 0x6
+??_lcd_write:	; 1 bytes @ 0x8
 	ds   2
-??_main:	; 1 bytes @ 0x8
+	global	lcd_write@index
+lcd_write@index:	; 2 bytes @ 0xA
+	ds   2
+??_main:	; 1 bytes @ 0xC
 	global	main@txt
-main@txt:	; 14 bytes @ 0x8
+main@txt:	; 14 bytes @ 0xC
 	ds   14
 ;!
 ;!Data Sizes:
@@ -937,7 +940,7 @@ main@txt:	; 14 bytes @ 0x8
 ;!
 ;!Auto Spaces:
 ;!    Space          Size  Autos    Used
-;!    COMRAM           95     22      36
+;!    COMRAM           95     26      40
 ;!    BANK0           160      0       0
 ;!    BANK1           256      0       0
 ;!    BANK2           256      0       0
@@ -959,7 +962,7 @@ main@txt:	; 14 bytes @ 0x8
 ;!Critical Paths under _main in COMRAM
 ;!
 ;!    _main->_lcd_write
-;!    _lcd_write->_enable_pulse
+;!    _lcd_write->_lcd_send_cmd
 ;!    _init_lcd->_lcd_send_cmd
 ;!    _lcd_send_cmd->_enable_pulse
 ;!
@@ -1005,27 +1008,28 @@ main@txt:	; 14 bytes @ 0x8
 ;! ---------------------------------------------------------------------------------
 ;! (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
 ;! ---------------------------------------------------------------------------------
-;! (0) _main                                                14    14      0     517
-;!                                              8 COMRAM    14    14      0
+;! (0) _main                                                14    14      0     887
+;!                                             12 COMRAM    14    14      0
 ;!                           _init_lcd
 ;!                          _lcd_write
 ;! ---------------------------------------------------------------------------------
-;! (1) _lcd_write                                            7     2      5     318
-;!                                              1 COMRAM     7     2      5
+;! (1) _lcd_write                                            9     4      5     612
+;!                                              3 COMRAM     9     4      5
 ;!                       _enable_pulse
+;!                       _lcd_send_cmd
 ;! ---------------------------------------------------------------------------------
-;! (1) _init_lcd                                             1     1      0     174
+;! (1) _init_lcd                                             1     1      0     250
 ;!                                              3 COMRAM     1     1      0
 ;!                       _lcd_send_cmd
 ;! ---------------------------------------------------------------------------------
-;! (2) _lcd_send_cmd                                         2     0      2     174
+;! (2) _lcd_send_cmd                                         2     0      2     250
 ;!                                              1 COMRAM     2     0      2
 ;!                       _enable_pulse
 ;! ---------------------------------------------------------------------------------
-;! (2) _enable_pulse                                         1     1      0       0
+;! (3) _enable_pulse                                         1     1      0       0
 ;!                                              0 COMRAM     1     1      0
 ;! ---------------------------------------------------------------------------------
-;! Estimated maximum stack depth 2
+;! Estimated maximum stack depth 3
 ;! ---------------------------------------------------------------------------------
 ;!
 ;! Call Graph Graphs:
@@ -1036,6 +1040,7 @@ main@txt:	; 14 bytes @ 0x8
 ;!       _enable_pulse
 ;!   _lcd_write
 ;!     _enable_pulse
+;!     _lcd_send_cmd
 ;!
 
 ;! Address spaces:
@@ -1060,7 +1065,7 @@ main@txt:	; 14 bytes @ 0x8
 ;!BITBANK0            A0      0       0       4        0.0%
 ;!BANK0               A0      0       0       5        0.0%
 ;!BITCOMRAM           5F      0       0       0        0.0%
-;!COMRAM              5F     16      24       1       37.9%
+;!COMRAM              5F     1A      28       1       42.1%
 ;!BITBIGSFRh          3E      0       0      20        0.0%
 ;!BITBIGSFRll         2C      0       0      23        0.0%
 ;!BITBIGSFRlhh        2A      0       0      21        0.0%
@@ -1070,8 +1075,8 @@ main@txt:	; 14 bytes @ 0x8
 ;!SFR                  0      0       0     200        0.0%
 ;!STACK                0      0       0       2        0.0%
 ;!NULL                 0      0       0       0        0.0%
-;!ABS                  0      0      24      24        0.0%
-;!DATA                 0      0      24       3        0.0%
+;!ABS                  0      0      28      24        0.0%
+;!DATA                 0      0      28       3        0.0%
 ;!CODE                 0      0       0       0        0.0%
 
 	global	_main
@@ -1082,7 +1087,7 @@ main@txt:	; 14 bytes @ 0x8
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
-;;  txt            14    8[COMRAM] unsigned char [14]
+;;  txt            14   12[COMRAM] unsigned char [14]
 ;; Return value:  Size  Location     Type
 ;;                  2   10[None  ] int 
 ;; Registers used:
@@ -1119,30 +1124,30 @@ _main:
 	callstack 28
 	line	27
 	
-l868:
+l872:
 	movlw	low(0Fh)
 	movwf	((c:4033))^0f00h,c	;volatile
 	line	29
 	
-l870:
+l874:
 	call	_init_lcd	;wreg free
 	line	30
 	
-l872:
+l876:
 	lfsr	2,(main@F3065)
 	lfsr	1,(main@txt)
 	movlw	14-1
-u41:
+u61:
 	movff	plusw2,plusw1
 	decf	wreg
-	bc	u41
+	bc	u61
 
 	line	31
 	
-l874:
-	movlw	high(01h)
+l878:
+	movlw	high(04h)
 	movwf	((c:lcd_write@row+1))^00h,c
-	movlw	low(01h)
+	movlw	low(04h)
 	movwf	((c:lcd_write@row))^00h,c
 	movlw	high(01h)
 	movwf	((c:lcd_write@line+1))^00h,c
@@ -1170,12 +1175,12 @@ GLOBAL	__end_of_main
 ;; Defined at:
 ;;		line 21 in file "lcd.c"
 ;; Parameters:    Size  Location     Type
-;;  row             2    1[COMRAM] int 
-;;  line            2    3[COMRAM] int 
-;;  txt             1    5[COMRAM] PTR const unsigned char 
+;;  row             2    3[COMRAM] int 
+;;  line            2    5[COMRAM] int 
+;;  txt             1    7[COMRAM] PTR const unsigned char 
 ;;		 -> main@txt(14), 
 ;; Auto vars:     Size  Location     Type
-;;  index           2    6[COMRAM] int 
+;;  index           2   10[COMRAM] int 
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      void 
 ;; Registers used:
@@ -1187,13 +1192,14 @@ GLOBAL	__end_of_main
 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
 ;;      Params:         5       0       0       0       0       0       0       0       0
 ;;      Locals:         2       0       0       0       0       0       0       0       0
-;;      Temps:          0       0       0       0       0       0       0       0       0
-;;      Totals:         7       0       0       0       0       0       0       0       0
-;;Total ram usage:        7 bytes
+;;      Temps:          2       0       0       0       0       0       0       0       0
+;;      Totals:         9       0       0       0       0       0       0       0       0
+;;Total ram usage:        9 bytes
 ;; Hardware stack levels used: 1
-;; Hardware stack levels required when called: 1
+;; Hardware stack levels required when called: 2
 ;; This function calls:
 ;;		_enable_pulse
+;;		_lcd_send_cmd
 ;; This function is called by:
 ;;		_main
 ;; This function uses a non-reentrant model
@@ -1209,51 +1215,74 @@ psect	text1
 	
 _lcd_write:
 ;incstack = 0
-	callstack 29
+	callstack 28
 	line	22
 	
-l856:
-	bsf	(0+(0/8)+(c:3981))^0f00h,c,(0)&7	;volatile
-	line	23
-	
 l858:
+	movff	(c:lcd_write@line),??_lcd_write+0+0
+	movff	(c:lcd_write@line+1),??_lcd_write+0+0+1
+	movlw	06h
+u45:
+	bcf	status,0
+	rlcf	(??_lcd_write+0+0)^00h,c
+	rlcf	(??_lcd_write+0+1)^00h,c
+	decfsz	wreg
+	goto	u45
+	movf	((c:lcd_write@row))^00h,c,w
+	addwf	(??_lcd_write+0+0)^00h,c
+	movf	((c:lcd_write@row+1))^00h,c,w
+	addwfc	(??_lcd_write+0+1)^00h,c
+	movlw	low(03Fh)
+	addwf	(??_lcd_write+0+0)^00h,c,w
+	movwf	((c:lcd_send_cmd@cmd))^00h,c
+	movlw	high(03Fh)
+	addwfc	(??_lcd_write+0+1)^00h,c,w
+	movwf	1+((c:lcd_send_cmd@cmd))^00h,c
+	call	_lcd_send_cmd	;wreg free
+	line	24
+	
+l860:
+	bsf	(0+(0/8)+(c:3981))^0f00h,c,(0)&7	;volatile
+	line	25
+	
+l862:
 	movlw	high(0)
 	movwf	((c:lcd_write@index+1))^00h,c
 	movlw	low(0)
 	movwf	((c:lcd_write@index))^00h,c
-	goto	l866
-	line	24
+	goto	l870
+	line	26
 	
-l860:
+l864:
 	movf	((c:lcd_write@txt))^00h,c,w
 	addwf	((c:lcd_write@index))^00h,c,w
 	movwf	fsr2l
 	clrf	fsr2h
 	movf	indf2,w
 	movwf	((c:3980))^0f00h,c	;volatile
+	line	27
+	
+l866:
+	call	_enable_pulse	;wreg free
 	line	25
 	
-l862:
-	call	_enable_pulse	;wreg free
-	line	23
-	
-l864:
+l868:
 	infsnz	((c:lcd_write@index))^00h,c
 	incf	((c:lcd_write@index+1))^00h,c
 	
-l866:
+l870:
 	movf	((c:lcd_write@txt))^00h,c,w
 	addwf	((c:lcd_write@index))^00h,c,w
 	movwf	fsr2l
 	clrf	fsr2h
 	movf	indf2,w
 	btfss	status,2
-	goto	u31
-	goto	u30
-u31:
-	goto	l860
-u30:
-	line	29
+	goto	u51
+	goto	u50
+u51:
+	goto	l864
+u50:
+	line	31
 	
 l37:
 	return	;funcret
@@ -1265,7 +1294,7 @@ GLOBAL	__end_of_lcd_write
 
 ;; *************** function _init_lcd *****************
 ;; Defined at:
-;;		line 31 in file "lcd.c"
+;;		line 33 in file "lcd.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -1293,67 +1322,67 @@ GLOBAL	__end_of_lcd_write
 ;; This function uses a non-reentrant model
 ;;
 psect	text2,class=CODE,space=0,reloc=2,group=0
-	line	31
+	line	33
 global __ptext2
 __ptext2:
 psect	text2
 	file	"lcd.c"
-	line	31
+	line	33
 	
 _init_lcd:
 ;incstack = 0
 	callstack 28
-	line	32
-	
-l844:
-	movlw	low(0)
-	movwf	((c:3989))^0f00h,c	;volatile
-	line	33
+	line	34
 	
 l846:
-	movlw	(0F8h)&0ffh
-	andwf	((c:3990))^0f00h,c	;volatile
+	movlw	low(0)
+	movwf	((c:3989))^0f00h,c	;volatile
 	line	35
 	
 l848:
-	movlw	low(0)
-	movwf	((c:3980))^0f00h,c	;volatile
-	line	36
 	movlw	(0F8h)&0ffh
-	andwf	((c:3981))^0f00h,c	;volatile
-	line	38
+	andwf	((c:3990))^0f00h,c	;volatile
+	line	37
 	
 l850:
+	movlw	low(0)
+	movwf	((c:3980))^0f00h,c	;volatile
+	line	38
+	movlw	(0F8h)&0ffh
+	andwf	((c:3981))^0f00h,c	;volatile
+	line	40
+	
+l852:
 	asmopt push
 asmopt off
 movlw	65
 movwf	(??_init_lcd+0+0)^00h,c
 	movlw	238
-u57:
+u77:
 decfsz	wreg,f
-	bra	u57
+	bra	u77
 	decfsz	(??_init_lcd+0+0)^00h,c,f
-	bra	u57
+	bra	u77
 	nop2
 asmopt pop
 
-	line	40
+	line	42
 	
-l852:
+l854:
 	movlw	high(038h)
 	movwf	((c:lcd_send_cmd@cmd+1))^00h,c
 	movlw	low(038h)
 	movwf	((c:lcd_send_cmd@cmd))^00h,c
 	call	_lcd_send_cmd	;wreg free
-	line	41
+	line	43
 	
-l854:
+l856:
 	movlw	high(0Ch)
 	movwf	((c:lcd_send_cmd@cmd+1))^00h,c
 	movlw	low(0Ch)
 	movwf	((c:lcd_send_cmd@cmd))^00h,c
 	call	_lcd_send_cmd	;wreg free
-	line	45
+	line	47
 	
 l40:
 	return	;funcret
@@ -1389,6 +1418,7 @@ GLOBAL	__end_of_init_lcd
 ;; This function calls:
 ;;		_enable_pulse
 ;; This function is called by:
+;;		_lcd_write
 ;;		_init_lcd
 ;; This function uses a non-reentrant model
 ;;
@@ -1405,15 +1435,15 @@ _lcd_send_cmd:
 	callstack 28
 	line	16
 	
-l838:
+l840:
 	bcf	(0+(0/8)+(c:3981))^0f00h,c,(0)&7	;volatile
 	line	17
 	
-l840:
+l842:
 	movff	(c:lcd_send_cmd@cmd),(c:3980)	;volatile
 	line	18
 	
-l842:
+l844:
 	call	_enable_pulse	;wreg free
 	line	19
 	
@@ -1464,30 +1494,30 @@ psect	text4
 	
 _enable_pulse:
 ;incstack = 0
-	callstack 29
+	callstack 28
 	line	9
 	
-l832:
+l834:
 	bcf	(0+(2/8)+(c:3981))^0f00h,c,(2)&7	;volatile
 	line	10
 	
-l834:
+l836:
 	asmopt push
 asmopt off
 movlw	33
 movwf	(??_enable_pulse+0+0)^00h,c
 	movlw	118
-u67:
+u87:
 decfsz	wreg,f
-	bra	u67
+	bra	u87
 	decfsz	(??_enable_pulse+0+0)^00h,c,f
-	bra	u67
+	bra	u87
 	nop2
 asmopt pop
 
 	line	11
 	
-l836:
+l838:
 	bsf	(0+(2/8)+(c:3981))^0f00h,c,(2)&7	;volatile
 	line	12
 	asmopt push
@@ -1495,11 +1525,11 @@ asmopt off
 movlw	33
 movwf	(??_enable_pulse+0+0)^00h,c
 	movlw	118
-u77:
+u97:
 decfsz	wreg,f
-	bra	u77
+	bra	u97
 	decfsz	(??_enable_pulse+0+0)^00h,c,f
-	bra	u77
+	bra	u97
 	nop2
 asmopt pop
 

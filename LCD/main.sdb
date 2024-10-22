@@ -31,7 +31,7 @@
 [v _lcd_send_cmd lcd_send_cmd `(v  1 e 1 0 ]
 "21
 [v _lcd_write lcd_write `(v  1 e 1 0 ]
-"31
+"33
 [v _init_lcd init_lcd `(v  1 e 1 0 ]
 "26 /home/lucas/PIC/C/LCD/main.c
 [v _main main `(i  1 e 2 0 ]
@@ -49,7 +49,7 @@
 [v _main main `(i  1 e 2 0 ]
 {
 "30
-[v main@txt txt `[14]uc  1 a 14 8 ]
+[v main@txt txt `[14]uc  1 a 14 12 ]
 "29
 [v main@F3065 F3065 `[14]uc  1 s 14 F3065 ]
 "38
@@ -57,18 +57,18 @@
 "21 /home/lucas/PIC/C/LCD/lcd.c
 [v _lcd_write lcd_write `(v  1 e 1 0 ]
 {
-"23
-[v lcd_write@index index `i  1 a 2 6 ]
+"25
+[v lcd_write@index index `i  1 a 2 10 ]
 "21
-[v lcd_write@row row `i  1 p 2 1 ]
-[v lcd_write@line line `i  1 p 2 3 ]
-[v lcd_write@txt txt `*.30Cuc  1 p 1 5 ]
-"29
-} 0
+[v lcd_write@row row `i  1 p 2 3 ]
+[v lcd_write@line line `i  1 p 2 5 ]
+[v lcd_write@txt txt `*.30Cuc  1 p 1 7 ]
 "31
+} 0
+"33
 [v _init_lcd init_lcd `(v  1 e 1 0 ]
 {
-"45
+"47
 } 0
 "15
 [v _lcd_send_cmd lcd_send_cmd `(v  1 e 1 0 ]

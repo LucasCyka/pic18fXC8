@@ -19,6 +19,8 @@ void lcd_send_cmd(int cmd){
 }
 
 void lcd_write(int row, int line, const char txt[]){
+    lcd_send_cmd((128+ (line - 1) * 64) + (row - 1)); //line x row
+
     LATE |= 1;
     for(int index = 0; txt[index] != 0; index++){
         LATD = txt[index];
