@@ -1,0 +1,79 @@
+[p GLOBOPT AUTOSTATIC LFSROK ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 18F4550 ]
+[d frameptr 4065 ]
+"62 /opt/microchip/xc8/v2.45/pic/sources/c90/common/float.c
+[v ___ftpack __ftpack `(f  1 e 3 0 ]
+"86 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftadd.c
+[v ___ftadd __ftadd `(f  1 e 3 0 ]
+"54 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftdiv.c
+[v ___ftdiv __ftdiv `(f  1 e 3 0 ]
+"62 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftmul.c
+[v ___ftmul __ftmul `(f  1 e 3 0 ]
+"19 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftsub.c
+[v ___ftsub __ftsub `(f  1 e 3 0 ]
+"10 /opt/microchip/xc8/v2.45/pic/sources/c90/common/sprcadd.c
+[v ___fladd __fladd `(d  1 e 3 0 ]
+"245
+[v ___flsub __flsub `(d  1 e 3 0 ]
+"11 /opt/microchip/xc8/v2.45/pic/sources/c90/common/sprcdiv.c
+[v ___fldiv __fldiv `(d  1 e 3 0 ]
+"8 /opt/microchip/xc8/v2.45/pic/sources/c90/common/sprcmul.c
+[v ___flmul __flmul `(d  1 e 3 0 ]
+"15 /opt/microchip/xc8/v2.45/pic/sources/c90/common/Umul32.c
+[v ___lmul __lmul `(ul  1 e 4 0 ]
+"91 /opt/microchip/xc8/v2.45/pic/sources/c90/common/Umul64.c
+[v ___omul __omul `(ul  1 e 4 0 ]
+"33 /home/lucas/PIC/C/LCD/lcd.c
+[v _enable_pulse enable_pulse `(v  1 e 1 0 ]
+"40
+[v _lcd_send_cmd lcd_send_cmd `(v  1 e 1 0 ]
+"46
+[v _lcd_write lcd_write `(v  1 e 1 0 ]
+"56
+[v _init_lcd init_lcd `(v  1 e 1 0 ]
+"74
+[v _main main `(i  1 e 2 0 ]
+"3263 /opt/microchip/xc8/v2.45/pic/include/proc/pic18f4550.h
+[v _LATD LATD `VEuc  1 e 1 @3980 ]
+"3375
+[v _LATE LATE `VEuc  1 e 1 @3981 ]
+"4001
+[v _TRISD TRISD `VEuc  1 e 1 @3989 ]
+"4223
+[v _TRISE TRISE `VEuc  1 e 1 @3990 ]
+"6581
+[v _ADCON1 ADCON1 `VEuc  1 e 1 @4033 ]
+"74 /home/lucas/PIC/C/LCD/lcd.c
+[v _main main `(i  1 e 2 0 ]
+{
+"83
+} 0
+"46
+[v _lcd_write lcd_write `(v  1 e 1 0 ]
+{
+"48
+[v lcd_write@index index `i  1 a 2 7 ]
+"46
+[v lcd_write@row row `i  1 p 2 1 ]
+[v lcd_write@line line `i  1 p 2 3 ]
+[v lcd_write@txt txt `*.31Cuc  1 p 1 5 ]
+"54
+} 0
+"56
+[v _init_lcd init_lcd `(v  1 e 1 0 ]
+{
+"70
+} 0
+"40
+[v _lcd_send_cmd lcd_send_cmd `(v  1 e 1 0 ]
+{
+[v lcd_send_cmd@cmd cmd `i  1 p 2 1 ]
+"44
+} 0
+"33
+[v _enable_pulse enable_pulse `(v  1 e 1 0 ]
+{
+"38
+} 0

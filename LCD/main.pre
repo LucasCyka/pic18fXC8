@@ -5687,48 +5687,23 @@ __attribute__((__unsupported__("The " "Write_b_eep" " routine is no longer suppo
 unsigned char __t1rd16on(void);
 unsigned char __t3rd16on(void);
 
+# 5 "lcd.h"
+void enable_pulse();
+void lcd_send_cmd(int cmd);
+void lcd_write(int row, int line, const char txt[]);
+void init_lcd();
+
 # 26 "main.c"
-void init_interrupts();
-
-
-
 int main(){
 ADCON1 = 0x0F;
-TRISA &= 252;
-TRISB |= 2;
 
-init_interrupts();
+init_lcd();
+char txt[] = "My library ;)";
+lcd_write(1,1,txt);
 
 for(;;){
 
-LATA ^= 1;
-_delay((unsigned long)((2000)*(20000000/4000.0)));
 
-}
-
-
-return 0;
-}
-
-
-void init_interrupts(){
-INTCON2bits.RBPU = 1;
-
-INTCON2bits.INTEDG0 = 1;
-
-INTCONbits.INT0E = 1;
-
-INTCONbits.INT0F = 0;
-
-INTCONbits.GIE = 1;
-
-}
-
-void __interrupt isr_routine(void){
-if(INTCONbits.INT0F == 1){
-LATA ^= 2;
-_delay((unsigned long)((30)*(20000000/4000.0)));
-INTCONbits.INT0F = 0;
 }
 
 }

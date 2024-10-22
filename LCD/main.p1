@@ -2,46 +2,10 @@ Version 3.2 HI-TECH Software Intermediate Code
 [p mainexit ]
 "6581 /opt/microchip/xc8/v2.45/pic/include/proc/pic18f4550.h
 [v _ADCON1 `Vuc ~T0 @X0 0 e@4033 ]
-"3427
-[v _TRISA `Vuc ~T0 @X0 0 e@3986 ]
-"3625
-[v _TRISB `Vuc ~T0 @X0 0 e@3987 ]
-"26 main.c
-[v _init_interrupts `(v ~T0 @X0 0 ef ]
-"2973 /opt/microchip/xc8/v2.45/pic/include/proc/pic18f4550.h
-[v _LATA `Vuc ~T0 @X0 0 e@3977 ]
-[v F44 `(v ~T0 @X0 1 tf1`ul ]
-"20 /opt/microchip/xc8/v2.45/pic/include/builtins.h
-[v __delay `JF44 ~T0 @X0 0 e ]
-[p i __delay ]
-"8511 /opt/microchip/xc8/v2.45/pic/include/proc/pic18f4550.h
-[s S351 :7 `uc 1 :1 `uc 1 ]
-[n S351 . . NOT_RBPU ]
-"8515
-[s S352 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S352 . RBIP . TMR0IP . INTEDG2 INTEDG1 INTEDG0 nRBPU ]
-"8525
-[s S353 :2 `uc 1 :1 `uc 1 :4 `uc 1 :1 `uc 1 ]
-[n S353 . . T0IP . RBPU ]
-"8510
-[u S350 `S351 1 `S352 1 `S353 1 ]
-[n S350 . . . . ]
-"8532
-[v _INTCON2bits `VS350 ~T0 @X0 0 e@4081 ]
-"8588
-[s S355 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S355 . RBIF INT0IF TMR0IF RBIE INT0IE TMR0IE PEIE_GIEL GIE_GIEH ]
-"8598
-[s S356 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S356 . . INT0F T0IF . INT0E T0IE PEIE GIE ]
-"8608
-[s S357 :6 `uc 1 :1 `uc 1 :1 `uc 1 ]
-[n S357 . . GIEL GIEH ]
-"8587
-[u S354 `S355 1 `S356 1 `S357 1 ]
-[n S354 . . . . ]
-"8614
-[v _INTCONbits `VS354 ~T0 @X0 0 e@4082 ]
+"8 lcd.h
+[v _init_lcd `(v ~T0 @X0 0 ef ]
+"7
+[v _lcd_write `(v ~T0 @X0 0 ef3`i`i`*Cuc ]
 "2 main.c
 [p x PLLDIV=5 ]
 "3
@@ -405,75 +369,48 @@ Version 3.2 HI-TECH Software Intermediate Code
 "8893
 [; <" TOSU equ 0FFFh ;# ">
 [v $root$_main `(v ~T0 @X0 0 e ]
-"30 main.c
+"26 main.c
 [v _main `(i ~T0 @X0 1 ef ]
 {
 [e :U _main ]
 [f ]
-"31
+"27
 [e = _ADCON1 -> -> 15 `i `uc ]
-"32
-[e =& _TRISA -> -> 252 `i `uc ]
+"29
+[e ( _init_lcd ..  ]
+[v F3065 `uc ~T0 @X0 -> 0 `x s ]
+[i F3065
+:U ..
+-> 77 `c
+-> 121 `c
+-> 32 `c
+-> 108 `c
+-> 105 `c
+-> 98 `c
+-> 114 `c
+-> 97 `c
+-> 114 `c
+-> 121 `c
+-> 32 `c
+-> 59 `c
+-> 41 `c
+-> 0 `c
+..
+]
+"30
+[v _txt `uc ~T0 @X0 14  a ]
+[e = _txt F3065 ]
+"31
+[e ( _lcd_write (3 , , -> 1 `i -> 1 `i -> &U _txt `*Cuc ]
 "33
-[e =| _TRISB -> -> 2 `i `uc ]
-"35
-[e ( _init_interrupts ..  ]
-"37
 {
 [e :U 363 ]
 {
-"39
-[e =^ _LATA -> -> 1 `i `uc ]
-"40
-[e ( __delay (1 -> * -> -> 2000 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
-"42
+"36
 }
 [e $U 363  ]
 [e :U 364 ]
 }
-"45
-[e ) -> 0 `i ]
-[e $UE 362  ]
-"46
+"38
 [e :UE 362 ]
-}
-"49
-[v _init_interrupts `(v ~T0 @X0 1 ef ]
-{
-[e :U _init_interrupts ]
-[f ]
-"50
-[e = . . _INTCON2bits 2 3 -> -> 1 `i `uc ]
-"52
-[e = . . _INTCON2bits 1 6 -> -> 1 `i `uc ]
-"54
-[e = . . _INTCONbits 1 4 -> -> 1 `i `uc ]
-"56
-[e = . . _INTCONbits 1 1 -> -> 0 `i `uc ]
-"58
-[e = . . _INTCONbits 1 7 -> -> 1 `i `uc ]
-"60
-[e :UE 366 ]
-}
-[v $root$_isr_routine `(v ~T0 @X0 0 e ]
-[v F3060 `(v ~T0 @X0 1 tf ]
-"62
-[v _isr_routine `IF3060 ~T0 @X0 1 e ]
-{
-[e :U _isr_routine ]
-[f ]
-"63
-[e $ ! == -> . . _INTCONbits 1 1 `i -> 1 `i 368  ]
-{
-"64
-[e =^ _LATA -> -> 2 `i `uc ]
-"65
-[e ( __delay (1 -> * -> -> 30 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
-"66
-[e = . . _INTCONbits 1 1 -> -> 0 `i `uc ]
-"67
-}
-[e :U 368 ]
-"69
-[e :UE 367 ]
 }
