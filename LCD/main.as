@@ -1168,7 +1168,7 @@ GLOBAL	__end_of_main
 
 ;; *************** function _lcd_write *****************
 ;; Defined at:
-;;		line 31 in file "lcd.c"
+;;		line 21 in file "lcd.c"
 ;; Parameters:    Size  Location     Type
 ;;  row             2    1[COMRAM] int 
 ;;  line            2    3[COMRAM] int 
@@ -1200,21 +1200,21 @@ GLOBAL	__end_of_main
 ;;
 psect	text1,class=CODE,space=0,reloc=2,group=0
 	file	"lcd.c"
-	line	31
+	line	21
 global __ptext1
 __ptext1:
 psect	text1
 	file	"lcd.c"
-	line	31
+	line	21
 	
 _lcd_write:
 ;incstack = 0
 	callstack 29
-	line	32
+	line	22
 	
 l856:
 	bsf	(0+(0/8)+(c:3981))^0f00h,c,(0)&7	;volatile
-	line	33
+	line	23
 	
 l858:
 	movlw	high(0)
@@ -1222,7 +1222,7 @@ l858:
 	movlw	low(0)
 	movwf	((c:lcd_write@index))^00h,c
 	goto	l866
-	line	34
+	line	24
 	
 l860:
 	movf	((c:lcd_write@txt))^00h,c,w
@@ -1231,11 +1231,11 @@ l860:
 	clrf	fsr2h
 	movf	indf2,w
 	movwf	((c:3980))^0f00h,c	;volatile
-	line	35
+	line	25
 	
 l862:
 	call	_enable_pulse	;wreg free
-	line	33
+	line	23
 	
 l864:
 	infsnz	((c:lcd_write@index))^00h,c
@@ -1253,7 +1253,7 @@ l866:
 u31:
 	goto	l860
 u30:
-	line	39
+	line	29
 	
 l37:
 	return	;funcret
@@ -1265,7 +1265,7 @@ GLOBAL	__end_of_lcd_write
 
 ;; *************** function _init_lcd *****************
 ;; Defined at:
-;;		line 41 in file "lcd.c"
+;;		line 31 in file "lcd.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -1293,35 +1293,35 @@ GLOBAL	__end_of_lcd_write
 ;; This function uses a non-reentrant model
 ;;
 psect	text2,class=CODE,space=0,reloc=2,group=0
-	line	41
+	line	31
 global __ptext2
 __ptext2:
 psect	text2
 	file	"lcd.c"
-	line	41
+	line	31
 	
 _init_lcd:
 ;incstack = 0
 	callstack 28
-	line	42
+	line	32
 	
 l844:
 	movlw	low(0)
 	movwf	((c:3989))^0f00h,c	;volatile
-	line	43
+	line	33
 	
 l846:
 	movlw	(0F8h)&0ffh
 	andwf	((c:3990))^0f00h,c	;volatile
-	line	45
+	line	35
 	
 l848:
 	movlw	low(0)
 	movwf	((c:3980))^0f00h,c	;volatile
-	line	46
+	line	36
 	movlw	(0F8h)&0ffh
 	andwf	((c:3981))^0f00h,c	;volatile
-	line	48
+	line	38
 	
 l850:
 	asmopt push
@@ -1337,7 +1337,7 @@ decfsz	wreg,f
 	nop2
 asmopt pop
 
-	line	50
+	line	40
 	
 l852:
 	movlw	high(038h)
@@ -1345,7 +1345,7 @@ l852:
 	movlw	low(038h)
 	movwf	((c:lcd_send_cmd@cmd))^00h,c
 	call	_lcd_send_cmd	;wreg free
-	line	51
+	line	41
 	
 l854:
 	movlw	high(0Ch)
@@ -1353,7 +1353,7 @@ l854:
 	movlw	low(0Ch)
 	movwf	((c:lcd_send_cmd@cmd))^00h,c
 	call	_lcd_send_cmd	;wreg free
-	line	55
+	line	45
 	
 l40:
 	return	;funcret
@@ -1365,7 +1365,7 @@ GLOBAL	__end_of_init_lcd
 
 ;; *************** function _lcd_send_cmd *****************
 ;; Defined at:
-;;		line 25 in file "lcd.c"
+;;		line 15 in file "lcd.c"
 ;; Parameters:    Size  Location     Type
 ;;  cmd             2    1[COMRAM] int 
 ;; Auto vars:     Size  Location     Type
@@ -1393,29 +1393,29 @@ GLOBAL	__end_of_init_lcd
 ;; This function uses a non-reentrant model
 ;;
 psect	text3,class=CODE,space=0,reloc=2,group=0
-	line	25
+	line	15
 global __ptext3
 __ptext3:
 psect	text3
 	file	"lcd.c"
-	line	25
+	line	15
 	
 _lcd_send_cmd:
 ;incstack = 0
 	callstack 28
-	line	26
+	line	16
 	
 l838:
 	bcf	(0+(0/8)+(c:3981))^0f00h,c,(0)&7	;volatile
-	line	27
+	line	17
 	
 l840:
 	movff	(c:lcd_send_cmd@cmd),(c:3980)	;volatile
-	line	28
+	line	18
 	
 l842:
 	call	_enable_pulse	;wreg free
-	line	29
+	line	19
 	
 l31:
 	return	;funcret
@@ -1427,7 +1427,7 @@ GLOBAL	__end_of_lcd_send_cmd
 
 ;; *************** function _enable_pulse *****************
 ;; Defined at:
-;;		line 18 in file "lcd.c"
+;;		line 8 in file "lcd.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -1455,21 +1455,21 @@ GLOBAL	__end_of_lcd_send_cmd
 ;; This function uses a non-reentrant model
 ;;
 psect	text4,class=CODE,space=0,reloc=2,group=0
-	line	18
+	line	8
 global __ptext4
 __ptext4:
 psect	text4
 	file	"lcd.c"
-	line	18
+	line	8
 	
 _enable_pulse:
 ;incstack = 0
 	callstack 29
-	line	19
+	line	9
 	
 l832:
 	bcf	(0+(2/8)+(c:3981))^0f00h,c,(2)&7	;volatile
-	line	20
+	line	10
 	
 l834:
 	asmopt push
@@ -1485,11 +1485,11 @@ decfsz	wreg,f
 	nop2
 asmopt pop
 
-	line	21
+	line	11
 	
 l836:
 	bsf	(0+(2/8)+(c:3981))^0f00h,c,(2)&7	;volatile
-	line	22
+	line	12
 	asmopt push
 asmopt off
 movlw	33
@@ -1503,7 +1503,7 @@ decfsz	wreg,f
 	nop2
 asmopt pop
 
-	line	23
+	line	13
 	
 l28:
 	return	;funcret

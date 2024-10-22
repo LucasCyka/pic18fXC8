@@ -351,38 +351,38 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; <" TOSH equ 0FFEh ;# ">
 "8893
 [; <" TOSU equ 0FFFh ;# ">
-"18 lcd.c
+"8 lcd.c
 [v _enable_pulse `(v ~T0 @X0 1 ef ]
 {
 [e :U _enable_pulse ]
 [f ]
-"19
+"9
 [e =& _LATE -> -> 251 `i `uc ]
-"20
+"10
 [e ( __delay (1 -> * -> -> 5 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
-"21
+"11
 [e =| _LATE -> -> 4 `i `uc ]
-"22
+"12
 [e ( __delay (1 -> * -> -> 5 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
-"23
+"13
 [e :UE 362 ]
 }
-"25
+"15
 [v _lcd_send_cmd `(v ~T0 @X0 1 ef1`i ]
 {
 [e :U _lcd_send_cmd ]
 [v _cmd `i ~T0 @X0 1 r1 ]
 [f ]
-"26
+"16
 [e =& _LATE -> -> 254 `i `uc ]
-"27
+"17
 [e = _LATD -> _cmd `uc ]
-"28
+"18
 [e ( _enable_pulse ..  ]
-"29
+"19
 [e :UE 363 ]
 }
-"31
+"21
 [v _lcd_write `(v ~T0 @X0 1 ef3`i`i`*Cuc ]
 {
 [e :U _lcd_write ]
@@ -390,50 +390,50 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _line `i ~T0 @X0 1 r2 ]
 [v _txt `*Cuc ~T0 @X0 1 r3 ]
 [f ]
-"32
+"22
 [e =| _LATE -> -> 1 `i `uc ]
-"33
+"23
 {
 [v _index `i ~T0 @X0 1 a ]
 [e = _index -> 0 `i ]
 [e $U 368  ]
 [e :U 365 ]
 {
-"34
+"24
 [e = _LATD *U + _txt * -> _index `x -> -> # *U _txt `i `x ]
-"35
+"25
 [e ( _enable_pulse ..  ]
-"37
+"27
 }
-"33
+"23
 [e ++ _index -> 1 `i ]
 [e :U 368 ]
 [e $ != -> *U + _txt * -> _index `x -> -> # *U _txt `i `x `i -> 0 `i 365  ]
 [e :U 366 ]
-"37
+"27
 }
-"39
+"29
 [e :UE 364 ]
 }
-"41
+"31
 [v _init_lcd `(v ~T0 @X0 1 ef ]
 {
 [e :U _init_lcd ]
 [f ]
-"42
+"32
 [e = _TRISD -> -> 0 `i `uc ]
-"43
+"33
 [e =& _TRISE -> -> 248 `i `uc ]
-"45
+"35
 [e = _LATD -> -> 0 `i `uc ]
-"46
+"36
 [e =& _LATE -> -> 248 `i `uc ]
-"48
+"38
 [e ( __delay (1 -> * -> -> 10 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
-"50
+"40
 [e ( _lcd_send_cmd (1 -> 56 `i ]
-"51
+"41
 [e ( _lcd_send_cmd (1 -> 12 `i ]
-"55
+"45
 [e :UE 369 ]
 }

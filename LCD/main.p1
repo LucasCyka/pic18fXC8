@@ -2,9 +2,9 @@ Version 3.2 HI-TECH Software Intermediate Code
 [p mainexit ]
 "6581 /opt/microchip/xc8/v2.45/pic/include/proc/pic18f4550.h
 [v _ADCON1 `Vuc ~T0 @X0 0 e@4033 ]
-"8 lcd.h
+"15 lcd.h
 [v _init_lcd `(v ~T0 @X0 0 ef ]
-"7
+"14
 [v _lcd_write `(v ~T0 @X0 0 ef3`i`i`*Cuc ]
 "2 main.c
 [p x PLLDIV=5 ]

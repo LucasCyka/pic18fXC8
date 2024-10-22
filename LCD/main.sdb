@@ -25,13 +25,13 @@
 [v ___lmul __lmul `(ul  1 e 4 0 ]
 "91 /opt/microchip/xc8/v2.45/pic/sources/c90/common/Umul64.c
 [v ___omul __omul `(ul  1 e 4 0 ]
-"18 /home/lucas/PIC/C/LCD/lcd.c
+"8 /home/lucas/PIC/C/LCD/lcd.c
 [v _enable_pulse enable_pulse `(v  1 e 1 0 ]
-"25
+"15
 [v _lcd_send_cmd lcd_send_cmd `(v  1 e 1 0 ]
-"31
+"21
 [v _lcd_write lcd_write `(v  1 e 1 0 ]
-"41
+"31
 [v _init_lcd init_lcd `(v  1 e 1 0 ]
 "26 /home/lucas/PIC/C/LCD/main.c
 [v _main main `(i  1 e 2 0 ]
@@ -54,30 +54,30 @@
 [v main@F3065 F3065 `[14]uc  1 s 14 F3065 ]
 "38
 } 0
-"31 /home/lucas/PIC/C/LCD/lcd.c
+"21 /home/lucas/PIC/C/LCD/lcd.c
 [v _lcd_write lcd_write `(v  1 e 1 0 ]
 {
-"33
+"23
 [v lcd_write@index index `i  1 a 2 6 ]
-"31
+"21
 [v lcd_write@row row `i  1 p 2 1 ]
 [v lcd_write@line line `i  1 p 2 3 ]
 [v lcd_write@txt txt `*.30Cuc  1 p 1 5 ]
-"39
+"29
 } 0
-"41
+"31
 [v _init_lcd init_lcd `(v  1 e 1 0 ]
 {
-"55
+"45
 } 0
-"25
+"15
 [v _lcd_send_cmd lcd_send_cmd `(v  1 e 1 0 ]
 {
 [v lcd_send_cmd@cmd cmd `i  1 p 2 1 ]
-"29
+"19
 } 0
-"18
+"8
 [v _enable_pulse enable_pulse `(v  1 e 1 0 ]
 {
-"23
+"13
 } 0

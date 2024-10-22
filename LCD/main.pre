@@ -5687,7 +5687,7 @@ __attribute__((__unsupported__("The " "Write_b_eep" " routine is no longer suppo
 unsigned char __t1rd16on(void);
 unsigned char __t3rd16on(void);
 
-# 5 "lcd.h"
+# 12 "lcd.h"
 void enable_pulse();
 void lcd_send_cmd(int cmd);
 void lcd_write(int row, int line, const char txt[]);
