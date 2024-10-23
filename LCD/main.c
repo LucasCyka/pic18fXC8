@@ -19,7 +19,7 @@
 
 #define _XTAL_FREQ 20000000 //20Mhz
 
-#include<xc.h>
+#include <xc.h>
 #include <proc/pic18f4550.h>
 #include "lcd.h"
 
