@@ -5687,13 +5687,11 @@ __attribute__((__unsupported__("The " "Write_b_eep" " routine is no longer suppo
 unsigned char __t1rd16on(void);
 unsigned char __t3rd16on(void);
 
-# 12 "lcd.h"
-void enable_pulse();
-void lcd_send_cmd(int cmd);
-void lcd_write(int row, int line, const char txt[]);
-void init_lcd();
+# 20 "adc.h"
+void ADC_init();
+int ADC_read(int channel);
 
-# 41 "adc.c"
+# 25 "adc.c"
 unsigned char channels[13][4] = {
 {0,0,0,0},
 {0,0,0,1},
@@ -5740,44 +5738,6 @@ value = 0;
 value = (ADRESH << 8) | ADRESL;
 return value;
 
-
-
-}
-
-void ConIntToStr(int FromInt, char *ToStr){
-int index = 3;
-int num = FromInt;
-
-for(index = 3; index > -1 ; index--){
-ToStr[index] = (char)(num % 10)+'0';
-num /= 10;
-}
-
-}
-
-
-int main(){
-ADCON1 = 0x0E;
-
-
-init_lcd();
-ADC_init();
-
-_delay((unsigned long)((10)*(20000000/4000.0)));
-
-lcd_write(1,1,"my lib ;)");
-
-for(;;){
-
-adRead = ADC_read(0);
-ConIntToStr(adRead,adReadTxt);
-
-lcd_write(1,1,adReadTxt);
-
-_delay((unsigned long)((100)*(20000000/4000.0)));
-lcd_send_cmd(1);
-
-}
 
 
 }

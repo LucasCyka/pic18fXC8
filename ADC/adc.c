@@ -17,26 +17,10 @@
 // CONFIG2H
 #pragma config WDT = OFF        // Watchdog Timer Disabled
 
-#define _XTAL_FREQ 20000000 //20Mhz
 
 #include <xc.h>
 #include <proc/pic18f4550.h>
-#include "lcd.h"
-
-
-#define AN0   0
-#define AN1   1
-#define AN2   2
-#define AN3   3
-#define AN4   4
-#define AN5   5
-#define AN6   6
-#define AN7   7
-#define AN8   8
-#define AN9   9
-#define AN10  10
-#define AN11  11
-#define AN12  12
+#include "adc.h"
 
 unsigned char channels[13][4] = {
     {0,0,0,0},
@@ -87,7 +71,7 @@ int ADC_read(int channel){
 
 
 }
-
+/**
 void ConIntToStr(int FromInt, char *ToStr){
    int index = 3;
    int num = FromInt;
@@ -124,5 +108,5 @@ int main(){
     }
 
 
-}
+}*/
 

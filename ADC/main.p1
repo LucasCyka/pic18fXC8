@@ -8,6 +8,14 @@ Version 3.2 HI-TECH Software Intermediate Code
 "20 /opt/microchip/xc8/v2.45/pic/include/builtins.h
 [v __delay `JF44 ~T0 @X0 0 e ]
 [p i __delay ]
+"13 lcd.h
+[v _lcd_send_cmd `(v ~T0 @X0 0 ef1`i ]
+"20 adc.h
+[v _ADC_init `(v ~T0 @X0 0 ef ]
+"21
+[v _ADC_read `(i ~T0 @X0 0 ef1`i ]
+"28 main.c
+[v _ConIntToStr `(v ~T0 @X0 0 ef2`i`*uc ]
 "14 lcd.h
 [v _lcd_write `(v ~T0 @X0 0 ef3`i`i`*Cuc ]
 "2 main.c
@@ -372,25 +380,86 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; <" TOSH equ 0FFEh ;# ">
 "8893
 [; <" TOSU equ 0FFFh ;# ">
+"30 main.c
+[v _Adread `i ~T0 @X0 1 e ]
+[i _Adread
+-> 0 `i
+]
+"31
+[v _txtAdRead `uc ~T0 @X0 -> 4 `i e ]
 [v $root$_main `(v ~T0 @X0 0 e ]
-"26 main.c
+"33
 [v _main `(i ~T0 @X0 1 ef ]
 {
 [e :U _main ]
 [f ]
-"27
-[e = _ADCON1 -> -> 14 `i `uc ]
-"30
-[e ( _init_lcd ..  ]
-"32
-[e ( __delay (1 -> * -> -> 10 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
 "34
-[e ( _lcd_write (3 , , -> 1 `i -> 1 `i :s 1C ]
+[e = _ADCON1 -> -> 14 `i `uc ]
 "37
+[e ( _init_lcd ..  ]
+"39
+[e ( __delay (1 -> * -> -> 10 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
+"42
+[e ( _lcd_send_cmd (1 -> 1 `i ]
+"44
+[e ( _ADC_init ..  ]
+"46
+{
+[e :U 363 ]
+{
+"47
+[e = _Adread ( _ADC_read (1 -> 0 `i ]
+"48
+[e ( _ConIntToStr (2 , _Adread &U _txtAdRead ]
+"50
+[e ( _lcd_write (3 , , -> 1 `i -> 1 `i -> &U _txtAdRead `*Cuc ]
+"51
+[e ( __delay (1 -> * -> -> 100 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
+"53
+[e ( _lcd_send_cmd (1 -> 1 `i ]
+"56
+}
+[e $U 363  ]
+[e :U 364 ]
+}
+"58
 [e ) -> 0 `i ]
 [e $UE 362  ]
-"38
+"60
 [e :UE 362 ]
 }
-[a 1C 109 121 32 108 105 98 32 59 41 0 ]
-
+"64
+[v _ConIntToStr `(v ~T0 @X0 1 ef2`i`*uc ]
+{
+[e :U _ConIntToStr ]
+[v _FromInt `i ~T0 @X0 1 r1 ]
+[v _ToStr `*uc ~T0 @X0 1 r2 ]
+[f ]
+"65
+[v _index `i ~T0 @X0 1 a ]
+[e = _index -> 3 `i ]
+"66
+[v _num `i ~T0 @X0 1 a ]
+[e = _num _FromInt ]
+"68
+{
+[e = _index -> 3 `i ]
+[e $ > _index -U -> 1 `i 367  ]
+[e $U 368  ]
+[e :U 367 ]
+{
+"69
+[e = *U + _ToStr * -> _index `x -> -> # *U _ToStr `i `x -> + -> -> % _num -> 10 `i `uc `ui -> 48 `ui `uc ]
+"70
+[e =/ _num -> -> 10 `uc `i ]
+"71
+}
+"68
+[e -- _index -> 1 `i ]
+[e $ > _index -U -> 1 `i 367  ]
+[e :U 368 ]
+"71
+}
+"73
+[e :UE 366 ]
+}

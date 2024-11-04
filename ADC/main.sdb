@@ -3,6 +3,10 @@
 [d edition pro ]
 [d chip 18F4550 ]
 [d frameptr 4065 ]
+"7 /opt/microchip/xc8/v2.45/pic/sources/c90/common/awdiv.c
+[v ___awdiv __awdiv `(i  1 e 2 0 ]
+"7 /opt/microchip/xc8/v2.45/pic/sources/c90/common/awmod.c
+[v ___awmod __awmod `(i  1 e 2 0 ]
 "62 /opt/microchip/xc8/v2.45/pic/sources/c90/common/float.c
 [v ___ftpack __ftpack `(f  1 e 3 0 ]
 "86 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftadd.c
@@ -25,6 +29,10 @@
 [v ___lmul __lmul `(ul  1 e 4 0 ]
 "91 /opt/microchip/xc8/v2.45/pic/sources/c90/common/Umul64.c
 [v ___omul __omul `(ul  1 e 4 0 ]
+"44 /home/lucas/PIC/C/ADC/adc.c
+[v _ADC_init ADC_init `(v  1 e 1 0 ]
+"54
+[v _ADC_read ADC_read `(i  1 e 2 0 ]
 "8 /home/lucas/PIC/C/ADC/lcd.c
 [v _enable_pulse enable_pulse `(v  1 e 1 0 ]
 "15
@@ -33,8 +41,10 @@
 [v _lcd_write lcd_write `(v  1 e 1 0 ]
 "33
 [v _init_lcd init_lcd `(v  1 e 1 0 ]
-"26 /home/lucas/PIC/C/ADC/main.c
+"33 /home/lucas/PIC/C/ADC/main.c
 [v _main main `(i  1 e 2 0 ]
+"64
+[v _ConIntToStr ConIntToStr `(v  1 e 1 0 ]
 "3263 /opt/microchip/xc8/v2.45/pic/include/proc/pic18f4550.h
 [v _LATD LATD `VEuc  1 e 1 @3980 ]
 "3375
@@ -43,12 +53,87 @@
 [v _TRISD TRISD `VEuc  1 e 1 @3989 ]
 "4223
 [v _TRISE TRISE `VEuc  1 e 1 @3990 ]
+[s S177 . 1 `uc 1 ADCS 1 0 :3:0 
+`uc 1 ACQT 1 0 :3:3 
+`uc 1 . 1 0 :1:6 
+`uc 1 ADFM 1 0 :1:7 
+]
+"6531
+[s S182 . 1 `uc 1 ADCS0 1 0 :1:0 
+`uc 1 ADCS1 1 0 :1:1 
+`uc 1 ADCS2 1 0 :1:2 
+`uc 1 ACQT0 1 0 :1:3 
+`uc 1 ACQT1 1 0 :1:4 
+`uc 1 ACQT2 1 0 :1:5 
+]
+[u S189 . 1 `S177 1 . 1 0 `S182 1 . 1 0 ]
+[v _ADCON2bits ADCON2bits `VES189  1 e 1 @4032 ]
 "6581
 [v _ADCON1 ADCON1 `VEuc  1 e 1 @4033 ]
-"26 /home/lucas/PIC/C/ADC/main.c
+[s S142 . 1 `uc 1 PCFG 1 0 :4:0 
+`uc 1 VCFG 1 0 :2:4 
+]
+"6606
+[s S145 . 1 `uc 1 PCFG0 1 0 :1:0 
+`uc 1 PCFG1 1 0 :1:1 
+`uc 1 PCFG2 1 0 :1:2 
+`uc 1 PCFG3 1 0 :1:3 
+`uc 1 VCFG0 1 0 :1:4 
+`uc 1 VCFG1 1 0 :1:5 
+]
+[s S152 . 1 `uc 1 . 1 0 :3:0 
+`uc 1 CHSN3 1 0 :1:3 
+`uc 1 VCFG01 1 0 :1:4 
+`uc 1 VCFG11 1 0 :1:5 
+]
+[u S157 . 1 `S142 1 . 1 0 `S145 1 . 1 0 `S152 1 . 1 0 ]
+[v _ADCON1bits ADCON1bits `VES157  1 e 1 @4033 ]
+[s S74 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 GO_NOT_DONE 1 0 :1:1 
+]
+"6710
+[s S77 . 1 `uc 1 ADON 1 0 :1:0 
+`uc 1 GO_nDONE 1 0 :1:1 
+`uc 1 CHS 1 0 :4:2 
+]
+[s S81 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 GO_DONE 1 0 :1:1 
+`uc 1 CHS0 1 0 :1:2 
+`uc 1 CHS1 1 0 :1:3 
+`uc 1 CHS2 1 0 :1:4 
+`uc 1 CHS3 1 0 :1:5 
+]
+[s S88 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 DONE 1 0 :1:1 
+]
+[s S91 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 GO 1 0 :1:1 
+]
+[s S94 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 NOT_DONE 1 0 :1:1 
+]
+[s S97 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 nDONE 1 0 :1:1 
+]
+[s S100 . 1 `uc 1 . 1 0 :1:0 
+`uc 1 GODONE 1 0 :1:1 
+]
+[u S103 . 1 `S74 1 . 1 0 `S77 1 . 1 0 `S81 1 . 1 0 `S88 1 . 1 0 `S91 1 . 1 0 `S94 1 . 1 0 `S97 1 . 1 0 `S100 1 . 1 0 ]
+[v _ADCON0bits ADCON0bits `VES103  1 e 1 @4034 ]
+"6792
+[v _ADRESL ADRESL `VEuc  1 e 1 @4035 ]
+"6799
+[v _ADRESH ADRESH `VEuc  1 e 1 @4036 ]
+"25 /home/lucas/PIC/C/ADC/adc.c
+[v _channels channels `[13][4]uc  1 e 52 0 ]
+"30 /home/lucas/PIC/C/ADC/main.c
+[v _Adread Adread `i  1 e 2 0 ]
+"31
+[v _txtAdRead txtAdRead `[4]uc  1 e 4 0 ]
+"33
 [v _main main `(i  1 e 2 0 ]
 {
-"38
+"60
 } 0
 "21 /home/lucas/PIC/C/ADC/lcd.c
 [v _lcd_write lcd_write `(v  1 e 1 0 ]
@@ -58,7 +143,7 @@
 "21
 [v lcd_write@row row `i  1 p 2 3 ]
 [v lcd_write@line line `i  1 p 2 5 ]
-[v lcd_write@txt txt `*.31Cuc  1 p 1 7 ]
+[v lcd_write@txt txt `*.30Cuc  1 p 1 7 ]
 "31
 } 0
 "33
@@ -76,4 +161,54 @@
 [v _enable_pulse enable_pulse `(v  1 e 1 0 ]
 {
 "13
+} 0
+"64 /home/lucas/PIC/C/ADC/main.c
+[v _ConIntToStr ConIntToStr `(v  1 e 1 0 ]
+{
+"65
+[v ConIntToStr@index index `i  1 a 2 13 ]
+"66
+[v ConIntToStr@num num `i  1 a 2 11 ]
+"64
+[v ConIntToStr@FromInt FromInt `i  1 p 2 8 ]
+[v ConIntToStr@ToStr ToStr `*.30uc  1 p 1 10 ]
+"73
+} 0
+"7 /opt/microchip/xc8/v2.45/pic/sources/c90/common/awmod.c
+[v ___awmod __awmod `(i  1 e 2 0 ]
+{
+"10
+[v ___awmod@sign sign `uc  1 a 1 5 ]
+[v ___awmod@counter counter `uc  1 a 1 4 ]
+"7
+[v ___awmod@dividend dividend `i  1 p 2 0 ]
+[v ___awmod@divisor divisor `i  1 p 2 2 ]
+"34
+} 0
+"7 /opt/microchip/xc8/v2.45/pic/sources/c90/common/awdiv.c
+[v ___awdiv __awdiv `(i  1 e 2 0 ]
+{
+"10
+[v ___awdiv@quotient quotient `i  1 a 2 6 ]
+"11
+[v ___awdiv@sign sign `uc  1 a 1 5 ]
+[v ___awdiv@counter counter `uc  1 a 1 4 ]
+"7
+[v ___awdiv@dividend dividend `i  1 p 2 0 ]
+[v ___awdiv@divisor divisor `i  1 p 2 2 ]
+"41
+} 0
+"54 /home/lucas/PIC/C/ADC/adc.c
+[v _ADC_read ADC_read `(i  1 e 2 0 ]
+{
+"62
+[v ADC_read@value value `i  1 a 2 4 ]
+"54
+[v ADC_read@channel channel `i  1 p 2 0 ]
+"73
+} 0
+"44
+[v _ADC_init ADC_init `(v  1 e 1 0 ]
+{
+"52
 } 0

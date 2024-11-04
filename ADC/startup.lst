@@ -1,7 +1,7 @@
 
 
 Microchip MPLAB XC8 Assembler V2.45 build 20230818022343 
-                                                                                                           Mon Oct 28 21:51:32 2024
+                                                                                                           Mon Nov  4 18:34:09 2024
 
 
      1                           	processor	18F4550
@@ -65,7 +65,7 @@ Microchip MPLAB XC8 Assembler V2.45 build 20230818022343
     59                           ;
     60                           ; Compiler options:
     61                           ;
-    62                           ; adc.c lcd.c
+    62                           ; main.c adc.c lcd.c
     63                           ;
     64   000000                     
     65                           ; Generated 18/08/2023 GMT
@@ -121,7 +121,7 @@ Microchip MPLAB XC8 Assembler V2.45 build 20230818022343
    115                           	psect	init
    116   000000                     start:
    117                           	callstack 0
-   118   000000  EFB9  F005         	goto	start_initialization	;jump to C runtime clear & initialization
+   118   000000  EFA0  F005         	goto	start_initialization	;jump to C runtime clear & initialization
    119                           
    120                           	psect	text
    121   000000                     intlevel0:
@@ -200,13 +200,13 @@ Microchip MPLAB XC8 Assembler V2.45 build 20230818022343
 
 
 Microchip Technology PIC18 Macro Assembler V2.45 build 20230818022343 
-Symbol Table                                                                                               Mon Oct 28 21:51:32 2024
+Symbol Table                                                                                               Mon Nov  4 18:34:09 2024
 
-                __S1 004C                 ___sp 0000                 _main 08AE                 start 0000  
+                __S1 0052                 ___sp 0000                 _main 08A0                 start 0000  
               __HRAM 0000                __LRAM 0001               isa$std 0001     ___inthi_stack_hi 0000  
    ___inthi_stack_lo 0000         __mediumconst 0000               stackhi 0000               stacklo 0000  
          __accesstop 0060           ___inthi_sp 0000           ___intlo_sp 0000           ___stack_hi 0000  
          ___stack_lo 0000     ___intlo_stack_hi 0000     ___intlo_stack_lo 0000              __ramtop 0800  
-start_initialization 0B72            ___heap_hi 0000            ___heap_lo 0000          __smallconst 0800  
+start_initialization 0B40            ___heap_hi 0000            ___heap_lo 0000          __smallconst 0800  
            isa$xinst 0000             intlevel0 0000             intlevel1 0000             intlevel2 0000  
            intlevel3 0000             reset_vec 0000  

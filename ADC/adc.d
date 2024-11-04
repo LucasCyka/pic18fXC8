@@ -1,1 +1,1 @@
- adc.d  adc.p1:  adc.c lcd.h
+ adc.d  adc.p1:  adc.c adc.h

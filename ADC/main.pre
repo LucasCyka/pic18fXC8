@@ -5693,7 +5693,16 @@ void lcd_send_cmd(int cmd);
 void lcd_write(int row, int line, const char txt[]);
 void init_lcd();
 
-# 26 "main.c"
+# 20 "adc.h"
+void ADC_init();
+int ADC_read(int channel);
+
+# 28 "main.c"
+void ConIntToStr(int FromInt, char *ToStr);
+
+int Adread = 0;
+char txtAdRead[4];
+
 int main(){
 ADCON1 = 0x0E;
 
@@ -5702,8 +5711,36 @@ init_lcd();
 
 _delay((unsigned long)((10)*(20000000/4000.0)));
 
-lcd_write(1,1,"my lib ;)");
 
+lcd_send_cmd(1);
+
+ADC_init();
+
+for(;;){
+Adread = ADC_read(0);
+ConIntToStr(Adread,txtAdRead);
+
+lcd_write(1,1,txtAdRead);
+_delay((unsigned long)((100)*(20000000/4000.0)));
+
+lcd_send_cmd(1);
+
+
+}
 
 return 0;
+
+}
+
+
+
+void ConIntToStr(int FromInt, char *ToStr){
+int index = 3;
+int num = FromInt;
+
+for(index = 3; index > -1 ; index--){
+ToStr[index] = (char)(num % 10)+'0';
+num /= 10;
+}
+
 }

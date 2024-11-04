@@ -57,19 +57,6 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _ADRESH `Vuc ~T0 @X0 0 e@4036 ]
 "6792
 [v _ADRESL `Vuc ~T0 @X0 0 e@4035 ]
-[p mainexit ]
-"6581
-[v _ADCON1 `Vuc ~T0 @X0 0 e@4033 ]
-"15 lcd.h
-[v _init_lcd `(v ~T0 @X0 0 ef ]
-[v F44 `(v ~T0 @X0 1 tf1`ul ]
-"20 /opt/microchip/xc8/v2.45/pic/include/builtins.h
-[v __delay `JF44 ~T0 @X0 0 e ]
-[p i __delay ]
-"14 lcd.h
-[v _lcd_write `(v ~T0 @X0 0 ef3`i`i`*Cuc ]
-"13
-[v _lcd_send_cmd `(v ~T0 @X0 0 ef1`i ]
 "2 adc.c
 [p x PLLDIV=5 ]
 "3
@@ -432,97 +419,97 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; <" TOSH equ 0FFEh ;# ">
 "8893
 [; <" TOSU equ 0FFFh ;# ">
-[v F3064 `uc ~T0 @X0 -> 4 `i t ]
-"41 adc.c
-[v _channels `F3064 ~T0 @X0 -> 13 `i e ]
+[v F3059 `uc ~T0 @X0 -> 4 `i t ]
+"25 adc.c
+[v _channels `F3059 ~T0 @X0 -> 13 `i e ]
 [i _channels
 :U ..
 :U ..
-"42
+"26
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
-"43
+"27
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
 ..
 :U ..
-"44
+"28
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
-"45
+"29
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
 -> -> 1 `i `uc
 ..
 :U ..
-"46
+"30
 -> -> 0 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
-"47
+"31
 -> -> 0 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
 ..
 :U ..
-"48
+"32
 -> -> 0 `i `uc
 -> -> 1 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
-"49
+"33
 -> -> 0 `i `uc
 -> -> 1 `i `uc
 -> -> 1 `i `uc
 -> -> 1 `i `uc
 ..
 :U ..
-"50
+"34
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
-"51
+"35
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
 ..
 :U ..
-"52
+"36
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 ..
 :U ..
-"53
+"37
 -> -> 1 `i `uc
 -> -> 0 `i `uc
 -> -> 1 `i `uc
 -> -> 1 `i `uc
 ..
 :U ..
-"54
+"38
 -> -> 1 `i `uc
 -> -> 1 `i `uc
 -> -> 0 `i `uc
@@ -530,140 +517,65 @@ Version 3.2 HI-TECH Software Intermediate Code
 ..
 ..
 ]
-"57
+"41
 [v _adRead `i ~T0 @X0 1 e ]
 [i _adRead
 -> 0 `i
 ]
-"58
+"42
 [v _adReadTxt `uc ~T0 @X0 -> 4 `i e ]
-"60
+"44
 [v _ADC_init `(v ~T0 @X0 1 ef ]
 {
 [e :U _ADC_init ]
 [f ]
-"61
+"45
 [e = . . _ADCON0bits 1 0 -> -> 1 `i `uc ]
-"62
+"46
 [e = . . _ADCON1bits 1 4 -> -> 0 `i `uc ]
-"63
+"47
 [e = . . _ADCON1bits 1 5 -> -> 0 `i `uc ]
-"64
+"48
 [e = . . _ADCON2bits 0 3 -> -> 1 `i `uc ]
-"68
+"52
 [e :UE 362 ]
 }
-"70
+"54
 [v _ADC_read `(i ~T0 @X0 1 ef1`i ]
 {
 [e :U _ADC_read ]
 [v _channel `i ~T0 @X0 1 r1 ]
 [f ]
-"71
+"55
 [e = . . _ADCON0bits 2 2 *U + &U *U + &U _channels * -> -> _channel `ui `ux -> * -> # *U &U *U &U _channels `ui -> -> 4 `i `ui `ux * -> -> -> 0 `i `ui `ux -> -> # *U &U *U + &U _channels * -> -> _channel `ui `ux -> * -> # *U &U *U &U _channels `ui -> -> 4 `i `ui `ux `ui `ux ]
-"72
+"56
 [e = . . _ADCON0bits 2 3 *U + &U *U + &U _channels * -> -> _channel `ui `ux -> * -> # *U &U *U &U _channels `ui -> -> 4 `i `ui `ux * -> -> -> 1 `i `ui `ux -> -> # *U &U *U + &U _channels * -> -> _channel `ui `ux -> * -> # *U &U *U &U _channels `ui -> -> 4 `i `ui `ux `ui `ux ]
-"73
+"57
 [e = . . _ADCON0bits 2 4 *U + &U *U + &U _channels * -> -> _channel `ui `ux -> * -> # *U &U *U &U _channels `ui -> -> 4 `i `ui `ux * -> -> -> 2 `i `ui `ux -> -> # *U &U *U + &U _channels * -> -> _channel `ui `ux -> * -> # *U &U *U &U _channels `ui -> -> 4 `i `ui `ux `ui `ux ]
-"74
+"58
 [e = . . _ADCON0bits 2 5 *U + &U *U + &U _channels * -> -> _channel `ui `ux -> * -> # *U &U *U &U _channels `ui -> -> 4 `i `ui `ux * -> -> -> 3 `i `ui `ux -> -> # *U &U *U + &U _channels * -> -> _channel `ui `ux -> * -> # *U &U *U &U _channels `ui -> -> 4 `i `ui `ux `ui `ux ]
-"76
+"60
 [e = . . _ADCON0bits 4 1 -> -> 1 `i `uc ]
-"78
+"62
 [v _value `i ~T0 @X0 1 a ]
 [e = _value -> 0 `i ]
-"80
+"64
 [e $U 364  ]
 [e :U 365 ]
 {
-"81
+"65
 [e = _value -> 0 `i ]
-"82
+"66
 }
 [e :U 364 ]
-"80
+"64
 [e $ == -> . . _ADCON0bits 3 1 `i -> 0 `i 365  ]
 [e :U 366 ]
-"84
+"68
 [e = _value | << -> _ADRESH `i -> 8 `i -> _ADRESL `i ]
-"85
+"69
 [e ) _value ]
 [e $UE 363  ]
-"89
+"73
 [e :UE 363 ]
 }
-"91
-[v _ConIntToStr `(v ~T0 @X0 1 ef2`i`*uc ]
-{
-[e :U _ConIntToStr ]
-[v _FromInt `i ~T0 @X0 1 r1 ]
-[v _ToStr `*uc ~T0 @X0 1 r2 ]
-[f ]
-"92
-[v _index `i ~T0 @X0 1 a ]
-[e = _index -> 3 `i ]
-"93
-[v _num `i ~T0 @X0 1 a ]
-[e = _num _FromInt ]
-"95
-{
-[e = _index -> 3 `i ]
-[e $ > _index -U -> 1 `i 368  ]
-[e $U 369  ]
-[e :U 368 ]
-{
-"96
-[e = *U + _ToStr * -> _index `x -> -> # *U _ToStr `i `x -> + -> -> % _num -> 10 `i `uc `ui -> 48 `ui `uc ]
-"97
-[e =/ _num -> -> 10 `uc `i ]
-"98
-}
-"95
-[e -- _index -> 1 `i ]
-[e $ > _index -U -> 1 `i 368  ]
-[e :U 369 ]
-"98
-}
-"100
-[e :UE 367 ]
-}
-[v $root$_main `(v ~T0 @X0 0 e ]
-"103
-[v _main `(i ~T0 @X0 1 ef ]
-{
-[e :U _main ]
-[f ]
-"104
-[e = _ADCON1 -> -> 14 `i `uc ]
-"107
-[e ( _init_lcd ..  ]
-"108
-[e ( _ADC_init ..  ]
-"110
-[e ( __delay (1 -> * -> -> 10 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
-"112
-[e ( _lcd_write (3 , , -> 1 `i -> 1 `i :s 1C ]
-"114
-{
-[e :U 372 ]
-{
-"116
-[e = _adRead ( _ADC_read (1 -> 0 `i ]
-"117
-[e ( _ConIntToStr (2 , _adRead &U _adReadTxt ]
-"119
-[e ( _lcd_write (3 , , -> 1 `i -> 1 `i -> &U _adReadTxt `*Cuc ]
-"121
-[e ( __delay (1 -> * -> -> 100 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
-"122
-[e ( _lcd_send_cmd (1 -> 1 `i ]
-"124
-}
-[e $U 372  ]
-[e :U 373 ]
-}
-"127
-[e :UE 371 ]
-}
-[a 1C 109 121 32 108 105 98 32 59 41 0 ]
-

@@ -22,6 +22,13 @@
 #include <xc.h>
 #include <proc/pic18f4550.h>
 #include "lcd.h"
+#include "adc.h"
+
+
+void ConIntToStr(int FromInt, char *ToStr);
+
+int Adread = 0;
+char txtAdRead[4];
 
 int main(){
     ADCON1 = 0x0E;
@@ -31,12 +38,36 @@ int main(){
 
     __delay_ms(10);
 
-    lcd_write(1,1,"my lib ;)");
+    //lcd_write(1,1,"my lib ;)");
+    lcd_send_cmd(1);
 
+    ADC_init();
+
+    for(;;){
+        Adread = ADC_read(AN0);
+        ConIntToStr(Adread,txtAdRead);
+
+        lcd_write(1,1,txtAdRead);
+        __delay_ms(100);
+
+        lcd_send_cmd(1);
+
+
+    }
 
     return 0;
-}
 
-void init(){
+}
     
+
+
+void ConIntToStr(int FromInt, char *ToStr){
+   int index = 3;
+   int num = FromInt;
+
+   for(index = 3; index > -1 ; index--){
+     ToStr[index] = (char)(num % 10)+'0';
+     num /= 10;
+   }
+
 }

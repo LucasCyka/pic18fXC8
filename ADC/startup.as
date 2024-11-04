@@ -7,7 +7,7 @@
 	;
 	; Compiler options:
 	;
-	; adc.c lcd.c
+	; main.c adc.c lcd.c
 	;
 
 
