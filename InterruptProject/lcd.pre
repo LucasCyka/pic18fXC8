@@ -1,5 +1,5 @@
 
-# 1 "adc.c"
+# 1 "lcd.c"
 
 # 18 "/opt/microchip/xc8/v2.45/pic/include/xc.h"
 extern const char __xc8_OPTIM_SPEED;
@@ -5667,54 +5667,49 @@ __attribute__((__unsupported__("The " "Write_b_eep" " routine is no longer suppo
 unsigned char __t1rd16on(void);
 unsigned char __t3rd16on(void);
 
-# 20 "adc.h"
-void ADC_init();
-int ADC_read(int channel);
+# 12 "lcd.h"
+void enable_pulse();
+void lcd_send_cmd(int cmd);
+void lcd_write(int row, int line, const char txt[]);
+void init_lcd();
 
-# 5 "adc.c"
-unsigned char channels[13][4] = {
-{0,0,0,0},
-{0,0,0,1},
-{0,0,1,0},
-{0,0,1,1},
-{0,1,0,0},
-{0,1,0,1},
-{0,1,1,0},
-{0,1,1,1},
-{1,0,0,0},
-{1,0,0,1},
-{1,0,1,0},
-{1,0,1,1},
-{1,1,0,0}
-};
+# 8 "lcd.c"
+void enable_pulse(){
+LATE &= 251;
+_delay((unsigned long)((5)*(20000000/4000.0)));
+LATE |= 4;
+_delay((unsigned long)((5)*(20000000/4000.0)));
+}
 
+void lcd_send_cmd(int cmd){
+LATE &= 254;
+LATD = cmd;
+enable_pulse();
+}
 
-void ADC_init(){
-ADCON0bits.ADON = 1;
-ADCON1bits.VCFG0 = 0;
-ADCON1bits.VCFG1 = 0;
-ADCON2bits.ADFM = 1;
+void lcd_write(int row, int line, const char txt[]){
+lcd_send_cmd((128+ (line - 1) * 64) + (row - 1));
 
-
+LATE |= 1;
+for(int index = 0; txt[index] != 0; index++){
+LATD = txt[index];
+enable_pulse();
 
 }
 
-int ADC_read(int channel){
-ADCON0bits.CHS0 = channels[channel][0];
-ADCON0bits.CHS1 = channels[channel][1];
-ADCON0bits.CHS2 = channels[channel][2];
-ADCON0bits.CHS3 = channels[channel][3];
-
-ADCON0bits.GO = 1;
-
-int value = 0;
-
-while(ADCON0bits.DONE == 0){
-value = 0;
 }
 
-value = (ADRESH << 8) | ADRESL;
-return value;
+void init_lcd(){
+TRISD = 0;
+TRISE &= 248;
+
+LATD = 0;
+LATE &= 248;
+
+_delay((unsigned long)((10)*(20000000/4000.0)));
+
+lcd_send_cmd(0x38);
+lcd_send_cmd(0x0C);
 
 
 

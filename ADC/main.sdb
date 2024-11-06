@@ -29,9 +29,9 @@
 [v ___lmul __lmul `(ul  1 e 4 0 ]
 "91 /opt/microchip/xc8/v2.45/pic/sources/c90/common/Umul64.c
 [v ___omul __omul `(ul  1 e 4 0 ]
-"44 /home/lucas/PIC/C/ADC/adc.c
+"22 /home/lucas/PIC/C/ADC/adc.c
 [v _ADC_init ADC_init `(v  1 e 1 0 ]
-"54
+"32
 [v _ADC_read ADC_read `(i  1 e 2 0 ]
 "8 /home/lucas/PIC/C/ADC/lcd.c
 [v _enable_pulse enable_pulse `(v  1 e 1 0 ]
@@ -124,7 +124,7 @@
 [v _ADRESL ADRESL `VEuc  1 e 1 @4035 ]
 "6799
 [v _ADRESH ADRESH `VEuc  1 e 1 @4036 ]
-"25 /home/lucas/PIC/C/ADC/adc.c
+"5 /home/lucas/PIC/C/ADC/adc.c
 [v _channels channels `[13][4]uc  1 e 52 0 ]
 "30 /home/lucas/PIC/C/ADC/main.c
 [v _Adread Adread `i  1 e 2 0 ]
@@ -198,17 +198,17 @@
 [v ___awdiv@divisor divisor `i  1 p 2 2 ]
 "41
 } 0
-"54 /home/lucas/PIC/C/ADC/adc.c
+"32 /home/lucas/PIC/C/ADC/adc.c
 [v _ADC_read ADC_read `(i  1 e 2 0 ]
 {
-"62
+"40
 [v ADC_read@value value `i  1 a 2 4 ]
-"54
+"32
 [v ADC_read@channel channel `i  1 p 2 0 ]
-"73
+"51
 } 0
-"44
+"22
 [v _ADC_init ADC_init `(v  1 e 1 0 ]
 {
-"52
+"30
 } 0

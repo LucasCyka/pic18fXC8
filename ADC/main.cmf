@@ -27,7 +27,7 @@ idataCOMRAM CODE 0 B0C B0C 34 1 1
 cstackCOMRAM COMRAM 1 35 35 11 1 1
 smallconst SMALLCONST 0 800 800 2 1 2
 dataCOMRAM COMRAM 1 1 1 34 1 1
-bssCOMRAM COMRAM 1 46 46 C 1 1
+bssCOMRAM COMRAM 1 46 46 6 1 1
 config CONFIG 4 300000 300000 4 1 1
 $startup.obj
 init CODE 0 0 0 4 1 2
@@ -54,9 +54,9 @@ IDLOC 200000-200007 1
 SMALLCONST BAE-7FFF 1
 CODE 4-7FF 1
 CODE BAE-7FFF 1
-BIGRAM 52-7FF 1
+BIGRAM 4C-7FF 1
 BIGSFR F60-FFF 1
-COMRAM 52-5F 1
+COMRAM 4C-5F 1
 CONFIG 300004-30000D 1
 EEDATA F00000-F000FF 1
 MEDIUMCONST BAE-7FFF 1
@@ -74,23 +74,23 @@ MEDIUMCONST BAE-7FFF 1
 # All other numeric values are in decimal.
 %LINETAB
 $main.obj
-BA4 text9 CODE >44:/home/lucas/PIC/C/ADC/adc.c
-BA4 text9 CODE >45:/home/lucas/PIC/C/ADC/adc.c
-BA6 text9 CODE >46:/home/lucas/PIC/C/ADC/adc.c
-BA8 text9 CODE >47:/home/lucas/PIC/C/ADC/adc.c
-BAA text9 CODE >48:/home/lucas/PIC/C/ADC/adc.c
-BAC text9 CODE >52:/home/lucas/PIC/C/ADC/adc.c
-802 text8 CODE >54:/home/lucas/PIC/C/ADC/adc.c
-802 text8 CODE >55:/home/lucas/PIC/C/ADC/adc.c
-820 text8 CODE >56:/home/lucas/PIC/C/ADC/adc.c
-840 text8 CODE >57:/home/lucas/PIC/C/ADC/adc.c
-85C text8 CODE >58:/home/lucas/PIC/C/ADC/adc.c
-87A text8 CODE >60:/home/lucas/PIC/C/ADC/adc.c
-87C text8 CODE >62:/home/lucas/PIC/C/ADC/adc.c
-87C text8 CODE >64:/home/lucas/PIC/C/ADC/adc.c
-880 text8 CODE >68:/home/lucas/PIC/C/ADC/adc.c
-896 text8 CODE >69:/home/lucas/PIC/C/ADC/adc.c
-89E text8 CODE >73:/home/lucas/PIC/C/ADC/adc.c
+BA4 text9 CODE >22:/home/lucas/PIC/C/ADC/adc.c
+BA4 text9 CODE >23:/home/lucas/PIC/C/ADC/adc.c
+BA6 text9 CODE >24:/home/lucas/PIC/C/ADC/adc.c
+BA8 text9 CODE >25:/home/lucas/PIC/C/ADC/adc.c
+BAA text9 CODE >26:/home/lucas/PIC/C/ADC/adc.c
+BAC text9 CODE >30:/home/lucas/PIC/C/ADC/adc.c
+802 text8 CODE >32:/home/lucas/PIC/C/ADC/adc.c
+802 text8 CODE >33:/home/lucas/PIC/C/ADC/adc.c
+820 text8 CODE >34:/home/lucas/PIC/C/ADC/adc.c
+840 text8 CODE >35:/home/lucas/PIC/C/ADC/adc.c
+85C text8 CODE >36:/home/lucas/PIC/C/ADC/adc.c
+87A text8 CODE >38:/home/lucas/PIC/C/ADC/adc.c
+87C text8 CODE >40:/home/lucas/PIC/C/ADC/adc.c
+87C text8 CODE >42:/home/lucas/PIC/C/ADC/adc.c
+880 text8 CODE >46:/home/lucas/PIC/C/ADC/adc.c
+896 text8 CODE >47:/home/lucas/PIC/C/ADC/adc.c
+89E text8 CODE >51:/home/lucas/PIC/C/ADC/adc.c
 928 text7 CODE >7:/opt/microchip/xc8/v2.45/pic/sources/c90/common/awdiv.c
 928 text7 CODE >13:/opt/microchip/xc8/v2.45/pic/sources/c90/common/awdiv.c
 92C text7 CODE >14:/opt/microchip/xc8/v2.45/pic/sources/c90/common/awdiv.c
@@ -185,29 +185,29 @@ A64 text1 CODE >25:/home/lucas/PIC/C/ADC/lcd.c
 B40 cinit CODE >1245:/home/lucas/PIC/C/ADC/main.as
 B40 cinit CODE >1247:/home/lucas/PIC/C/ADC/main.as
 B40 cinit CODE >1250:/home/lucas/PIC/C/ADC/main.as
-B40 cinit CODE >1282:/home/lucas/PIC/C/ADC/main.as
-B42 cinit CODE >1283:/home/lucas/PIC/C/ADC/main.as
-B44 cinit CODE >1284:/home/lucas/PIC/C/ADC/main.as
-B46 cinit CODE >1285:/home/lucas/PIC/C/ADC/main.as
-B48 cinit CODE >1286:/home/lucas/PIC/C/ADC/main.as
-B4A cinit CODE >1287:/home/lucas/PIC/C/ADC/main.as
-B4C cinit CODE >1288:/home/lucas/PIC/C/ADC/main.as
-B50 cinit CODE >1289:/home/lucas/PIC/C/ADC/main.as
-B54 cinit CODE >1290:/home/lucas/PIC/C/ADC/main.as
-B54 cinit CODE >1291:/home/lucas/PIC/C/ADC/main.as
-B56 cinit CODE >1292:/home/lucas/PIC/C/ADC/main.as
-B5A cinit CODE >1293:/home/lucas/PIC/C/ADC/main.as
-B5C cinit CODE >1294:/home/lucas/PIC/C/ADC/main.as
-B5E cinit CODE >1295:/home/lucas/PIC/C/ADC/main.as
-B60 cinit CODE >1299:/home/lucas/PIC/C/ADC/main.as
-B64 cinit CODE >1300:/home/lucas/PIC/C/ADC/main.as
-B66 cinit CODE >1301:/home/lucas/PIC/C/ADC/main.as
-B66 cinit CODE >1302:/home/lucas/PIC/C/ADC/main.as
-B68 cinit CODE >1303:/home/lucas/PIC/C/ADC/main.as
-B6A cinit CODE >1304:/home/lucas/PIC/C/ADC/main.as
-B6C cinit CODE >1310:/home/lucas/PIC/C/ADC/main.as
-B6C cinit CODE >1312:/home/lucas/PIC/C/ADC/main.as
-B6E cinit CODE >1313:/home/lucas/PIC/C/ADC/main.as
+B40 cinit CODE >1274:/home/lucas/PIC/C/ADC/main.as
+B42 cinit CODE >1275:/home/lucas/PIC/C/ADC/main.as
+B44 cinit CODE >1276:/home/lucas/PIC/C/ADC/main.as
+B46 cinit CODE >1277:/home/lucas/PIC/C/ADC/main.as
+B48 cinit CODE >1278:/home/lucas/PIC/C/ADC/main.as
+B4A cinit CODE >1279:/home/lucas/PIC/C/ADC/main.as
+B4C cinit CODE >1280:/home/lucas/PIC/C/ADC/main.as
+B50 cinit CODE >1281:/home/lucas/PIC/C/ADC/main.as
+B54 cinit CODE >1282:/home/lucas/PIC/C/ADC/main.as
+B54 cinit CODE >1283:/home/lucas/PIC/C/ADC/main.as
+B56 cinit CODE >1284:/home/lucas/PIC/C/ADC/main.as
+B5A cinit CODE >1285:/home/lucas/PIC/C/ADC/main.as
+B5C cinit CODE >1286:/home/lucas/PIC/C/ADC/main.as
+B5E cinit CODE >1287:/home/lucas/PIC/C/ADC/main.as
+B60 cinit CODE >1291:/home/lucas/PIC/C/ADC/main.as
+B62 cinit CODE >1292:/home/lucas/PIC/C/ADC/main.as
+B64 cinit CODE >1293:/home/lucas/PIC/C/ADC/main.as
+B66 cinit CODE >1294:/home/lucas/PIC/C/ADC/main.as
+B68 cinit CODE >1295:/home/lucas/PIC/C/ADC/main.as
+B6A cinit CODE >1296:/home/lucas/PIC/C/ADC/main.as
+B6C cinit CODE >1302:/home/lucas/PIC/C/ADC/main.as
+B6C cinit CODE >1304:/home/lucas/PIC/C/ADC/main.as
+B6E cinit CODE >1305:/home/lucas/PIC/C/ADC/main.as
 $startup.obj
 0 init CODE >102:/home/lucas/PIC/C/ADC/startup.as
 # %SYMTAB Section
@@ -225,7 +225,7 @@ $startup.obj
 ___awdiv@counter 39 0 COMRAM 1 cstackCOMRAM main.obj
 __Lmediumconst 0 0 MEDIUMCONST 0 mediumconst main.obj
 __Hspace_0 BAE 0 ABS 0 - main.obj
-__Hspace_1 52 0 ABS 0 - main.obj
+__Hspace_1 4C 0 ABS 0 - main.obj
 __Hspace_2 0 0 ABS 0 - main.obj
 __Hspace_4 600004 0 ABS 0 - main.obj
 __Hibigdata 0 0 CODE 0 ibigdata main.obj
@@ -265,7 +265,7 @@ _ADCON1 FC1 0 ABS 0 - main.obj
 _ADRESH FC4 0 ABS 0 - main.obj
 _ADRESL FC3 0 ABS 0 - main.obj
 ___awdiv@dividend 35 0 COMRAM 1 cstackCOMRAM main.obj
-_Adread 4C 0 COMRAM 1 bssCOMRAM main.obj
+_Adread 46 0 COMRAM 1 bssCOMRAM main.obj
 ___inthi_sp 0 0 STACK 2 stack startup.obj
 ___intlo_sp 0 0 STACK 2 stack startup.obj
 __LdataCOMRAM 0 0 ABS 0 dataCOMRAM main.obj
@@ -371,10 +371,9 @@ __HcstackCOMRAM 0 0 ABS 0 cstackCOMRAM main.obj
 __Hintret 0 0 ABS 0 intret main.obj
 __Hirdata 0 0 CODE 0 irdata main.obj
 __S0 BAE 0 ABS 0 - main.obj
-__S1 52 0 ABS 0 - main.obj
+__S1 4C 0 ABS 0 - main.obj
 __S4 0 0 ABS 0 - main.obj
 __S5 0 0 ABS 0 - main.obj
-_adRead 4A 0 COMRAM 1 bssCOMRAM main.obj
 ?_ADC_read 35 0 COMRAM 1 cstackCOMRAM main.obj
 __HidataCOMRAM 0 0 ABS 0 idataCOMRAM main.obj
 __Lbigdata 0 0 BIGRAM 1 bigdata main.obj
@@ -419,8 +418,7 @@ _channels 1 0 COMRAM 1 dataCOMRAM main.obj
 end_of_initialization B6C 0 CODE 0 cinit main.obj
 __Lnvrram 0 0 COMRAM 1 nvrram main.obj
 __Hintentry 0 0 ABS 0 intentry main.obj
-_txtAdRead 4E 0 COMRAM 1 bssCOMRAM main.obj
-_adReadTxt 46 0 COMRAM 1 bssCOMRAM main.obj
+_txtAdRead 48 0 COMRAM 1 bssCOMRAM main.obj
 ___awdiv@quotient 3B 0 COMRAM 1 cstackCOMRAM main.obj
 ?___awdiv 35 0 COMRAM 1 cstackCOMRAM main.obj
 ?___awmod 35 0 COMRAM 1 cstackCOMRAM main.obj
@@ -508,7 +506,7 @@ __Hintcode 0 0 CODE 0 intcode main.obj
 text8 0 802 802 3AC 1
 reset_vec 0 0 0 4 1
 smallconst 0 800 800 2 1
-dataCOMRAM 1 1 1 51 1
+dataCOMRAM 1 1 1 4B 1
 # %NOTES Section
 # This section contains data of all the note-psects.  The beginning of the section
 # is indicated by %NOTES. The first line indicates the name and decimal

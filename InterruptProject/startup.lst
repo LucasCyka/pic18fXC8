@@ -1,7 +1,7 @@
 
 
 Microchip MPLAB XC8 Assembler V2.45 build 20230818022343 
-                                                                                                           Mon Nov  4 18:37:56 2024
+                                                                                                           Wed Nov  6 19:09:16 2024
 
 
      1                           	processor	18F4550
@@ -65,7 +65,7 @@ Microchip MPLAB XC8 Assembler V2.45 build 20230818022343
     59                           ;
     60                           ; Compiler options:
     61                           ;
-    62                           ; main.c adc.c lcd.c
+    62                           ; main.c lcd.c conversions.c
     63                           ;
     64   000000                     
     65                           ; Generated 18/08/2023 GMT
@@ -114,99 +114,100 @@ Microchip MPLAB XC8 Assembler V2.45 build 20230818022343
    108                           	psect	reset_vec
    109   000000                     
    110                           ; No powerup routine
-   111                           ; No interrupt routine
-   112   000000                     
-   113                           ;Initialize the stack pointer (FSR1)
-   114   000000                     
-   115                           	psect	init
-   116   000000                     start:
-   117                           	callstack 0
-   118   000000  EFA0  F005         	goto	start_initialization	;jump to C runtime clear & initialization
-   119                           
-   120                           	psect	text
-   121   000000                     intlevel0:
-   122                           	callstack 0
-   123   000000                     intlevel1:
-   124                           	callstack 0
-   125   000000                     intlevel2:
-   126                           	callstack 0
-   127   000000                     intlevel3:
-   128                           	callstack 0
-   129                           
-   130                           	psect	ramtop
-   131   000800                     __ramtop:
-   132                           	callstack 0
-   133                           
-   134                           	psect	stack
-   135   000000                     ___sp:
-   136                           	callstack 0
-   137   000000                     ___inthi_sp:
-   138                           	callstack 0
-   139   000000                     ___intlo_sp:
-   140                           	callstack 0
-   141   000000                     ___stack_lo:
-   142                           	callstack 0
-   143   000000                     ___stack_hi:
-   144                           	callstack 0
-   145   000000                     ___inthi_stack_lo:
-   146                           	callstack 0
-   147   000000                     ___inthi_stack_hi:
-   148                           	callstack 0
-   149   000000                     ___intlo_stack_lo:
-   150                           	callstack 0
-   151   000000                     ___intlo_stack_hi:
-   152                           	callstack 0
-   153                           
-   154                           ; No heap to be allocated
-   155                           
-   156                           	psect	heap
-   157   000000                     tosu	equ	0xFFF
-   158                           tosh	equ	0xFFE
-   159                           tosl	equ	0xFFD
-   160                           stkptr	equ	0xFFC
-   161                           pclatu	equ	0xFFB
-   162                           pclath	equ	0xFFA
-   163                           pcl	equ	0xFF9
-   164                           tblptru	equ	0xFF8
-   165                           tblptrh	equ	0xFF7
-   166                           tblptrl	equ	0xFF6
-   167                           tablat	equ	0xFF5
-   168                           prodh	equ	0xFF4
-   169                           prodl	equ	0xFF3
-   170                           indf0	equ	0xFEF
-   171                           postinc0	equ	0xFEE
-   172                           postdec0	equ	0xFED
-   173                           preinc0	equ	0xFEC
-   174                           plusw0	equ	0xFEB
-   175                           fsr0h	equ	0xFEA
-   176                           fsr0l	equ	0xFE9
-   177                           wreg	equ	0xFE8
-   178                           indf1	equ	0xFE7
-   179                           postinc1	equ	0xFE6
-   180                           postdec1	equ	0xFE5
-   181                           preinc1	equ	0xFE4
-   182                           plusw1	equ	0xFE3
-   183                           fsr1h	equ	0xFE2
-   184                           fsr1l	equ	0xFE1
-   185                           bsr	equ	0xFE0
-   186                           indf2	equ	0xFDF
-   187                           postinc2	equ	0xFDE
-   188                           postdec2	equ	0xFDD
-   189                           preinc2	equ	0xFDC
-   190                           plusw2	equ	0xFDB
-   191                           fsr2h	equ	0xFDA
-   192                           fsr2l	equ	0xFD9
-   193                           status	equ	0xFD8
+   111                           ; jump to start
+   112   000000  EF07  F000         	goto	start
+   113   000000                     
+   114                           ;Initialize the stack pointer (FSR1)
+   115   000000                     
+   116                           	psect	init
+   117   00000E                     start:
+   118                           	callstack 0
+   119   00000E  EFE1  F005         	goto	start_initialization	;jump to C runtime clear & initialization
+   120                           
+   121                           	psect	text
+   122   000000                     intlevel0:
+   123                           	callstack 0
+   124   000000                     intlevel1:
+   125                           	callstack 0
+   126   000000                     intlevel2:
+   127                           	callstack 0
+   128   000000                     intlevel3:
+   129                           	callstack 0
+   130                           
+   131                           	psect	ramtop
+   132   000800                     __ramtop:
+   133                           	callstack 0
+   134                           
+   135                           	psect	stack
+   136   000000                     ___sp:
+   137                           	callstack 0
+   138   000000                     ___inthi_sp:
+   139                           	callstack 0
+   140   000000                     ___intlo_sp:
+   141                           	callstack 0
+   142   000000                     ___stack_lo:
+   143                           	callstack 0
+   144   000000                     ___stack_hi:
+   145                           	callstack 0
+   146   000000                     ___inthi_stack_lo:
+   147                           	callstack 0
+   148   000000                     ___inthi_stack_hi:
+   149                           	callstack 0
+   150   000000                     ___intlo_stack_lo:
+   151                           	callstack 0
+   152   000000                     ___intlo_stack_hi:
+   153                           	callstack 0
+   154                           
+   155                           ; No heap to be allocated
+   156                           
+   157                           	psect	heap
+   158   000000                     tosu	equ	0xFFF
+   159                           tosh	equ	0xFFE
+   160                           tosl	equ	0xFFD
+   161                           stkptr	equ	0xFFC
+   162                           pclatu	equ	0xFFB
+   163                           pclath	equ	0xFFA
+   164                           pcl	equ	0xFF9
+   165                           tblptru	equ	0xFF8
+   166                           tblptrh	equ	0xFF7
+   167                           tblptrl	equ	0xFF6
+   168                           tablat	equ	0xFF5
+   169                           prodh	equ	0xFF4
+   170                           prodl	equ	0xFF3
+   171                           indf0	equ	0xFEF
+   172                           postinc0	equ	0xFEE
+   173                           postdec0	equ	0xFED
+   174                           preinc0	equ	0xFEC
+   175                           plusw0	equ	0xFEB
+   176                           fsr0h	equ	0xFEA
+   177                           fsr0l	equ	0xFE9
+   178                           wreg	equ	0xFE8
+   179                           indf1	equ	0xFE7
+   180                           postinc1	equ	0xFE6
+   181                           postdec1	equ	0xFE5
+   182                           preinc1	equ	0xFE4
+   183                           plusw1	equ	0xFE3
+   184                           fsr1h	equ	0xFE2
+   185                           fsr1l	equ	0xFE1
+   186                           bsr	equ	0xFE0
+   187                           indf2	equ	0xFDF
+   188                           postinc2	equ	0xFDE
+   189                           postdec2	equ	0xFDD
+   190                           preinc2	equ	0xFDC
+   191                           plusw2	equ	0xFDB
+   192                           fsr2h	equ	0xFDA
+   193                           fsr2l	equ	0xFD9
+   194                           status	equ	0xFD8
 
 
 Microchip Technology PIC18 Macro Assembler V2.45 build 20230818022343 
-Symbol Table                                                                                               Mon Nov  4 18:37:56 2024
+Symbol Table                                                                                               Wed Nov  6 19:09:16 2024
 
-                __S1 004C                 ___sp 0000                 _main 08A0                 start 0000  
+                __S1 0019                 ___sp 0000                 _main 0860                 start 000E  
               __HRAM 0000                __LRAM 0001               isa$std 0001     ___inthi_stack_hi 0000  
    ___inthi_stack_lo 0000         __mediumconst 0000               stackhi 0000               stacklo 0000  
          __accesstop 0060           ___inthi_sp 0000           ___intlo_sp 0000           ___stack_hi 0000  
          ___stack_lo 0000     ___intlo_stack_hi 0000     ___intlo_stack_lo 0000              __ramtop 0800  
-start_initialization 0B40            ___heap_hi 0000            ___heap_lo 0000          __smallconst 0800  
+start_initialization 0BC2            ___heap_hi 0000            ___heap_lo 0000          __smallconst 0800  
            isa$xinst 0000             intlevel0 0000             intlevel1 0000             intlevel2 0000  
            intlevel3 0000             reset_vec 0000  

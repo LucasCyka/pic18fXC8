@@ -1,5 +1,25 @@
 
-# 1 "adc.c"
+# 1 "main.c"
+
+
+# 2
+#pragma config PLLDIV = 5
+#pragma config CPUDIV = OSC1_PLL2
+#pragma config USBDIV = 2
+
+
+#pragma config FOSC = HS
+#pragma config FCMEN = OFF
+#pragma config IESO = OFF
+
+
+#pragma config PWRT = OFF
+#pragma config BOR = ON
+#pragma config BORV = 3
+#pragma config VREGEN = OFF
+
+
+#pragma config WDT = OFF
 
 # 18 "/opt/microchip/xc8/v2.45/pic/include/xc.h"
 extern const char __xc8_OPTIM_SPEED;
@@ -5667,56 +5687,73 @@ __attribute__((__unsupported__("The " "Write_b_eep" " routine is no longer suppo
 unsigned char __t1rd16on(void);
 unsigned char __t3rd16on(void);
 
-# 20 "adc.h"
-void ADC_init();
-int ADC_read(int channel);
+# 12 "lcd.h"
+void enable_pulse();
+void lcd_send_cmd(int cmd);
+void lcd_write(int row, int line, const char txt[]);
+void init_lcd();
 
-# 5 "adc.c"
-unsigned char channels[13][4] = {
-{0,0,0,0},
-{0,0,0,1},
-{0,0,1,0},
-{0,0,1,1},
-{0,1,0,0},
-{0,1,0,1},
-{0,1,1,0},
-{0,1,1,1},
-{1,0,0,0},
-{1,0,0,1},
-{1,0,1,0},
-{1,0,1,1},
-{1,1,0,0}
-};
+# 5 "conversions.h"
+void IntToStr(int FromInt, char *ToStr);
 
+# 27 "main.c"
+void init_interrupt();
 
-void ADC_init(){
-ADCON0bits.ADON = 1;
-ADCON1bits.VCFG0 = 0;
-ADCON1bits.VCFG1 = 0;
-ADCON2bits.ADFM = 1;
+int counter = 0;
+char counterTxt[4];
+
+int main(){
+ADCON1 |= 0x0F;
+TRISBbits.RB0 = 1;
+init_interrupt();
 
 
+init_lcd();
+_delay((unsigned long)((10)*(20000000/4000.0)));
+for(;;){
+IntToStr(counter,counterTxt);
+lcd_write(1,1,counterTxt);
+
+if(!INTCONbits.INT0E){
+_delay((unsigned long)((30)*(20000000/4000.0)));
+if(!PORTBbits.RB0){
+INTCONbits.INT0F = 0;
+INTCONbits.INT0E = 1;
+}
+}
+_delay((unsigned long)((10)*(20000000/4000.0)));
+switch (counter)
+{
+case 0:
+lcd_write(1,2,"Pronto                      ");
+break;
+case 1:
+lcd_write(1,2,"Emergencia                     ");
+break;
+case 2:
+lcd_write(1,2,"Manutencao                     ");
+break;
+case 3:
+counter = 0;
+break;
+}
 
 }
 
-int ADC_read(int channel){
-ADCON0bits.CHS0 = channels[channel][0];
-ADCON0bits.CHS1 = channels[channel][1];
-ADCON0bits.CHS2 = channels[channel][2];
-ADCON0bits.CHS3 = channels[channel][3];
-
-ADCON0bits.GO = 1;
-
-int value = 0;
-
-while(ADCON0bits.DONE == 0){
-value = 0;
 }
 
-value = (ADRESH << 8) | ADRESL;
-return value;
-
-
+void interrupt isr_routine(void){
+if(INTCONbits.INT0F){
+INTCONbits.INT0F = 0;
+INTCONbits.INT0E = 0;
+counter++;
+}
 
 }
 
+void init_interrupt(){
+INTCONbits.GIE = 1;
+INTCONbits.INT0E = 1;
+INTCONbits.INT0F = 0;
+INTCON2bits.INTEDG0 = 1;
+}
