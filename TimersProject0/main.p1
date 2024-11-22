@@ -1,6 +1,6 @@
 Version 3.2 HI-TECH Software Intermediate Code
 [p mainexit ]
-"33 main.c
+"45 main.c
 [v _setup `(v ~T0 @X0 0 ef ]
 "5 Libs/Conversions/conversions.h
 [v _IntToStr `(v ~T0 @X0 0 ef2`i`*uc ]
@@ -18,7 +18,7 @@ Version 3.2 HI-TECH Software Intermediate Code
 [v _LATA `Vuc ~T0 @X0 0 e@3977 ]
 "15 Libs/LCD/lcd.h
 [v _init_lcd `(v ~T0 @X0 0 ef ]
-"34 main.c
+"46 main.c
 [v _init_timer `(v ~T0 @X0 0 ef ]
 "8075 /opt/microchip/xc8/v2.45/pic/include/proc/pic18f4550.h
 [s S342 :3 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 :1 `uc 1 ]
@@ -49,27 +49,27 @@ Version 3.2 HI-TECH Software Intermediate Code
 [n S354 . . . . ]
 "8614
 [v _INTCONbits `VS354 ~T0 @X0 0 e@4082 ]
-"2 main.c
+"12 main.c
 [p x PLLDIV=5 ]
-"3
-[p x CPUDIV=OSC1_PLL2 ]
-"4
-[p x USBDIV=2 ]
-"7
-[p x FOSC=HS ]
-"8
-[p x FCMEN=OFF ]
-"9
-[p x IESO=OFF ]
-"12
-[p x PWRT=OFF ]
 "13
-[p x BOR=ON ]
+[p x CPUDIV=OSC1_PLL2 ]
 "14
-[p x BORV=3 ]
-"15
-[p x VREGEN=OFF ]
+[p x USBDIV=2 ]
+"17
+[p x FOSC=HS ]
 "18
+[p x FCMEN=OFF ]
+"19
+[p x IESO=OFF ]
+"22
+[p x PWRT=OFF ]
+"23
+[p x BOR=ON ]
+"24
+[p x BORV=3 ]
+"25
+[p x VREGEN=OFF ]
+"28
 [p x WDT=OFF ]
 "54 /opt/microchip/xc8/v2.45/pic/include/proc/pic18f4550.h
 [; <" SPPDATA equ 0F62h ;# ">
@@ -411,117 +411,119 @@ Version 3.2 HI-TECH Software Intermediate Code
 [; <" TOSH equ 0FFEh ;# ">
 "8893
 [; <" TOSU equ 0FFFh ;# ">
-"28 main.c
+"40 main.c
 [v _mileseconds `l ~T0 @X0 1 e ]
 [i _mileseconds
 -> -> 0 `i `l
 ]
-"29
+"41
 [v _seconds `i ~T0 @X0 1 e ]
 [i _seconds
 -> 0 `i
 ]
-"30
+"42
 [v _seconds_txt `uc ~T0 @X0 -> 4 `i e ]
 [v $root$_main `(v ~T0 @X0 0 e ]
-"36
+"48
 [v _main `(i ~T0 @X0 1 ef ]
 {
 [e :U _main ]
 [f ]
-"37
+"49
 [e ( _setup ..  ]
-"38
+"50
 {
 [e :U 363 ]
 {
-"39
+"51
 [e = _seconds -> _mileseconds `i ]
-"40
+"52
 [e ( _IntToStr (2 , _seconds &U _seconds_txt ]
-"44
+"56
 [e ( _lcd_write (3 , , -> 1 `i -> 2 `i -> &U _seconds_txt `*Cuc ]
-"46
-[e ( __delay (1 -> * -> -> 10 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
-"48
+"58
+[e ( __delay (1 -> * -> -> 1 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
+"60
 }
 [e $U 363  ]
 [e :U 364 ]
 }
-"49
+"61
 [e :UE 362 ]
 }
-"51
+"63
 [v _setup `(v ~T0 @X0 1 ef ]
 {
 [e :U _setup ]
 [f ]
-"52
+"64
 [e =| _ADCON1 -> -> 15 `i `uc ]
-"53
-[e =& _TRISA -> -> 254 `i `uc ]
-"54
+"65
+[e = _TRISA -> -> 0 `i `uc ]
+"66
 [e = _LATA -> -> 0 `i `uc ]
-"55
+"67
 [e ( _init_lcd ..  ]
-"56
+"68
 [e ( __delay (1 -> * -> -> 10 `i `d / -> -> 20000000 `l `d .4000.0 `ul ]
-"57
+"69
 [e ( _init_timer ..  ]
-"59
+"71
 [e :UE 366 ]
 }
-"61
+"73
 [v _init_timer `(v ~T0 @X0 1 ef ]
 {
 [e :U _init_timer ]
 [f ]
-"62
-[e = . . _T0CONbits 0 5 -> -> 1 `i `uc ]
-"63
-[e = . . _T0CONbits 0 4 -> -> 0 `i `uc ]
-"64
-[e = . . _T0CONbits 0 3 -> -> 0 `i `uc ]
-"65
-[e = . . _T0CONbits 0 2 -> -> 0 `i `uc ]
-"66
-[e = . . _T0CONbits 0 1 -> -> 0 `i `uc ]
-"67
-[e =| _T0CON -> -> 7 `i `uc ]
-"71
-[e = _TMR0 -> -> 0 `i `us ]
-"72
-[e = . . _INTCONbits 1 7 -> -> 1 `i `uc ]
-"73
-[e = . . _INTCONbits 0 5 -> -> 1 `i `uc ]
 "74
-[e = . . _INTCONbits 0 2 -> -> 0 `i `uc ]
+[e = . . _T0CONbits 0 5 -> -> 1 `i `uc ]
+"75
+[e = . . _T0CONbits 0 4 -> -> 0 `i `uc ]
 "76
+[e = . . _T0CONbits 0 3 -> -> 0 `i `uc ]
+"78
+[e = . . _T0CONbits 0 1 -> -> 1 `i `uc ]
+"79
+[e =| _T0CON -> -> 0 `i `uc ]
+"83
+[e = _TMR0 -> -> 53037 `l `us ]
+"84
+[e = . . _INTCONbits 1 7 -> -> 1 `i `uc ]
+"85
+[e = . . _INTCONbits 1 6 -> -> 1 `i `uc ]
+"86
+[e = . . _INTCONbits 0 5 -> -> 1 `i `uc ]
+"87
+[e = . . _INTCONbits 0 2 -> -> 0 `i `uc ]
+"89
 [e :UE 367 ]
 }
 [v $root$_isr_routine `(v ~T0 @X0 0 e ]
 [v F3076 `(v ~T0 @X0 1 tf ]
-"78
+"91
 [v _isr_routine `IF3076 ~T0 @X0 1 e ]
 {
 [e :U _isr_routine ]
 [f ]
-"82
-[e $ ! != -> . . _INTCONbits 0 2 `i -> -> -> 0 `i `Vuc `i 369  ]
+"95
+[e $ ! && != -> . . _INTCONbits 0 2 `i -> -> -> 0 `i `Vuc `i != -> . . _INTCONbits 0 5 `i -> -> -> 0 `i `Vuc `i 369  ]
 {
-"83
-[e = _TMR0 -> -> 0 `i `us ]
-"84
+"96
+[e = _TMR0 -> -> 53037 `l `us ]
+"97
 [e = . . _INTCONbits 0 5 -> -> 0 `i `uc ]
-"85
+"98
 [e = . . _INTCONbits 0 2 -> -> 0 `i `uc ]
-"86
+"99
 [e ++ _mileseconds -> -> 1 `i `l ]
-"88
+"100
+[e =^ _LATA -> -> 1 `i `uc ]
+"101
 [e = . . _INTCONbits 0 5 -> -> 1 `i `uc ]
-"89
+"102
 }
 [e :U 369 ]
-"92
+"105
 [e :UE 368 ]
 }

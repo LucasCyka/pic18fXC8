@@ -1,7 +1,7 @@
 ### HEXMate logfile and output summary ###
 
 ### Command-line arguments ###
- /tmp/xcXfJGpGn/driver_tmp_3.obj
+ /tmp/xcXOoGOmm/driver_tmp_3.obj
  -Omain.hex
  -logfile=main.hxl
  -addressing=1
@@ -9,19 +9,19 @@
 
 ### Memory Usage ###
  Input file ranges:
-  0h - 3h		(/tmp/xcXfJGpGn/driver_tmp_3.obj)
-  8h - 11h		(/tmp/xcXfJGpGn/driver_tmp_3.obj)
-  800h - AD9h		(/tmp/xcXfJGpGn/driver_tmp_3.obj)
-  300000h - 300003h		(/tmp/xcXfJGpGn/driver_tmp_3.obj)
+  0h - 3h		(/tmp/xcXOoGOmm/driver_tmp_3.obj)
+  8h - 11h		(/tmp/xcXOoGOmm/driver_tmp_3.obj)
+  800h - ADFh		(/tmp/xcXOoGOmm/driver_tmp_3.obj)
+  300000h - 300003h		(/tmp/xcXOoGOmm/driver_tmp_3.obj)
  Unused ranges:
   4h - 7h
   12h - 7FFh
-  ADAh - 2FFFFFh
+  AE0h - 2FFFFFh
 
 ### Hex Memory Map ###
  Legend:
   -- = Unused memory
-  H1 = Input file             (/tmp/xcXfJGpGn/driver_tmp_3.obj)
+  H1 = Input file             (/tmp/xcXOoGOmm/driver_tmp_3.obj)
 ----------------------------------------------------------
          | 00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F
 ----------------------------------------------------------
@@ -73,7 +73,7 @@
 00000AA0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00000AB0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 00000AC0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
-00000AD0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 -- -- -- -- -- --
+00000AD0 | H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1 H1
 ----------------------------------------------------------
 00300000 | H1 H1 H1 H1 -- -- -- -- -- -- -- -- -- -- -- --
 00300010 | --

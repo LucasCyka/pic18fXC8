@@ -39,13 +39,13 @@
 [v _lcd_write lcd_write `(v  1 e 1 0 ]
 "33
 [v _init_lcd init_lcd `(v  1 e 1 0 ]
-"36 /home/lucas/PIC/C/TimersProject0/main.c
+"48 /home/lucas/PIC/C/TimersProject0/main.c
 [v _main main `(i  1 e 2 0 ]
-"51
+"63
 [v _setup setup `(v  1 e 1 0 ]
-"61
+"73
 [v _init_timer init_timer `(v  1 e 1 0 ]
-"78
+"91
 [v _isr_routine isr_routine `II(v  1 e 1 0 ]
 "2973 /opt/microchip/xc8/v2.45/pic/include/proc/pic18f4550.h
 [v _LATA LATA `VEuc  1 e 1 @3977 ]
@@ -104,26 +104,26 @@
 ]
 [u S108 . 1 `S86 1 . 1 0 `S95 1 . 1 0 `S104 1 . 1 0 ]
 [v _INTCONbits INTCONbits `VES108  1 e 1 @4082 ]
-"28 /home/lucas/PIC/C/TimersProject0/main.c
+"40 /home/lucas/PIC/C/TimersProject0/main.c
 [v _mileseconds mileseconds `l  1 e 4 0 ]
-"29
+"41
 [v _seconds seconds `i  1 e 2 0 ]
-"30
+"42
 [v _seconds_txt seconds_txt `[4]uc  1 e 4 0 ]
-"36
+"48
 [v _main main `(i  1 e 2 0 ]
 {
-"49
+"61
 } 0
-"51
+"63
 [v _setup setup `(v  1 e 1 0 ]
 {
-"59
+"71
 } 0
-"61
+"73
 [v _init_timer init_timer `(v  1 e 1 0 ]
 {
-"76
+"89
 } 0
 "33 /home/lucas/PIC/C/TimersProject0/Libs/LCD/lcd.c
 [v _init_lcd init_lcd `(v  1 e 1 0 ]
@@ -188,8 +188,8 @@
 [v ___awdiv@divisor divisor `i  1 p 2 2 ]
 "41
 } 0
-"78 /home/lucas/PIC/C/TimersProject0/main.c
+"91 /home/lucas/PIC/C/TimersProject0/main.c
 [v _isr_routine isr_routine `II(v  1 e 1 0 ]
 {
-"92
+"105
 } 0

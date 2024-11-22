@@ -2,7 +2,7 @@
 # 1 "main.c"
 
 
-# 2
+# 12
 #pragma config PLLDIV = 5
 #pragma config CPUDIV = OSC1_PLL2
 #pragma config USBDIV = 2
@@ -5696,7 +5696,7 @@ void init_lcd();
 # 5 "Libs/Conversions/conversions.h"
 void IntToStr(int FromInt, char *ToStr);
 
-# 28 "main.c"
+# 40 "main.c"
 long mileseconds = 0;
 int seconds = 0;
 char seconds_txt[4];
@@ -5715,14 +5715,14 @@ IntToStr(seconds,seconds_txt);
 
 lcd_write(1,2,seconds_txt);
 
-_delay((unsigned long)((10)*(20000000/4000.0)));
+_delay((unsigned long)((1)*(20000000/4000.0)));
 
 }
 }
 
 void setup(){
 ADCON1 |= 0x0F;
-TRISA &= 0xFE;
+TRISA = 0;
 LATA = 0;
 init_lcd();
 _delay((unsigned long)((10)*(20000000/4000.0)));
@@ -5734,14 +5734,15 @@ void init_timer(){
 T0CONbits.TMR0ON = 1;
 T0CONbits.T08BIT = 0;
 T0CONbits.T0CS = 0;
-T0CONbits.T0SE = 0;
-T0CONbits.PSA = 0;
-T0CON |= 7;
+
+T0CONbits.PSA = 1;
+T0CON |= 0;
 
 
 
-TMR0 = 0;
+TMR0 = 53037;
 INTCONbits.GIE = 1;
+INTCONbits.PEIE = 1;
 INTCONbits.TMR0IE = 1;
 INTCONbits.TMR0IF = 0;
 
@@ -5751,12 +5752,12 @@ void interrupt isr_routine(void){
 
 
 
-if(INTCONbits.TMR0IF){
-TMR0 = 0;
+if(INTCONbits.TMR0IF && INTCONbits.TMR0IE){
+TMR0 = 53037;
 INTCONbits.TMR0IE = 0;
 INTCONbits.TMR0IF = 0;
 mileseconds++;
-
+LATA ^= 1;
 INTCONbits.TMR0IE = 1;
 }
 

@@ -1202,7 +1202,7 @@ IntToStr@index:	; 2 bytes @ 0xD
 
 ;; *************** function _main *****************
 ;; Defined at:
-;;		line 36 in file "main.c"
+;;		line 48 in file "main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -1232,37 +1232,37 @@ IntToStr@index:	; 2 bytes @ 0xD
 ;;
 psect	text0,class=CODE,space=0,reloc=2,group=0
 	file	"main.c"
-	line	36
+	line	48
 global __ptext0
 __ptext0:
 psect	text0
 	file	"main.c"
-	line	36
+	line	48
 	
 _main:
 ;incstack = 0
 	callstack 26
-	line	37
+	line	49
 	
-l1149:
+l1155:
 	call	_setup	;wreg free
-	line	39
+	line	51
 	
-l1151:
+l1157:
 	movff	(c:_mileseconds),(c:_seconds)
 	movff	(c:_mileseconds+1),(c:_seconds+1)
-	line	40
+	line	52
 	
-l1153:
+l1159:
 	movff	(c:_seconds),(c:IntToStr@FromInt)
 	movff	(c:_seconds+1),(c:IntToStr@FromInt+1)
 		movlw	low(_seconds_txt)
 	movwf	((c:IntToStr@ToStr))^00h,c
 
 	call	_IntToStr	;wreg free
-	line	44
+	line	56
 	
-l1155:
+l1161:
 	movlw	high(01h)
 	movwf	((c:lcd_write@row+1))^00h,c
 	movlw	low(01h)
@@ -1275,28 +1275,28 @@ l1155:
 	movwf	((c:lcd_write@txt))^00h,c
 
 	call	_lcd_write	;wreg free
-	line	46
+	line	58
 	
-l1157:
+l1163:
 	asmopt push
 asmopt off
-movlw	65
+movlw	7
 movwf	(??_main+0+0)^00h,c
-	movlw	238
-u327:
+	movlw	125
+u337:
 decfsz	wreg,f
-	bra	u327
+	bra	u337
 	decfsz	(??_main+0+0)^00h,c,f
-	bra	u327
-	nop2
+	bra	u337
+	nop
 asmopt pop
 
-	line	48
-	goto	l1151
+	line	60
+	goto	l1157
 	global	start
 	goto	start
 	callstack 0
-	line	49
+	line	61
 GLOBAL	__end_of_main
 	__end_of_main:
 	signat	_main,90
@@ -1304,7 +1304,7 @@ GLOBAL	__end_of_main
 
 ;; *************** function _setup *****************
 ;; Defined at:
-;;		line 51 in file "main.c"
+;;		line 63 in file "main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -1333,55 +1333,56 @@ GLOBAL	__end_of_main
 ;; This function uses a non-reentrant model
 ;;
 psect	text1,class=CODE,space=0,reloc=2,group=0
-	line	51
+	line	63
 global __ptext1
 __ptext1:
 psect	text1
 	file	"main.c"
-	line	51
+	line	63
 	
 _setup:
 ;incstack = 0
 	callstack 26
-	line	52
-	
-l1107:
-	movlw	(0Fh)&0ffh
-	iorwf	((c:4033))^0f00h,c	;volatile
-	line	53
-	
-l1109:
-	bcf	(0+(0/8)+(c:3986))^0f00h,c,(0)&7	;volatile
-	line	54
-	
-l1111:
-	movlw	low(0)
-	movwf	((c:3977))^0f00h,c	;volatile
-	line	55
+	line	64
 	
 l1113:
-	call	_init_lcd	;wreg free
-	line	56
+	movlw	(0Fh)&0ffh
+	iorwf	((c:4033))^0f00h,c	;volatile
+	line	65
 	
 l1115:
+	movlw	low(0)
+	movwf	((c:3986))^0f00h,c	;volatile
+	line	66
+	
+l1117:
+	movlw	low(0)
+	movwf	((c:3977))^0f00h,c	;volatile
+	line	67
+	
+l1119:
+	call	_init_lcd	;wreg free
+	line	68
+	
+l1121:
 	asmopt push
 asmopt off
 movlw	65
 movwf	(??_setup+0+0)^00h,c
 	movlw	238
-u337:
+u347:
 decfsz	wreg,f
-	bra	u337
+	bra	u347
 	decfsz	(??_setup+0+0)^00h,c,f
-	bra	u337
+	bra	u347
 	nop2
 asmopt pop
 
-	line	57
+	line	69
 	
-l1117:
+l1123:
 	call	_init_timer	;wreg free
-	line	59
+	line	71
 	
 l42:
 	return	;funcret
@@ -1393,7 +1394,7 @@ GLOBAL	__end_of_setup
 
 ;; *************** function _init_timer *****************
 ;; Defined at:
-;;		line 61 in file "main.c"
+;;		line 73 in file "main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -1401,7 +1402,7 @@ GLOBAL	__end_of_setup
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      void 
 ;; Registers used:
-;;		wreg, status,2, status,0
+;;		wreg, status,2
 ;; Tracked objects:
 ;;		On entry : 0/0
 ;;		On exit  : 0/0
@@ -1421,53 +1422,54 @@ GLOBAL	__end_of_setup
 ;; This function uses a non-reentrant model
 ;;
 psect	text2,class=CODE,space=0,reloc=2,group=0
-	line	61
+	line	73
 global __ptext2
 __ptext2:
 psect	text2
 	file	"main.c"
-	line	61
+	line	73
 	
 _init_timer:
 ;incstack = 0
 	callstack 28
-	line	62
+	line	74
 	
 l853:
 	bsf	((c:4053))^0f00h,c,7	;volatile
-	line	63
+	line	75
 	bcf	((c:4053))^0f00h,c,6	;volatile
-	line	64
+	line	76
 	bcf	((c:4053))^0f00h,c,5	;volatile
-	line	65
-	bcf	((c:4053))^0f00h,c,4	;volatile
-	line	66
-	bcf	((c:4053))^0f00h,c,3	;volatile
-	line	67
+	line	78
+	bsf	((c:4053))^0f00h,c,3	;volatile
+	line	79
 	
 l855:
-	movlw	(07h)&0ffh
-	iorwf	((c:4053))^0f00h,c	;volatile
-	line	71
+	movf	((c:4053))^0f00h,c,w	;volatile
+	line	83
 	
 l857:
-	movlw	high(0)
+	movlw	high(0CF2Dh)
 	movwf	((c:4054+1))^0f00h,c	;volatile
-	movlw	low(0)
+	movlw	low(0CF2Dh)
 	movwf	((c:4054))^0f00h,c	;volatile
-	line	72
+	line	84
 	
 l859:
 	bsf	((c:4082))^0f00h,c,7	;volatile
-	line	73
+	line	85
 	
 l861:
-	bsf	((c:4082))^0f00h,c,5	;volatile
-	line	74
+	bsf	((c:4082))^0f00h,c,6	;volatile
+	line	86
 	
 l863:
+	bsf	((c:4082))^0f00h,c,5	;volatile
+	line	87
+	
+l865:
 	bcf	((c:4082))^0f00h,c,2	;volatile
-	line	76
+	line	89
 	
 l45:
 	return	;funcret
@@ -1520,17 +1522,17 @@ _init_lcd:
 	callstack 26
 	line	34
 	
-l1015:
+l1021:
 	movlw	low(0)
 	movwf	((c:3989))^0f00h,c	;volatile
 	line	35
 	
-l1017:
+l1023:
 	movlw	(0F8h)&0ffh
 	andwf	((c:3990))^0f00h,c	;volatile
 	line	37
 	
-l1019:
+l1025:
 	movlw	low(0)
 	movwf	((c:3980))^0f00h,c	;volatile
 	line	38
@@ -1538,23 +1540,23 @@ l1019:
 	andwf	((c:3981))^0f00h,c	;volatile
 	line	40
 	
-l1021:
+l1027:
 	asmopt push
 asmopt off
 movlw	65
 movwf	(??_init_lcd+0+0)^00h,c
 	movlw	238
-u347:
+u357:
 decfsz	wreg,f
-	bra	u347
+	bra	u357
 	decfsz	(??_init_lcd+0+0)^00h,c,f
-	bra	u347
+	bra	u357
 	nop2
 asmopt pop
 
 	line	42
 	
-l1023:
+l1029:
 	movlw	high(038h)
 	movwf	((c:lcd_send_cmd@cmd+1))^00h,c
 	movlw	low(038h)
@@ -1562,7 +1564,7 @@ l1023:
 	call	_lcd_send_cmd	;wreg free
 	line	43
 	
-l1025:
+l1031:
 	movlw	high(0Ch)
 	movwf	((c:lcd_send_cmd@cmd+1))^00h,c
 	movlw	low(0Ch)
@@ -1624,16 +1626,16 @@ _lcd_write:
 	callstack 27
 	line	22
 	
-l1135:
+l1141:
 	movff	(c:lcd_write@line),??_lcd_write+0+0
 	movff	(c:lcd_write@line+1),??_lcd_write+0+0+1
 	movlw	06h
-u305:
+u315:
 	bcf	status,0
 	rlcf	(??_lcd_write+0+0)^00h,c
 	rlcf	(??_lcd_write+0+1)^00h,c
 	decfsz	wreg
-	goto	u305
+	goto	u315
 	movf	((c:lcd_write@row))^00h,c,w
 	addwf	(??_lcd_write+0+0)^00h,c
 	movf	((c:lcd_write@row+1))^00h,c,w
@@ -1647,19 +1649,19 @@ u305:
 	call	_lcd_send_cmd	;wreg free
 	line	24
 	
-l1137:
+l1143:
 	bsf	(0+(0/8)+(c:3981))^0f00h,c,(0)&7	;volatile
 	line	25
 	
-l1139:
+l1145:
 	movlw	high(0)
 	movwf	((c:lcd_write@index+1))^00h,c
 	movlw	low(0)
 	movwf	((c:lcd_write@index))^00h,c
-	goto	l1147
+	goto	l1153
 	line	26
 	
-l1141:
+l1147:
 	movf	((c:lcd_write@txt))^00h,c,w
 	addwf	((c:lcd_write@index))^00h,c,w
 	movwf	fsr2l
@@ -1668,26 +1670,26 @@ l1141:
 	movwf	((c:3980))^0f00h,c	;volatile
 	line	27
 	
-l1143:
+l1149:
 	call	_enable_pulse	;wreg free
 	line	25
 	
-l1145:
+l1151:
 	infsnz	((c:lcd_write@index))^00h,c
 	incf	((c:lcd_write@index+1))^00h,c
 	
-l1147:
+l1153:
 	movf	((c:lcd_write@txt))^00h,c,w
 	addwf	((c:lcd_write@index))^00h,c,w
 	movwf	fsr2l
 	clrf	fsr2h
 	movf	indf2,w
 	btfss	status,2
-	goto	u311
-	goto	u310
-u311:
-	goto	l1141
-u310:
+	goto	u321
+	goto	u320
+u321:
+	goto	l1147
+u320:
 	line	31
 	
 l73:
@@ -1741,15 +1743,15 @@ _lcd_send_cmd:
 	callstack 26
 	line	16
 	
-l1009:
+l1015:
 	bcf	(0+(0/8)+(c:3981))^0f00h,c,(0)&7	;volatile
 	line	17
 	
-l1011:
+l1017:
 	movff	(c:lcd_send_cmd@cmd),(c:3980)	;volatile
 	line	18
 	
-l1013:
+l1019:
 	call	_enable_pulse	;wreg free
 	line	19
 	
@@ -1814,11 +1816,11 @@ asmopt off
 movlw	33
 movwf	(??_enable_pulse+0+0)^00h,c
 	movlw	118
-u357:
+u367:
 decfsz	wreg,f
-	bra	u357
+	bra	u367
 	decfsz	(??_enable_pulse+0+0)^00h,c,f
-	bra	u357
+	bra	u367
 	nop2
 asmopt pop
 
@@ -1832,11 +1834,11 @@ asmopt off
 movlw	33
 movwf	(??_enable_pulse+0+0)^00h,c
 	movlw	118
-u367:
+u377:
 decfsz	wreg,f
-	bra	u367
+	bra	u377
 	decfsz	(??_enable_pulse+0+0)^00h,c,f
-	bra	u367
+	bra	u377
 	nop2
 asmopt pop
 
@@ -1897,10 +1899,10 @@ _IntToStr:
 	callstack 28
 	line	2
 	
-l1119:
+l1125:
 	line	3
 	
-l1121:
+l1127:
 	movff	(c:IntToStr@FromInt),(c:IntToStr@num)
 	movff	(c:IntToStr@FromInt+1),(c:IntToStr@num+1)
 	line	5
@@ -1910,7 +1912,7 @@ l1121:
 	movwf	((c:IntToStr@index))^00h,c
 	line	6
 	
-l1127:
+l1133:
 	movf	((c:IntToStr@ToStr))^00h,c,w
 	addwf	((c:IntToStr@index))^00h,c,w
 	movwf	fsr2l
@@ -1928,7 +1930,7 @@ l1127:
 
 	line	7
 	
-l1129:
+l1135:
 	movff	(c:IntToStr@num),(c:___awdiv@dividend)
 	movff	(c:IntToStr@num+1),(c:___awdiv@dividend+1)
 	movlw	high(0Ah)
@@ -1940,19 +1942,19 @@ l1129:
 	movff	1+?___awdiv,(c:IntToStr@num+1)
 	line	5
 	
-l1131:
+l1137:
 	decf	((c:IntToStr@index))^00h,c
 	btfss	status,0
 	decf	((c:IntToStr@index+1))^00h,c
 	
-l1133:
+l1139:
 	btfsc	((c:IntToStr@index+1))^00h,c,7
-	goto	u290
-	goto	u291
+	goto	u300
+	goto	u301
 
-u291:
-	goto	l1127
-u290:
+u301:
+	goto	l1133
+u300:
 	line	10
 	
 l81:
@@ -2008,70 +2010,70 @@ ___awmod:
 	callstack 28
 	line	12
 	
-l1071:
+l1077:
 	movlw	low(0)
 	movwf	((c:___awmod@sign))^00h,c
 	line	13
 	
-l1073:
+l1079:
 	btfsc	((c:___awmod@dividend+1))^00h,c,7
-	goto	u230
-	goto	u231
+	goto	u240
+	goto	u241
 
-u231:
-	goto	l1079
-u230:
+u241:
+	goto	l1085
+u240:
 	line	14
 	
-l1075:
+l1081:
 	negf	((c:___awmod@dividend))^00h,c
 	comf	((c:___awmod@dividend+1))^00h,c
 	btfsc	status,0
 	incf	((c:___awmod@dividend+1))^00h,c
 	line	15
 	
-l1077:
+l1083:
 	movlw	low(01h)
 	movwf	((c:___awmod@sign))^00h,c
 	line	17
 	
-l1079:
+l1085:
 	btfsc	((c:___awmod@divisor+1))^00h,c,7
-	goto	u240
-	goto	u241
+	goto	u250
+	goto	u251
 
-u241:
-	goto	l1083
-u240:
+u251:
+	goto	l1089
+u250:
 	line	18
 	
-l1081:
+l1087:
 	negf	((c:___awmod@divisor))^00h,c
 	comf	((c:___awmod@divisor+1))^00h,c
 	btfsc	status,0
 	incf	((c:___awmod@divisor+1))^00h,c
 	line	19
 	
-l1083:
+l1089:
 	movf	((c:___awmod@divisor))^00h,c,w
 iorwf	((c:___awmod@divisor+1))^00h,c,w
 	btfsc	status,2
-	goto	u251
-	goto	u250
+	goto	u261
+	goto	u260
 
-u251:
-	goto	l1099
-u250:
+u261:
+	goto	l1105
+u260:
 	line	20
 	
-l1085:
+l1091:
 	movlw	low(01h)
 	movwf	((c:___awmod@counter))^00h,c
 	line	21
-	goto	l1089
+	goto	l1095
 	line	22
 	
-l1087:
+l1093:
 	bcf	status,0
 	rlcf	((c:___awmod@divisor))^00h,c
 	rlcf	((c:___awmod@divisor+1))^00h,c
@@ -2079,31 +2081,31 @@ l1087:
 	incf	((c:___awmod@counter))^00h,c
 	line	21
 	
-l1089:
+l1095:
 	
 	btfss	((c:___awmod@divisor+1))^00h,c,(15)&7
-	goto	u261
-	goto	u260
-u261:
-	goto	l1087
-u260:
+	goto	u271
+	goto	u270
+u271:
+	goto	l1093
+u270:
 	line	26
 	
-l1091:
+l1097:
 		movf	((c:___awmod@divisor))^00h,c,w
 	subwf	((c:___awmod@dividend))^00h,c,w
 	movf	((c:___awmod@divisor+1))^00h,c,w
 	subwfb	((c:___awmod@dividend+1))^00h,c,w
 	btfss	status,0
-	goto	u271
-	goto	u270
+	goto	u281
+	goto	u280
 
-u271:
-	goto	l1095
-u270:
+u281:
+	goto	l1101
+u280:
 	line	27
 	
-l1093:
+l1099:
 	movf	((c:___awmod@divisor))^00h,c,w
 	subwf	((c:___awmod@dividend))^00h,c
 	movf	((c:___awmod@divisor+1))^00h,c,w
@@ -2111,36 +2113,36 @@ l1093:
 
 	line	28
 	
-l1095:
+l1101:
 	bcf	status,0
 	rrcf	((c:___awmod@divisor+1))^00h,c
 	rrcf	((c:___awmod@divisor))^00h,c
 	line	29
 	
-l1097:
+l1103:
 	decfsz	((c:___awmod@counter))^00h,c
 	
-	goto	l1091
+	goto	l1097
 	line	31
 	
-l1099:
+l1105:
 	movf	((c:___awmod@sign))^00h,c,w
 	btfsc	status,2
-	goto	u281
-	goto	u280
-u281:
-	goto	l1103
-u280:
+	goto	u291
+	goto	u290
+u291:
+	goto	l1109
+u290:
 	line	32
 	
-l1101:
+l1107:
 	negf	((c:___awmod@dividend))^00h,c
 	comf	((c:___awmod@dividend+1))^00h,c
 	btfsc	status,0
 	incf	((c:___awmod@dividend+1))^00h,c
 	line	33
 	
-l1103:
+l1109:
 	movff	(c:___awmod@dividend),(c:?___awmod)
 	movff	(c:___awmod@dividend+1),(c:?___awmod+1)
 	line	34
@@ -2199,82 +2201,82 @@ ___awdiv:
 	callstack 28
 	line	13
 	
-l1027:
+l1033:
 	movlw	low(0)
 	movwf	((c:___awdiv@sign))^00h,c
 	line	14
 	
-l1029:
-	btfsc	((c:___awdiv@divisor+1))^00h,c,7
-	goto	u170
-	goto	u171
-
-u171:
-	goto	l1035
-u170:
-	line	15
-	
-l1031:
-	negf	((c:___awdiv@divisor))^00h,c
-	comf	((c:___awdiv@divisor+1))^00h,c
-	btfsc	status,0
-	incf	((c:___awdiv@divisor+1))^00h,c
-	line	16
-	
-l1033:
-	movlw	low(01h)
-	movwf	((c:___awdiv@sign))^00h,c
-	line	18
-	
 l1035:
-	btfsc	((c:___awdiv@dividend+1))^00h,c,7
+	btfsc	((c:___awdiv@divisor+1))^00h,c,7
 	goto	u180
 	goto	u181
 
 u181:
 	goto	l1041
 u180:
-	line	19
+	line	15
 	
 l1037:
+	negf	((c:___awdiv@divisor))^00h,c
+	comf	((c:___awdiv@divisor+1))^00h,c
+	btfsc	status,0
+	incf	((c:___awdiv@divisor+1))^00h,c
+	line	16
+	
+l1039:
+	movlw	low(01h)
+	movwf	((c:___awdiv@sign))^00h,c
+	line	18
+	
+l1041:
+	btfsc	((c:___awdiv@dividend+1))^00h,c,7
+	goto	u190
+	goto	u191
+
+u191:
+	goto	l1047
+u190:
+	line	19
+	
+l1043:
 	negf	((c:___awdiv@dividend))^00h,c
 	comf	((c:___awdiv@dividend+1))^00h,c
 	btfsc	status,0
 	incf	((c:___awdiv@dividend+1))^00h,c
 	line	20
 	
-l1039:
+l1045:
 	movlw	(01h)&0ffh
 	xorwf	((c:___awdiv@sign))^00h,c
 	line	22
 	
-l1041:
+l1047:
 	movlw	high(0)
 	movwf	((c:___awdiv@quotient+1))^00h,c
 	movlw	low(0)
 	movwf	((c:___awdiv@quotient))^00h,c
 	line	23
 	
-l1043:
+l1049:
 	movf	((c:___awdiv@divisor))^00h,c,w
 iorwf	((c:___awdiv@divisor+1))^00h,c,w
 	btfsc	status,2
-	goto	u191
-	goto	u190
+	goto	u201
+	goto	u200
 
-u191:
-	goto	l1063
-u190:
+u201:
+	goto	l1069
+u200:
 	line	24
 	
-l1045:
+l1051:
 	movlw	low(01h)
 	movwf	((c:___awdiv@counter))^00h,c
 	line	25
-	goto	l1049
+	goto	l1055
 	line	26
 	
-l1047:
+l1053:
 	bcf	status,0
 	rlcf	((c:___awdiv@divisor))^00h,c
 	rlcf	((c:___awdiv@divisor+1))^00h,c
@@ -2282,37 +2284,37 @@ l1047:
 	incf	((c:___awdiv@counter))^00h,c
 	line	25
 	
-l1049:
+l1055:
 	
 	btfss	((c:___awdiv@divisor+1))^00h,c,(15)&7
-	goto	u201
-	goto	u200
-u201:
-	goto	l1047
-u200:
+	goto	u211
+	goto	u210
+u211:
+	goto	l1053
+u210:
 	line	30
 	
-l1051:
+l1057:
 	bcf	status,0
 	rlcf	((c:___awdiv@quotient))^00h,c
 	rlcf	((c:___awdiv@quotient+1))^00h,c
 	line	31
 	
-l1053:
+l1059:
 		movf	((c:___awdiv@divisor))^00h,c,w
 	subwf	((c:___awdiv@dividend))^00h,c,w
 	movf	((c:___awdiv@divisor+1))^00h,c,w
 	subwfb	((c:___awdiv@dividend+1))^00h,c,w
 	btfss	status,0
-	goto	u211
-	goto	u210
+	goto	u221
+	goto	u220
 
-u211:
-	goto	l1059
-u210:
+u221:
+	goto	l1065
+u220:
 	line	32
 	
-l1055:
+l1061:
 	movf	((c:___awdiv@divisor))^00h,c,w
 	subwf	((c:___awdiv@dividend))^00h,c
 	movf	((c:___awdiv@divisor+1))^00h,c,w
@@ -2320,40 +2322,40 @@ l1055:
 
 	line	33
 	
-l1057:
+l1063:
 	bsf	(0+(0/8)+(c:___awdiv@quotient))^00h,c,(0)&7
 	line	35
 	
-l1059:
+l1065:
 	bcf	status,0
 	rrcf	((c:___awdiv@divisor+1))^00h,c
 	rrcf	((c:___awdiv@divisor))^00h,c
 	line	36
 	
-l1061:
+l1067:
 	decfsz	((c:___awdiv@counter))^00h,c
 	
-	goto	l1051
+	goto	l1057
 	line	38
 	
-l1063:
+l1069:
 	movf	((c:___awdiv@sign))^00h,c,w
 	btfsc	status,2
-	goto	u221
-	goto	u220
-u221:
-	goto	l1067
-u220:
+	goto	u231
+	goto	u230
+u231:
+	goto	l1073
+u230:
 	line	39
 	
-l1065:
+l1071:
 	negf	((c:___awdiv@quotient))^00h,c
 	comf	((c:___awdiv@quotient+1))^00h,c
 	btfsc	status,0
 	incf	((c:___awdiv@quotient+1))^00h,c
 	line	40
 	
-l1067:
+l1073:
 	movff	(c:___awdiv@quotient),(c:?___awdiv)
 	movff	(c:___awdiv@quotient+1),(c:?___awdiv+1)
 	line	41
@@ -2368,7 +2370,7 @@ GLOBAL	__end_of___awdiv
 
 ;; *************** function _isr_routine *****************
 ;; Defined at:
-;;		line 78 in file "main.c"
+;;		line 91 in file "main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -2401,7 +2403,7 @@ global __pintcode
 __pintcode:
 psect	intcode
 	file	"main.c"
-	line	78
+	line	91
 	
 _isr_routine:
 ;incstack = 0
@@ -2415,44 +2417,57 @@ __pintcode_body:
 int_func:
 
 	pop	; remove dummy address from shadow register refresh
-	line	82
+	line	95
 	
-i2l997:
+i2l999:
 	btfss	((c:4082))^0f00h,c,2	;volatile
 	goto	i2u16_41
 	goto	i2u16_40
 i2u16_41:
 	goto	i2l51
 i2u16_40:
-	line	83
-	
-i2l999:
-	movlw	high(0)
-	movwf	((c:4054+1))^0f00h,c	;volatile
-	movlw	low(0)
-	movwf	((c:4054))^0f00h,c	;volatile
-	line	84
 	
 i2l1001:
-	bcf	((c:4082))^0f00h,c,5	;volatile
-	line	85
+	btfss	((c:4082))^0f00h,c,5	;volatile
+	goto	i2u17_41
+	goto	i2u17_40
+i2u17_41:
+	goto	i2l51
+i2u17_40:
+	line	96
 	
 i2l1003:
-	bcf	((c:4082))^0f00h,c,2	;volatile
-	line	86
+	movlw	high(0CF2Dh)
+	movwf	((c:4054+1))^0f00h,c	;volatile
+	movlw	low(0CF2Dh)
+	movwf	((c:4054))^0f00h,c	;volatile
+	line	97
 	
 i2l1005:
+	bcf	((c:4082))^0f00h,c,5	;volatile
+	line	98
+	
+i2l1007:
+	bcf	((c:4082))^0f00h,c,2	;volatile
+	line	99
+	
+i2l1009:
 	movlw	low(01h)
 	addwf	((c:_mileseconds))^00h,c
 	movlw	0
 	addwfc	((c:_mileseconds+1))^00h,c
 	addwfc	((c:_mileseconds+2))^00h,c
 	addwfc	((c:_mileseconds+3))^00h,c
-	line	88
+	line	100
 	
-i2l1007:
+i2l1011:
+	movlw	(01h)&0ffh
+	xorwf	((c:3977))^0f00h,c	;volatile
+	line	101
+	
+i2l1013:
 	bsf	((c:4082))^0f00h,c,5	;volatile
-	line	92
+	line	105
 	
 i2l51:
 	bcf int$flags,1,c ;clear compiler interrupt flag (level 2)
