@@ -1,0 +1,70 @@
+[p GLOBOPT AUTOSTATIC LFSROK ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 18F4550 ]
+[d frameptr 4065 ]
+"62 /opt/microchip/xc8/v2.45/pic/sources/c90/common/float.c
+[v ___ftpack __ftpack `(f  1 e 3 0 ]
+"86 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftadd.c
+[v ___ftadd __ftadd `(f  1 e 3 0 ]
+"54 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftdiv.c
+[v ___ftdiv __ftdiv `(f  1 e 3 0 ]
+"62 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftmul.c
+[v ___ftmul __ftmul `(f  1 e 3 0 ]
+"19 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftsub.c
+[v ___ftsub __ftsub `(f  1 e 3 0 ]
+"10 /opt/microchip/xc8/v2.45/pic/sources/c90/common/sprcadd.c
+[v ___fladd __fladd `(d  1 e 3 0 ]
+"245
+[v ___flsub __flsub `(d  1 e 3 0 ]
+"11 /opt/microchip/xc8/v2.45/pic/sources/c90/common/sprcdiv.c
+[v ___fldiv __fldiv `(d  1 e 3 0 ]
+"8 /opt/microchip/xc8/v2.45/pic/sources/c90/common/sprcmul.c
+[v ___flmul __flmul `(d  1 e 3 0 ]
+"15 /opt/microchip/xc8/v2.45/pic/sources/c90/common/Umul32.c
+[v ___lmul __lmul `(ul  1 e 4 0 ]
+"91 /opt/microchip/xc8/v2.45/pic/sources/c90/common/Umul64.c
+[v ___omul __omul `(ul  1 e 4 0 ]
+"32 /home/lucas/PIC/C/CCP_PWM/main.c
+[v _main main `(i  1 e 2 0 ]
+"51
+[v _setup setup `(v  1 e 1 0 ]
+[s S38 . 1 `uc 1 TRISC0 1 0 :1:0 
+`uc 1 TRISC1 1 0 :1:1 
+`uc 1 TRISC2 1 0 :1:2 
+`uc 1 . 1 0 :3:3 
+`uc 1 TRISC6 1 0 :1:6 
+`uc 1 TRISC7 1 0 :1:7 
+]
+"3875 /opt/microchip/xc8/v2.45/pic/include/proc/pic18f4550.h
+[s S45 . 1 `uc 1 RC0 1 0 :1:0 
+`uc 1 RC1 1 0 :1:1 
+`uc 1 RC2 1 0 :1:2 
+`uc 1 . 1 0 :3:3 
+`uc 1 RC6 1 0 :1:6 
+`uc 1 RC7 1 0 :1:7 
+]
+[u S52 . 1 `S38 1 . 1 0 `S45 1 . 1 0 ]
+[v _TRISCbits TRISCbits `VES52  1 e 1 @3988 ]
+"6327
+[v _CCP1CON CCP1CON `VEuc  1 e 1 @4029 ]
+"6496
+[v _CCPR1L CCPR1L `VEuc  1 e 1 @4030 ]
+"6581
+[v _ADCON1 ADCON1 `VEuc  1 e 1 @4033 ]
+"7200
+[v _T2CON T2CON `VEuc  1 e 1 @4042 ]
+"7298
+[v _PR2 PR2 `VEuc  1 e 1 @4043 ]
+"28 /home/lucas/PIC/C/CCP_PWM/main.c
+[v _dc dc `ui  1 e 2 0 ]
+"32
+[v _main main `(i  1 e 2 0 ]
+{
+"49
+} 0
+"51
+[v _setup setup `(v  1 e 1 0 ]
+{
+"66
+} 0
