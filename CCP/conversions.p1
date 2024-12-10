@@ -1,0 +1,36 @@
+Version 3.2 HI-TECH Software Intermediate Code
+"1 Libs/Conversions/conversions.c
+[v _IntToStr `(v ~T0 @X0 1 ef2`i`*uc ]
+{
+[e :U _IntToStr ]
+[v _FromInt `i ~T0 @X0 1 r1 ]
+[v _ToStr `*uc ~T0 @X0 1 r2 ]
+[f ]
+"2
+[v _index `i ~T0 @X0 1 a ]
+[e = _index -> 5 `i ]
+"3
+[v _num `ui ~T0 @X0 1 a ]
+[e = _num -> _FromInt `ui ]
+"5
+{
+[e = _index -> 5 `i ]
+[e $ > _index -U -> 1 `i 2  ]
+[e $U 3  ]
+[e :U 2 ]
+{
+"6
+[e = *U + _ToStr * -> _index `x -> -> # *U _ToStr `i `x -> + -> -> % _num -> -> 10 `i `ui `uc `ui -> 48 `ui `uc ]
+"7
+[e =/ _num -> -> 10 `uc `ui ]
+"8
+}
+"5
+[e -- _index -> 1 `i ]
+[e $ > _index -U -> 1 `i 2  ]
+[e :U 3 ]
+"8
+}
+"10
+[e :UE 1 ]
+}

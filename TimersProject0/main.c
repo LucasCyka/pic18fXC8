@@ -1,13 +1,3 @@
-/** 
- * NOTES FOR MYSELF
- * FORMULA = TIME TO WAIT/1(PERIOD OF MY CLOCK/PRESCALE) - 1
- * BUT MY CLOCK IS DIVIDED BY IN THE TIMER CIRCUIT, EVEN WITHOUT PRESCALE
- * YOU CAN DO 2^16 - RESULT OF MY FORMULA ABOVE AS A DEFAULT VALUE FOR THE TIMER COUNT
- * WHEN WORKING ON 16 BITS MODE.
- * 
-*/
-
-
 // CONFIG1L
 #pragma config PLLDIV = 5      // PLL Prescaler Selection (Divide by 5 (20 MHz input))
 #pragma config CPUDIV = OSC1_PLL2 // System Clock Postscaler (OSC1/OSC2 Src: /1, 96 MHz PLL Src: /2)
@@ -29,6 +19,7 @@
 
 #define _XTAL_FREQ 20000000 //20Mhz
 
+// 2^16 - (((1/200)/2) * 5E6 -1)
 #define TIMER_VAL 53037
 
 #include <xc.h>
@@ -37,9 +28,9 @@
 #include "Libs/Conversions/conversions.h"
 
 //data
-long mileseconds = 0;
-int seconds = 0;
-char seconds_txt[4];
+int frequency = 200;
+int frequency_txt[4];
+
 
 //function prototypes
 void setup();
@@ -48,14 +39,11 @@ void init_timer();
 int main(){
     setup();
     for(;;){
-        seconds = mileseconds;
-        IntToStr(seconds,seconds_txt);
-        
+        IntToStr(frequency,frequency_txt);
+        lcd_write(1,2,frequency_txt);
+        lcd_write(5,2,"Hz");
 
-        
-        lcd_write(1,2,seconds_txt);
-
-        __delay_ms(1);
+        __delay_ms(10);
 
     }
 }
@@ -74,7 +62,6 @@ void init_timer(){
     T0CONbits.TMR0ON = 1; //Enables timer0
     T0CONbits.T08BIT = 0; //uses timer0 in 16bit mode
     T0CONbits.T0CS   = 0; //uses internal clock for counter
-    //T0CONbits.T0SE   = 0; //from low to high edge for the counter
     T0CONbits.PSA    = 1; //dont use prescale
     T0CON           |= 0; //prescale 
 
@@ -88,17 +75,13 @@ void init_timer(){
     
 }
 
+
 void interrupt isr_routine(void){
 
-    //0,001seconds/(1/(20E6/256)) - 1
-    //timer0 counter will overflow after 4 clocks at 20Mhz. Thats after 4ms
     if(INTCONbits.TMR0IF && INTCONbits.TMR0IE){
         TMR0              = TIMER_VAL;
-        INTCONbits.TMR0IE = 0;
         INTCONbits.TMR0IF = 0;
-        mileseconds++;
         LATA ^= 1; 
-        INTCONbits.TMR0IE = 1;
     }
     
 

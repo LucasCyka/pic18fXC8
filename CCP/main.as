@@ -795,51 +795,56 @@ TOSH equ 0FFEh ;#
 TOSU equ 0FFFh ;# 
 	debug_source C
 	FNCALL	_main,_IntToStr
+	FNCALL	_main,___ftdiv
+	FNCALL	_main,___fttol
+	FNCALL	_main,___lwtoft
 	FNCALL	_main,_lcd_write
 	FNCALL	_main,_setup
 	FNCALL	_setup,_init_lcd
-	FNCALL	_setup,_init_timer
 	FNCALL	_init_lcd,_lcd_send_cmd
 	FNCALL	_lcd_write,_enable_pulse
 	FNCALL	_lcd_write,_lcd_send_cmd
 	FNCALL	_lcd_send_cmd,_enable_pulse
-	FNCALL	_IntToStr,___awdiv
-	FNCALL	_IntToStr,___awmod
+	FNCALL	___lwtoft,___ftpack
+	FNCALL	___ftdiv,___ftpack
+	FNCALL	_IntToStr,___lwdiv
+	FNCALL	_IntToStr,___lwmod
 	FNROOT	_main
 	FNCALL	intlevel2,_isr_routine
 	global	intlevel2
 	FNROOT	intlevel2
-psect	idataCOMRAM,class=CODE,space=0,delta=1,noexec
-global __pidataCOMRAM
-__pidataCOMRAM:
-	file	"main.c"
-	line	31
-
-;initializer for _frequency
-	dw	(0C8h)&0ffffh
-	global	_frequency_txt
-	global	_T0CON
-_T0CON	set	0xFD5
-	global	_LATA
-_LATA	set	0xF89
-	global	_TRISA
-_TRISA	set	0xF92
-	global	_ADCON1
-_ADCON1	set	0xFC1
-	global	_T0CONbits
-_T0CONbits	set	0xFD5
-	global	_TRISD
-_TRISD	set	0xF95
+	global	_rounded_frequency
+	global	_frequency
+	global	_data2
+	global	_data
+	global	_data_txt
+	global	_fdata
 	global	_LATD
 _LATD	set	0xF8C
 	global	_LATE
 _LATE	set	0xF8D
-	global	_TMR0
-_TMR0	set	0xFD6
-	global	_INTCONbits
-_INTCONbits	set	0xFF2
+	global	_TRISCbits
+_TRISCbits	set	0xF94
+	global	_PIR1bits
+_PIR1bits	set	0xF9E
+	global	_CCPR1
+_CCPR1	set	0xFBE
+	global	_T3CONbits
+_T3CONbits	set	0xFB1
+	global	_CCP1CON
+_CCP1CON	set	0xFBD
+	global	_TMR1
+_TMR1	set	0xFCE
+	global	_ADCON0
+_ADCON0	set	0xFC2
+	global	_T1CONbits
+_T1CONbits	set	0xFCD
 	global	_TRISE
 _TRISE	set	0xF96
+	global	_TRISD
+_TRISD	set	0xF95
+	global	_PIE1bits
+_PIE1bits	set	0xF9D
 psect	smallconst,class=SMALLCONST,space=0,reloc=2,noexec
 global __psmallconst
 __psmallconst:
@@ -879,38 +884,35 @@ __initialization:
 psect	bssCOMRAM,class=COMRAM,space=1,noexec,lowdata
 global __pbssCOMRAM
 __pbssCOMRAM:
-	global	_frequency_txt
-_frequency_txt:
-       ds      8
-psect	dataCOMRAM,class=COMRAM,space=1,noexec,lowdata
-global __pdataCOMRAM
-__pdataCOMRAM:
-	file	"main.c"
-	line	31
+	global	_period
+	global	_period
+_period:
+       ds      3
+	global	_rounded_frequency
+_rounded_frequency:
+       ds      2
 	global	_frequency
 _frequency:
+       ds      2
+	global	_data2
+_data2:
+       ds      2
+	global	_data
+_data:
+       ds      2
+	global	_data_txt
+_data_txt:
+       ds      5
+	global	_fdata
+_fdata:
        ds      2
 	file	"main.as"
 	line	#
 psect	cinit
-; Initialize objects allocated to COMRAM (2 bytes)
-	global __pidataCOMRAM
-	; load TBLPTR registers with __pidataCOMRAM
-	movlw	low (__pidataCOMRAM)
-	movwf	tblptrl
-	movlw	high(__pidataCOMRAM)
-	movwf	tblptrh
-	movlw	low highword(__pidataCOMRAM)
-	movwf	tblptru
-	tblrd*+ ;fetch initializer
-	movff	tablat, __pdataCOMRAM+0		
-	tblrd*+ ;fetch initializer
-	movff	tablat, __pdataCOMRAM+1		
-	line	#
-; Clear objects allocated to COMRAM (8 bytes)
+; Clear objects allocated to COMRAM (18 bytes)
 	global __pbssCOMRAM
 lfsr	0,__pbssCOMRAM
-movlw	8
+movlw	18
 clear_0:
 clrf	postinc0,c
 decf	wreg
@@ -934,90 +936,135 @@ global __pcstackCOMRAM
 __pcstackCOMRAM:
 ?_setup:	; 1 bytes @ 0x0
 ?_init_lcd:	; 1 bytes @ 0x0
-?_init_timer:	; 1 bytes @ 0x0
-??_init_timer:	; 1 bytes @ 0x0
 ?_isr_routine:	; 1 bytes @ 0x0
 ??_isr_routine:	; 1 bytes @ 0x0
 ?_enable_pulse:	; 1 bytes @ 0x0
 ??_enable_pulse:	; 1 bytes @ 0x0
 ?_main:	; 2 bytes @ 0x0
-	global	?___awdiv
-?___awdiv:	; 2 bytes @ 0x0
-	global	?___awmod
-?___awmod:	; 2 bytes @ 0x0
-	global	___awdiv@dividend
-___awdiv@dividend:	; 2 bytes @ 0x0
-	global	___awmod@dividend
-___awmod@dividend:	; 2 bytes @ 0x0
+	global	?___lwdiv
+?___lwdiv:	; 2 bytes @ 0x0
+	global	?___lwmod
+?___lwmod:	; 2 bytes @ 0x0
+	global	?___ftpack
+?___ftpack:	; 3 bytes @ 0x0
+	global	___lwdiv@dividend
+___lwdiv@dividend:	; 2 bytes @ 0x0
+	global	___lwmod@dividend
+___lwmod@dividend:	; 2 bytes @ 0x0
+	global	___ftpack@arg
+___ftpack@arg:	; 3 bytes @ 0x0
 	ds   1
 ?_lcd_send_cmd:	; 1 bytes @ 0x1
 	global	lcd_send_cmd@cmd
 lcd_send_cmd@cmd:	; 2 bytes @ 0x1
 	ds   1
-	global	___awdiv@divisor
-___awdiv@divisor:	; 2 bytes @ 0x2
-	global	___awmod@divisor
-___awmod@divisor:	; 2 bytes @ 0x2
+	global	___lwdiv@divisor
+___lwdiv@divisor:	; 2 bytes @ 0x2
+	global	___lwmod@divisor
+___lwmod@divisor:	; 2 bytes @ 0x2
 	ds   1
 ?_lcd_write:	; 1 bytes @ 0x3
 ??_init_lcd:	; 1 bytes @ 0x3
 ??_lcd_send_cmd:	; 1 bytes @ 0x3
+	global	___ftpack@exp
+___ftpack@exp:	; 1 bytes @ 0x3
 	global	lcd_write@row
 lcd_write@row:	; 2 bytes @ 0x3
 	ds   1
 ??_setup:	; 1 bytes @ 0x4
-??___awdiv:	; 1 bytes @ 0x4
-??___awmod:	; 1 bytes @ 0x4
-	global	___awdiv@counter
-___awdiv@counter:	; 1 bytes @ 0x4
-	global	___awmod@counter
-___awmod@counter:	; 1 bytes @ 0x4
+??___lwdiv:	; 1 bytes @ 0x4
+??___lwmod:	; 1 bytes @ 0x4
+	global	___ftpack@sign
+___ftpack@sign:	; 1 bytes @ 0x4
+	global	___lwmod@counter
+___lwmod@counter:	; 1 bytes @ 0x4
+	global	___lwdiv@quotient
+___lwdiv@quotient:	; 2 bytes @ 0x4
 	ds   1
-	global	___awdiv@sign
-___awdiv@sign:	; 1 bytes @ 0x5
-	global	___awmod@sign
-___awmod@sign:	; 1 bytes @ 0x5
+??___ftpack:	; 1 bytes @ 0x5
 	global	lcd_write@line
 lcd_write@line:	; 2 bytes @ 0x5
 	ds   1
-	global	___awdiv@quotient
-___awdiv@quotient:	; 2 bytes @ 0x6
+	global	___lwdiv@counter
+___lwdiv@counter:	; 1 bytes @ 0x6
 	ds   1
+?_IntToStr:	; 1 bytes @ 0x7
 	global	lcd_write@txt
 lcd_write@txt:	; 2 bytes @ 0x7
-	ds   1
-?_IntToStr:	; 1 bytes @ 0x8
 	global	IntToStr@FromInt
-IntToStr@FromInt:	; 2 bytes @ 0x8
+IntToStr@FromInt:	; 2 bytes @ 0x7
+	ds   1
+	global	?___lwtoft
+?___lwtoft:	; 3 bytes @ 0x8
+	global	___lwtoft@c
+___lwtoft@c:	; 2 bytes @ 0x8
 	ds   1
 ??_lcd_write:	; 1 bytes @ 0x9
-	ds   1
 	global	IntToStr@ToStr
-IntToStr@ToStr:	; 1 bytes @ 0xA
+IntToStr@ToStr:	; 1 bytes @ 0x9
 	ds   1
-??_IntToStr:	; 1 bytes @ 0xB
+??_IntToStr:	; 1 bytes @ 0xA
+	global	IntToStr@num
+IntToStr@num:	; 2 bytes @ 0xA
+	ds   1
+??___lwtoft:	; 1 bytes @ 0xB
+	global	?___ftdiv
+?___ftdiv:	; 3 bytes @ 0xB
 	global	lcd_write@index
 lcd_write@index:	; 2 bytes @ 0xB
-	global	IntToStr@num
-IntToStr@num:	; 2 bytes @ 0xB
-	ds   2
-	global	IntToStr@index
-IntToStr@index:	; 2 bytes @ 0xD
-	ds   2
-??_main:	; 1 bytes @ 0xF
+	global	___ftdiv@f1
+___ftdiv@f1:	; 3 bytes @ 0xB
 	ds   1
+	global	IntToStr@index
+IntToStr@index:	; 2 bytes @ 0xC
+	ds   2
+	global	___ftdiv@f2
+___ftdiv@f2:	; 3 bytes @ 0xE
+	ds   3
+??___ftdiv:	; 1 bytes @ 0x11
+	ds   3
+	global	___ftdiv@cntr
+___ftdiv@cntr:	; 1 bytes @ 0x14
+	ds   1
+	global	___ftdiv@f3
+___ftdiv@f3:	; 3 bytes @ 0x15
+	ds   3
+	global	___ftdiv@exp
+___ftdiv@exp:	; 1 bytes @ 0x18
+	ds   1
+	global	___ftdiv@sign
+___ftdiv@sign:	; 1 bytes @ 0x19
+	ds   1
+	global	?___fttol
+?___fttol:	; 4 bytes @ 0x1A
+	global	___fttol@f1
+___fttol@f1:	; 3 bytes @ 0x1A
+	ds   4
+??___fttol:	; 1 bytes @ 0x1E
+	ds   5
+	global	___fttol@sign1
+___fttol@sign1:	; 1 bytes @ 0x23
+	ds   1
+	global	___fttol@lval
+___fttol@lval:	; 4 bytes @ 0x24
+	ds   4
+	global	___fttol@exp1
+___fttol@exp1:	; 1 bytes @ 0x28
+	ds   1
+??_main:	; 1 bytes @ 0x29
+	ds   2
 ;!
 ;!Data Sizes:
 ;!    Strings     3
 ;!    Constant    0
-;!    Data        2
-;!    BSS         8
+;!    Data        0
+;!    BSS         18
 ;!    Persistent  0
 ;!    Stack       0
 ;!
 ;!Auto Spaces:
 ;!    Space          Size  Autos    Used
-;!    COMRAM           94     16      26
+;!    COMRAM           94     43      61
 ;!    BANK0           160      0       0
 ;!    BANK1           256      0       0
 ;!    BANK2           256      0       0
@@ -1030,23 +1077,26 @@ IntToStr@index:	; 2 bytes @ 0xD
 ;!
 ;!Pointer List with Targets:
 ;!
-;!    IntToStr@ToStr	PTR unsigned char  size(1) Largest target is 8
-;!		 -> frequency_txt(COMRAM[8]), 
+;!    IntToStr@ToStr	PTR unsigned char  size(1) Largest target is 5
+;!		 -> data_txt(COMRAM[5]), 
 ;!
-;!    lcd_write@txt	PTR const unsigned char  size(2) Largest target is 8
-;!		 -> frequency_txt(COMRAM[8]), STR_1(CODE[3]), 
+;!    lcd_write@txt	PTR const unsigned char  size(2) Largest target is 5
+;!		 -> data_txt(COMRAM[5]), STR_1(CODE[3]), 
 ;!
 
 
 ;!
 ;!Critical Paths under _main in COMRAM
 ;!
-;!    _main->_IntToStr
+;!    _main->___fttol
 ;!    _setup->_init_lcd
 ;!    _init_lcd->_lcd_send_cmd
 ;!    _lcd_write->_lcd_send_cmd
 ;!    _lcd_send_cmd->_enable_pulse
-;!    _IntToStr->___awdiv
+;!    ___lwtoft->___ftpack
+;!    ___fttol->___ftdiv
+;!    ___ftdiv->___lwtoft
+;!    _IntToStr->___lwdiv
 ;!
 ;!Critical Paths under _isr_routine in COMRAM
 ;!
@@ -1117,7 +1167,7 @@ IntToStr@index:	; 2 bytes @ 0xD
 ;!    None.
 
 ;;
-;;Main: autosize = 0, tempsize = 1, incstack = 0, save=0
+;;Main: autosize = 0, tempsize = 2, incstack = 0, save=0
 ;;
 
 ;!
@@ -1126,18 +1176,17 @@ IntToStr@index:	; 2 bytes @ 0xD
 ;! ---------------------------------------------------------------------------------
 ;! (Depth) Function   	        Calls       Base Space   Used Autos Params    Refs
 ;! ---------------------------------------------------------------------------------
-;! (0) _main                                                 1     1      0    2301
-;!                                             15 COMRAM     1     1      0
+;! (0) _main                                                 2     2      0    8544
+;!                                             41 COMRAM     2     2      0
 ;!                           _IntToStr
+;!                            ___ftdiv
+;!                            ___fttol
+;!                           ___lwtoft
 ;!                          _lcd_write
 ;!                              _setup
 ;! ---------------------------------------------------------------------------------
-;! (1) _setup                                                1     1      0     250
-;!                                              4 COMRAM     1     1      0
+;! (1) _setup                                                0     0      0     250
 ;!                           _init_lcd
-;!                         _init_timer
-;! ---------------------------------------------------------------------------------
-;! (2) _init_timer                                           0     0      0       0
 ;! ---------------------------------------------------------------------------------
 ;! (2) _init_lcd                                             1     1      0     250
 ;!                                              3 COMRAM     1     1      0
@@ -1155,16 +1204,33 @@ IntToStr@index:	; 2 bytes @ 0xD
 ;! (4) _enable_pulse                                         1     1      0       0
 ;!                                              0 COMRAM     1     1      0
 ;! ---------------------------------------------------------------------------------
-;! (1) _IntToStr                                             7     4      3    1211
-;!                                              8 COMRAM     7     4      3
-;!                            ___awdiv
-;!                            ___awmod
+;! (1) ___lwtoft                                             3     0      3    2864
+;!                                              8 COMRAM     3     0      3
+;!                           ___ftpack
 ;! ---------------------------------------------------------------------------------
-;! (2) ___awmod                                              6     2      4     448
-;!                                              0 COMRAM     6     2      4
+;! (1) ___fttol                                             15    11      4     328
+;!                                             26 COMRAM    15    11      4
+;!                            ___ftdiv (ARG)
+;!                           ___lwtoft (ARG)
 ;! ---------------------------------------------------------------------------------
-;! (2) ___awdiv                                              8     4      4     452
-;!                                              0 COMRAM     8     4      4
+;! (1) ___ftdiv                                             15     9      6    3326
+;!                                             11 COMRAM    15     9      6
+;!                           ___ftpack
+;!                           ___lwtoft (ARG)
+;! ---------------------------------------------------------------------------------
+;! (2) ___ftpack                                             8     3      5    2766
+;!                                              0 COMRAM     8     3      5
+;! ---------------------------------------------------------------------------------
+;! (1) _IntToStr                                             7     4      3     936
+;!                                              7 COMRAM     7     4      3
+;!                            ___lwdiv
+;!                            ___lwmod
+;! ---------------------------------------------------------------------------------
+;! (2) ___lwmod                                              5     1      4     311
+;!                                              0 COMRAM     5     1      4
+;! ---------------------------------------------------------------------------------
+;! (2) ___lwdiv                                              7     3      4     314
+;!                                              0 COMRAM     7     3      4
 ;! ---------------------------------------------------------------------------------
 ;! Estimated maximum stack depth 4
 ;! ---------------------------------------------------------------------------------
@@ -1179,8 +1245,16 @@ IntToStr@index:	; 2 bytes @ 0xD
 ;!
 ;! _main (ROOT)
 ;!   _IntToStr
-;!     ___awdiv
-;!     ___awmod
+;!     ___lwdiv
+;!     ___lwmod
+;!   ___ftdiv
+;!     ___ftpack
+;!     ___lwtoft (ARG)
+;!       ___ftpack
+;!   ___fttol
+;!     ___ftdiv (ARG)
+;!     ___lwtoft (ARG)
+;!   ___lwtoft
 ;!   _lcd_write
 ;!     _enable_pulse
 ;!     _lcd_send_cmd
@@ -1188,7 +1262,6 @@ IntToStr@index:	; 2 bytes @ 0xD
 ;!   _setup
 ;!     _init_lcd
 ;!       _lcd_send_cmd
-;!     _init_timer
 ;!
 ;! _isr_routine (ROOT)
 ;!
@@ -1215,35 +1288,35 @@ IntToStr@index:	; 2 bytes @ 0xD
 ;!BITBANK0            A0      0       0       4        0.0%
 ;!BANK0               A0      0       0       5        0.0%
 ;!BITCOMRAM           5E      0       0       0        0.0%
-;!COMRAM              5E     10      1A       1       27.7%
-;!BITBIGSFRlhh        2A      0       0      23        0.0%
-;!BITBIGSFRlll        29      0       0      27        0.0%
-;!BITBIGSFRhhl        1A      0       0      21        0.0%
-;!BITBIGSFRhl         13      0       0      22        0.0%
-;!BITBIGSFRhhh         D      0       0      20        0.0%
-;!BITBIGSFRllhh        4      0       0      25        0.0%
-;!BITBIGSFRllhl        2      0       0      26        0.0%
-;!BITBIGSFRlhl         2      0       0      24        0.0%
+;!COMRAM              5E     2B      3D       1       64.9%
+;!BITBIGSFRhhh        30      0       0      20        0.0%
+;!BITBIGSFRlll        2C      0       0      27        0.0%
+;!BITBIGSFRhll        12      0       0      24        0.0%
+;!BITBIGSFRhlh         B      0       0      23        0.0%
+;!BITBIGSFRhhlh        A      0       0      21        0.0%
+;!BITBIGSFRllh         6      0       0      26        0.0%
+;!BITBIGSFRlh          6      0       0      25        0.0%
+;!BITBIGSFRhhll        2      0       0      22        0.0%
 ;!BIGSFR               0      0       0     200        0.0%
 ;!BITSFR               0      0       0     200        0.0%
 ;!SFR                  0      0       0     200        0.0%
 ;!STACK                0      0       0       2        0.0%
 ;!NULL                 0      0       0       0        0.0%
-;!ABS                  0      0      1A      28        0.0%
-;!DATA                 0      0      1A       3        0.0%
+;!ABS                  0      0      3D      28        0.0%
+;!DATA                 0      0      3D       3        0.0%
 ;!CODE                 0      0       0       0        0.0%
 
 	global	_main
 
 ;; *************** function _main *****************
 ;; Defined at:
-;;		line 39 in file "main.c"
+;;		line 43 in file "main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
 ;;		None
 ;; Return value:  Size  Location     Type
-;;                  2   34[None  ] int 
+;;                  2   51[None  ] int 
 ;; Registers used:
 ;;		wreg, fsr2l, fsr2h, status,2, status,0, tblptrl, tblptrh, tblptru, cstack
 ;; Tracked objects:
@@ -1253,12 +1326,15 @@ IntToStr@index:	; 2 bytes @ 0xD
 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
 ;;      Params:         0       0       0       0       0       0       0       0       0
 ;;      Locals:         0       0       0       0       0       0       0       0       0
-;;      Temps:          1       0       0       0       0       0       0       0       0
-;;      Totals:         1       0       0       0       0       0       0       0       0
-;;Total ram usage:        1 bytes
+;;      Temps:          2       0       0       0       0       0       0       0       0
+;;      Totals:         2       0       0       0       0       0       0       0       0
+;;Total ram usage:        2 bytes
 ;; Hardware stack levels required when called: 5
 ;; This function calls:
 ;;		_IntToStr
+;;		___ftdiv
+;;		___fttol
+;;		___lwtoft
 ;;		_lcd_write
 ;;		_setup
 ;; This function is called by:
@@ -1267,57 +1343,122 @@ IntToStr@index:	; 2 bytes @ 0xD
 ;;
 psect	text0,class=CODE,space=0,reloc=2,group=0
 	file	"main.c"
-	line	39
+	line	43
 global __ptext0
 __ptext0:
 psect	text0
 	file	"main.c"
-	line	39
+	line	43
 	
 _main:
 ;incstack = 0
 	callstack 26
-	line	40
+	line	45
 	
-l1147:
+l1369:
 	call	_setup	;wreg free
-	line	42
+	line	50
 	
-l1149:
-	movlw	high(0C8h)
-	movwf	((c:IntToStr@FromInt+1))^00h,c
-	movlw	low(0C8h)
-	movwf	((c:IntToStr@FromInt))^00h,c
-		movlw	low(_frequency_txt)
+l53:
+	btfss	((c:3998))^0f00h,c,2	;volatile
+	goto	u671
+	goto	u670
+u671:
+	goto	l53
+u670:
+	
+l55:
+	line	52
+	movff	(c:4030),(c:_data)	;volatile
+	movff	(c:4030+1),(c:_data+1)	;volatile
+	line	53
+	bcf	((c:3998))^0f00h,c,2	;volatile
+	line	55
+	
+l56:
+	btfss	((c:3998))^0f00h,c,2	;volatile
+	goto	u681
+	goto	u680
+u681:
+	goto	l56
+u680:
+	
+l58:
+	line	57
+	movff	(c:4030),(c:_data2)	;volatile
+	movff	(c:4030+1),(c:_data2+1)	;volatile
+	line	58
+	
+l1371:
+	movf	((c:_data))^00h,c,w
+	subwf	((c:_data2))^00h,c,w
+	movwf	((c:_fdata))^00h,c
+	movf	((c:_data+1))^00h,c,w
+	subwfb	((c:_data2+1))^00h,c,w
+	movwf	1+((c:_fdata))^00h,c
+	line	60
+	
+l1373:
+	movff	(c:_fdata),(c:___lwtoft@c)
+	movff	(c:_fdata+1),(c:___lwtoft@c+1)
+	call	___lwtoft	;wreg free
+	movff	0+?___lwtoft,(c:___ftdiv@f2)
+	movff	1+?___lwtoft,(c:___ftdiv@f2+1)
+	movff	2+?___lwtoft,(c:___ftdiv@f2+2)
+	movlw	low(float24(5000000.0000000000))
+	movwf	((c:___ftdiv@f1))^00h,c
+	movlw	high(float24(5000000.0000000000))
+	movwf	((c:___ftdiv@f1+1))^00h,c
+	movlw	low highword(float24(5000000.0000000000))
+	movwf	((c:___ftdiv@f1+2))^00h,c
+
+	call	___ftdiv	;wreg free
+	movff	0+?___ftdiv,(c:___fttol@f1)
+	movff	1+?___ftdiv,(c:___fttol@f1+1)
+	movff	2+?___ftdiv,(c:___fttol@f1+2)
+	call	___fttol	;wreg free
+	movff	0+?___fttol,(c:_frequency)
+	movff	1+?___fttol,(c:_frequency+1)
+	line	61
+	
+l1375:
+	movff	(c:_frequency),(c:_rounded_frequency)
+	movff	(c:_frequency+1),(c:_rounded_frequency+1)
+	line	62
+	
+l1377:
+	movff	(c:_rounded_frequency),(c:IntToStr@FromInt)
+	movff	(c:_rounded_frequency+1),(c:IntToStr@FromInt+1)
+		movlw	low(_data_txt)
 	movwf	((c:IntToStr@ToStr))^00h,c
 
 	call	_IntToStr	;wreg free
-	line	43
+	line	64
 	
-l1151:
+l1379:
 	movlw	high(01h)
 	movwf	((c:lcd_write@row+1))^00h,c
 	movlw	low(01h)
 	movwf	((c:lcd_write@row))^00h,c
-	movlw	high(02h)
+	movlw	high(01h)
 	movwf	((c:lcd_write@line+1))^00h,c
-	movlw	low(02h)
+	movlw	low(01h)
 	movwf	((c:lcd_write@line))^00h,c
-		movlw	low(_frequency_txt)
+		movlw	low(_data_txt)
 	movwf	((c:lcd_write@txt))^00h,c
 	clrf	((c:lcd_write@txt+1))^00h,c
 
 	call	_lcd_write	;wreg free
-	line	44
+	line	65
 	
-l1153:
-	movlw	high(05h)
+l1381:
+	movlw	high(08h)
 	movwf	((c:lcd_write@row+1))^00h,c
-	movlw	low(05h)
+	movlw	low(08h)
 	movwf	((c:lcd_write@row))^00h,c
-	movlw	high(02h)
+	movlw	high(01h)
 	movwf	((c:lcd_write@line+1))^00h,c
-	movlw	low(02h)
+	movlw	low(01h)
 	movwf	((c:lcd_write@line))^00h,c
 		movlw	low(STR_1)
 	movwf	((c:lcd_write@txt))^00h,c
@@ -1327,28 +1468,49 @@ l1153:
 	movwf	((c:lcd_write@txt+1))^00h,c
 
 	call	_lcd_write	;wreg free
-	line	46
+	line	67
 	
-l1155:
+l1383:
 	asmopt push
 asmopt off
-movlw	65
+movlw  3
+movwf	(??_main+0+0+1)^00h,c
+movlw	138
 movwf	(??_main+0+0)^00h,c
-	movlw	238
-u377:
+	movlw	86
+u697:
 decfsz	wreg,f
-	bra	u377
+	bra	u697
 	decfsz	(??_main+0+0)^00h,c,f
-	bra	u377
-	nop2
+	bra	u697
+	decfsz	(??_main+0+0+1)^00h,c,f
+	bra	u697
 asmopt pop
 
-	line	48
-	goto	l1149
+	line	68
+	
+l1385:
+	movlw	high(0)
+	movwf	((c:4046+1))^0f00h,c	;volatile
+	movlw	low(0)
+	movwf	((c:4046))^0f00h,c	;volatile
+	line	69
+	
+l1387:
+	movlw	high(0)
+	movwf	((c:4030+1))^0f00h,c	;volatile
+	movlw	low(0)
+	movwf	((c:4030))^0f00h,c	;volatile
+	line	70
+	
+l1389:
+	bcf	((c:3998))^0f00h,c,2	;volatile
+	line	75
+	goto	l53
 	global	start
 	goto	start
 	callstack 0
-	line	49
+	line	78
 GLOBAL	__end_of_main
 	__end_of_main:
 	signat	_main,90
@@ -1356,7 +1518,7 @@ GLOBAL	__end_of_main
 
 ;; *************** function _setup *****************
 ;; Defined at:
-;;		line 51 in file "main.c"
+;;		line 80 in file "main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -1372,163 +1534,108 @@ GLOBAL	__end_of_main
 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
 ;;      Params:         0       0       0       0       0       0       0       0       0
 ;;      Locals:         0       0       0       0       0       0       0       0       0
-;;      Temps:          1       0       0       0       0       0       0       0       0
-;;      Totals:         1       0       0       0       0       0       0       0       0
-;;Total ram usage:        1 bytes
+;;      Temps:          0       0       0       0       0       0       0       0       0
+;;      Totals:         0       0       0       0       0       0       0       0       0
+;;Total ram usage:        0 bytes
 ;; Hardware stack levels used: 1
 ;; Hardware stack levels required when called: 4
 ;; This function calls:
 ;;		_init_lcd
-;;		_init_timer
 ;; This function is called by:
 ;;		_main
 ;; This function uses a non-reentrant model
 ;;
 psect	text1,class=CODE,space=0,reloc=2,group=0
-	line	51
+	line	80
 global __ptext1
 __ptext1:
 psect	text1
 	file	"main.c"
-	line	51
+	line	80
 	
 _setup:
 ;incstack = 0
 	callstack 26
-	line	52
+	line	81
 	
-l1105:
-	movlw	(0Fh)&0ffh
-	iorwf	((c:4033))^0f00h,c	;volatile
-	line	53
+l1211:
+	movlw	low(0Fh)
+	movwf	((c:4034))^0f00h,c	;volatile
+	line	82
 	
-l1107:
-	movlw	low(0)
-	movwf	((c:3986))^0f00h,c	;volatile
-	line	54
+l1213:
+	bsf	((c:3988))^0f00h,c,2	;volatile
+	line	83
 	
-l1109:
-	movlw	low(0)
-	movwf	((c:3977))^0f00h,c	;volatile
-	line	55
-	
-l1111:
+l1215:
 	call	_init_lcd	;wreg free
-	line	56
+	line	86
 	
-l1113:
-	asmopt push
-asmopt off
-movlw	65
-movwf	(??_setup+0+0)^00h,c
-	movlw	238
-u387:
-decfsz	wreg,f
-	bra	u387
-	decfsz	(??_setup+0+0)^00h,c,f
-	bra	u387
-	nop2
-asmopt pop
-
-	line	57
+l1217:
+	bsf	((c:4045))^0f00h,c,7	;volatile
+	line	87
 	
-l1115:
-	call	_init_timer	;wreg free
-	line	59
+l1219:
+	bcf	((c:4045))^0f00h,c,4	;volatile
+	line	88
 	
-l40:
+l1221:
+	bcf	((c:4045))^0f00h,c,5	;volatile
+	line	89
+	
+l1223:
+	bcf	((c:4045))^0f00h,c,3	;volatile
+	line	90
+	
+l1225:
+	bcf	((c:4045))^0f00h,c,1	;volatile
+	line	91
+	
+l1227:
+	bsf	((c:4045))^0f00h,c,0	;volatile
+	line	92
+	
+l1229:
+	movlw	high(0)
+	movwf	((c:4046+1))^0f00h,c	;volatile
+	movlw	low(0)
+	movwf	((c:4046))^0f00h,c	;volatile
+	line	93
+	
+l1231:
+	movlw	high(0)
+	movwf	((c:4030+1))^0f00h,c	;volatile
+	movlw	low(0)
+	movwf	((c:4030))^0f00h,c	;volatile
+	line	97
+	
+l1233:
+	movlw	(05h)&0ffh
+	iorwf	((c:4029))^0f00h,c	;volatile
+	line	98
+	
+l1235:
+	bsf	((c:3997))^0f00h,c,2	;volatile
+	line	99
+	
+l1237:
+	bcf	((c:3998))^0f00h,c,2	;volatile
+	line	100
+	
+l1239:
+	bcf	((c:4017))^0f00h,c,6	;volatile
+	line	101
+	
+l1241:
+	bcf	((c:4017))^0f00h,c,3	;volatile
+	line	104
+	
+l63:
 	return	;funcret
 	callstack 0
 GLOBAL	__end_of_setup
 	__end_of_setup:
 	signat	_setup,89
-	global	_init_timer
-
-;; *************** function _init_timer *****************
-;; Defined at:
-;;		line 61 in file "main.c"
-;; Parameters:    Size  Location     Type
-;;		None
-;; Auto vars:     Size  Location     Type
-;;		None
-;; Return value:  Size  Location     Type
-;;                  1    wreg      void 
-;; Registers used:
-;;		wreg, status,2
-;; Tracked objects:
-;;		On entry : 0/0
-;;		On exit  : 0/0
-;;		Unchanged: 0/0
-;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
-;;      Params:         0       0       0       0       0       0       0       0       0
-;;      Locals:         0       0       0       0       0       0       0       0       0
-;;      Temps:          0       0       0       0       0       0       0       0       0
-;;      Totals:         0       0       0       0       0       0       0       0       0
-;;Total ram usage:        0 bytes
-;; Hardware stack levels used: 1
-;; Hardware stack levels required when called: 1
-;; This function calls:
-;;		Nothing
-;; This function is called by:
-;;		_setup
-;; This function uses a non-reentrant model
-;;
-psect	text2,class=CODE,space=0,reloc=2,group=0
-	line	61
-global __ptext2
-__ptext2:
-psect	text2
-	file	"main.c"
-	line	61
-	
-_init_timer:
-;incstack = 0
-	callstack 28
-	line	62
-	
-l851:
-	bsf	((c:4053))^0f00h,c,7	;volatile
-	line	63
-	bcf	((c:4053))^0f00h,c,6	;volatile
-	line	64
-	bcf	((c:4053))^0f00h,c,5	;volatile
-	line	65
-	bsf	((c:4053))^0f00h,c,3	;volatile
-	line	66
-	
-l853:
-	movf	((c:4053))^0f00h,c,w	;volatile
-	line	70
-	
-l855:
-	movlw	high(0CF2Dh)
-	movwf	((c:4054+1))^0f00h,c	;volatile
-	movlw	low(0CF2Dh)
-	movwf	((c:4054))^0f00h,c	;volatile
-	line	71
-	
-l857:
-	bsf	((c:4082))^0f00h,c,7	;volatile
-	line	72
-	
-l859:
-	bsf	((c:4082))^0f00h,c,6	;volatile
-	line	73
-	
-l861:
-	bsf	((c:4082))^0f00h,c,5	;volatile
-	line	74
-	
-l863:
-	bcf	((c:4082))^0f00h,c,2	;volatile
-	line	76
-	
-l43:
-	return	;funcret
-	callstack 0
-GLOBAL	__end_of_init_timer
-	__end_of_init_timer:
-	signat	_init_timer,89
 	global	_init_lcd
 
 ;; *************** function _init_lcd *****************
@@ -1560,12 +1667,12 @@ GLOBAL	__end_of_init_timer
 ;;		_setup
 ;; This function uses a non-reentrant model
 ;;
-psect	text3,class=CODE,space=0,reloc=2,group=0
+psect	text2,class=CODE,space=0,reloc=2,group=0
 	file	"Libs/LCD/lcd.c"
 	line	33
-global __ptext3
-__ptext3:
-psect	text3
+global __ptext2
+__ptext2:
+psect	text2
 	file	"Libs/LCD/lcd.c"
 	line	33
 	
@@ -1574,17 +1681,17 @@ _init_lcd:
 	callstack 26
 	line	34
 	
-l1013:
+l1125:
 	movlw	low(0)
 	movwf	((c:3989))^0f00h,c	;volatile
 	line	35
 	
-l1015:
+l1127:
 	movlw	(0F8h)&0ffh
 	andwf	((c:3990))^0f00h,c	;volatile
 	line	37
 	
-l1017:
+l1129:
 	movlw	low(0)
 	movwf	((c:3980))^0f00h,c	;volatile
 	line	38
@@ -1592,23 +1699,23 @@ l1017:
 	andwf	((c:3981))^0f00h,c	;volatile
 	line	40
 	
-l1019:
+l1131:
 	asmopt push
 asmopt off
 movlw	65
 movwf	(??_init_lcd+0+0)^00h,c
 	movlw	238
-u397:
+u707:
 decfsz	wreg,f
-	bra	u397
+	bra	u707
 	decfsz	(??_init_lcd+0+0)^00h,c,f
-	bra	u397
+	bra	u707
 	nop2
 asmopt pop
 
 	line	42
 	
-l1021:
+l1133:
 	movlw	high(038h)
 	movwf	((c:lcd_send_cmd@cmd+1))^00h,c
 	movlw	low(038h)
@@ -1616,7 +1723,7 @@ l1021:
 	call	_lcd_send_cmd	;wreg free
 	line	43
 	
-l1023:
+l1135:
 	movlw	high(0Ch)
 	movwf	((c:lcd_send_cmd@cmd+1))^00h,c
 	movlw	low(0Ch)
@@ -1624,7 +1731,7 @@ l1023:
 	call	_lcd_send_cmd	;wreg free
 	line	47
 	
-l74:
+l88:
 	return	;funcret
 	callstack 0
 GLOBAL	__end_of_init_lcd
@@ -1639,7 +1746,7 @@ GLOBAL	__end_of_init_lcd
 ;;  row             2    3[COMRAM] int 
 ;;  line            2    5[COMRAM] int 
 ;;  txt             2    7[COMRAM] PTR const unsigned char 
-;;		 -> STR_1(3), frequency_txt(8), 
+;;		 -> STR_1(3), data_txt(5), 
 ;; Auto vars:     Size  Location     Type
 ;;  index           2   11[COMRAM] int 
 ;; Return value:  Size  Location     Type
@@ -1665,11 +1772,11 @@ GLOBAL	__end_of_init_lcd
 ;;		_main
 ;; This function uses a non-reentrant model
 ;;
-psect	text4,class=CODE,space=0,reloc=2,group=0
+psect	text3,class=CODE,space=0,reloc=2,group=0
 	line	21
-global __ptext4
-__ptext4:
-psect	text4
+global __ptext3
+__ptext3:
+psect	text3
 	file	"Libs/LCD/lcd.c"
 	line	21
 	
@@ -1678,16 +1785,16 @@ _lcd_write:
 	callstack 27
 	line	22
 	
-l1133:
+l1259:
 	movff	(c:lcd_write@line),??_lcd_write+0+0
 	movff	(c:lcd_write@line+1),??_lcd_write+0+0+1
 	movlw	06h
-u335:
+u505:
 	bcf	status,0
 	rlcf	(??_lcd_write+0+0)^00h,c
 	rlcf	(??_lcd_write+0+1)^00h,c
 	decfsz	wreg
-	goto	u335
+	goto	u505
 	movf	((c:lcd_write@row))^00h,c,w
 	addwf	(??_lcd_write+0+0)^00h,c
 	movf	((c:lcd_write@row+1))^00h,c,w
@@ -1701,19 +1808,19 @@ u335:
 	call	_lcd_send_cmd	;wreg free
 	line	24
 	
-l1135:
+l1261:
 	bsf	(0+(0/8)+(c:3981))^0f00h,c,(0)&7	;volatile
 	line	25
 	
-l1137:
+l1263:
 	movlw	high(0)
 	movwf	((c:lcd_write@index+1))^00h,c
 	movlw	low(0)
 	movwf	((c:lcd_write@index))^00h,c
-	goto	l1145
+	goto	l1271
 	line	26
 	
-l1139:
+l1265:
 	movf	((c:lcd_write@index))^00h,c,w
 	addwf	((c:lcd_write@txt))^00h,c,w
 	movwf	(??_lcd_write+0+0)^00h,c
@@ -1726,28 +1833,28 @@ l1139:
 	
 	movlw	high __ramtop-1
 	cpfsgt	tblptrh
-	bra	u347
+	bra	u517
 	tblrd	*
 	
 	movf	tablat,w
-	bra	u340
-u347:
+	bra	u510
+u517:
 	movff	tblptrl,fsr2l
 	movff	tblptrh,fsr2h
 	movf	indf2,w
-u340:
+u510:
 	movwf	((c:3980))^0f00h,c	;volatile
 	line	27
 	
-l1141:
+l1267:
 	call	_enable_pulse	;wreg free
 	line	25
 	
-l1143:
+l1269:
 	infsnz	((c:lcd_write@index))^00h,c
 	incf	((c:lcd_write@index+1))^00h,c
 	
-l1145:
+l1271:
 	movf	((c:lcd_write@index))^00h,c,w
 	addwf	((c:lcd_write@txt))^00h,c,w
 	movwf	(??_lcd_write+0+0)^00h,c
@@ -1760,26 +1867,26 @@ l1145:
 	
 	movlw	high __ramtop-1
 	cpfsgt	tblptrh
-	bra	u357
+	bra	u527
 	tblrd	*
 	
 	movf	tablat,w
-	bra	u350
-u357:
+	bra	u520
+u527:
 	movff	tblptrl,fsr2l
 	movff	tblptrh,fsr2h
 	movf	indf2,w
-u350:
+u520:
 	iorlw	0
 	btfss	status,2
-	goto	u361
-	goto	u360
-u361:
-	goto	l1139
-u360:
+	goto	u531
+	goto	u530
+u531:
+	goto	l1265
+u530:
 	line	31
 	
-l71:
+l85:
 	return	;funcret
 	callstack 0
 GLOBAL	__end_of_lcd_write
@@ -1817,11 +1924,11 @@ GLOBAL	__end_of_lcd_write
 ;;		_init_lcd
 ;; This function uses a non-reentrant model
 ;;
-psect	text5,class=CODE,space=0,reloc=2,group=0
+psect	text4,class=CODE,space=0,reloc=2,group=0
 	line	15
-global __ptext5
-__ptext5:
-psect	text5
+global __ptext4
+__ptext4:
+psect	text4
 	file	"Libs/LCD/lcd.c"
 	line	15
 	
@@ -1830,19 +1937,19 @@ _lcd_send_cmd:
 	callstack 26
 	line	16
 	
-l1007:
+l1119:
 	bcf	(0+(0/8)+(c:3981))^0f00h,c,(0)&7	;volatile
 	line	17
 	
-l1009:
+l1121:
 	movff	(c:lcd_send_cmd@cmd),(c:3980)	;volatile
 	line	18
 	
-l1011:
+l1123:
 	call	_enable_pulse	;wreg free
 	line	19
 	
-l65:
+l79:
 	return	;funcret
 	callstack 0
 GLOBAL	__end_of_lcd_send_cmd
@@ -1880,11 +1987,11 @@ GLOBAL	__end_of_lcd_send_cmd
 ;;		_lcd_write
 ;; This function uses a non-reentrant model
 ;;
-psect	text6,class=CODE,space=0,reloc=2,group=0
+psect	text5,class=CODE,space=0,reloc=2,group=0
 	line	8
-global __ptext6
-__ptext6:
-psect	text6
+global __ptext5
+__ptext5:
+psect	text5
 	file	"Libs/LCD/lcd.c"
 	line	8
 	
@@ -1893,27 +2000,27 @@ _enable_pulse:
 	callstack 26
 	line	9
 	
-l827:
+l841:
 	bcf	(0+(2/8)+(c:3981))^0f00h,c,(2)&7	;volatile
 	line	10
 	
-l829:
+l843:
 	asmopt push
 asmopt off
 movlw	33
 movwf	(??_enable_pulse+0+0)^00h,c
 	movlw	118
-u407:
+u717:
 decfsz	wreg,f
-	bra	u407
+	bra	u717
 	decfsz	(??_enable_pulse+0+0)^00h,c,f
-	bra	u407
+	bra	u717
 	nop2
 asmopt pop
 
 	line	11
 	
-l831:
+l845:
 	bsf	(0+(2/8)+(c:3981))^0f00h,c,(2)&7	;volatile
 	line	12
 	asmopt push
@@ -1921,34 +2028,817 @@ asmopt off
 movlw	33
 movwf	(??_enable_pulse+0+0)^00h,c
 	movlw	118
-u417:
+u727:
 decfsz	wreg,f
-	bra	u417
+	bra	u727
 	decfsz	(??_enable_pulse+0+0)^00h,c,f
-	bra	u417
+	bra	u727
 	nop2
 asmopt pop
 
 	line	13
 	
-l62:
+l76:
 	return	;funcret
 	callstack 0
 GLOBAL	__end_of_enable_pulse
 	__end_of_enable_pulse:
 	signat	_enable_pulse,89
+	global	___lwtoft
+
+;; *************** function ___lwtoft *****************
+;; Defined at:
+;;		line 28 in file "/opt/microchip/xc8/v2.45/pic/sources/c90/common/lwtoft.c"
+;; Parameters:    Size  Location     Type
+;;  c               2    8[COMRAM] unsigned int 
+;; Auto vars:     Size  Location     Type
+;;		None
+;; Return value:  Size  Location     Type
+;;                  3    8[COMRAM] float 
+;; Registers used:
+;;		wreg, status,2, status,0, cstack
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+;;      Params:         3       0       0       0       0       0       0       0       0
+;;      Locals:         0       0       0       0       0       0       0       0       0
+;;      Temps:          0       0       0       0       0       0       0       0       0
+;;      Totals:         3       0       0       0       0       0       0       0       0
+;;Total ram usage:        3 bytes
+;; Hardware stack levels used: 1
+;; Hardware stack levels required when called: 2
+;; This function calls:
+;;		___ftpack
+;; This function is called by:
+;;		_main
+;; This function uses a non-reentrant model
+;;
+psect	text6,class=CODE,space=0,reloc=2,group=1
+	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/lwtoft.c"
+	line	28
+global __ptext6
+__ptext6:
+psect	text6
+	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/lwtoft.c"
+	line	28
+	
+___lwtoft:
+;incstack = 0
+	callstack 28
+	line	30
+	
+l1365:
+	movff	(c:___lwtoft@c),(c:___ftpack@arg)
+	movff	(c:___lwtoft@c+1),(c:___ftpack@arg+1)
+	clrf	((c:___ftpack@arg+2))^00h,c
+	movlw	low(08Eh)
+	movwf	((c:___ftpack@exp))^00h,c
+	movlw	low(0)
+	movwf	((c:___ftpack@sign))^00h,c
+	call	___ftpack	;wreg free
+	movff	0+?___ftpack,(c:?___lwtoft)
+	movff	1+?___ftpack,(c:?___lwtoft+1)
+	movff	2+?___ftpack,(c:?___lwtoft+2)
+	line	31
+	
+l597:
+	return	;funcret
+	callstack 0
+GLOBAL	__end_of___lwtoft
+	__end_of___lwtoft:
+	signat	___lwtoft,4219
+	global	___fttol
+
+;; *************** function ___fttol *****************
+;; Defined at:
+;;		line 44 in file "/opt/microchip/xc8/v2.45/pic/sources/c90/common/fttol.c"
+;; Parameters:    Size  Location     Type
+;;  f1              3   26[COMRAM] float 
+;; Auto vars:     Size  Location     Type
+;;  lval            4   36[COMRAM] unsigned long 
+;;  exp1            1   40[COMRAM] unsigned char 
+;;  sign1           1   35[COMRAM] unsigned char 
+;; Return value:  Size  Location     Type
+;;                  4   26[COMRAM] long 
+;; Registers used:
+;;		wreg, status,2, status,0
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+;;      Params:         4       0       0       0       0       0       0       0       0
+;;      Locals:         6       0       0       0       0       0       0       0       0
+;;      Temps:          5       0       0       0       0       0       0       0       0
+;;      Totals:        15       0       0       0       0       0       0       0       0
+;;Total ram usage:       15 bytes
+;; Hardware stack levels used: 1
+;; Hardware stack levels required when called: 1
+;; This function calls:
+;;		Nothing
+;; This function is called by:
+;;		_main
+;; This function uses a non-reentrant model
+;;
+psect	text7,class=CODE,space=0,reloc=2,group=1
+	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/fttol.c"
+	line	44
+global __ptext7
+__ptext7:
+psect	text7
+	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/fttol.c"
+	line	44
+	
+___fttol:
+;incstack = 0
+	callstack 29
+	line	49
+	
+l1319:
+	movff	(c:___fttol@f1+2),??___fttol+0+0
+	clrf	(??___fttol+0+0+1)^00h,c
+	clrf	(??___fttol+0+0+2)^00h,c
+	rlcf	((c:___fttol@f1+1))^00h,c,w
+	rlcf	(??___fttol+0+0)^00h,c
+	bnc	u591
+	bsf	(??___fttol+0+0+1)^00h,c,0
+u591:
+	movf	(??___fttol+0+0)^00h,c,w
+	movwf	((c:___fttol@exp1))^00h,c
+	movf	((c:___fttol@exp1))^00h,c,w
+	btfss	status,2
+	goto	u601
+	goto	u600
+u601:
+	goto	l1325
+u600:
+	line	50
+	
+l1321:
+	movlw	low(0)
+	movwf	((c:?___fttol))^00h,c
+	movlw	high(0)
+	movwf	((c:?___fttol+1))^00h,c
+	movlw	low highword(0)
+	movwf	((c:?___fttol+2))^00h,c
+	movlw	high highword(0)
+	movwf	((c:?___fttol+3))^00h,c
+	goto	l470
+	line	51
+	
+l1325:
+	movlw	(017h)&0ffh
+	movwf	(??___fttol+0+0)^00h,c
+	movff	(c:___fttol@f1),??___fttol+1+0
+	movff	(c:___fttol@f1+1),??___fttol+1+0+1
+	movff	(c:___fttol@f1+2),??___fttol+1+0+2
+	incf	((??___fttol+0+0))^00h,c,w
+	movwf	(??___fttol+4+0)^00h,c
+	goto	u610
+u615:
+	bcf	status,0
+	rrcf	(??___fttol+1+2)^00h,c
+	rrcf	(??___fttol+1+1)^00h,c
+	rrcf	(??___fttol+1+0)^00h,c
+u610:
+	decfsz	(??___fttol+4+0)^00h,c
+	goto	u615
+	movf	(??___fttol+1+0)^00h,c,w
+	movwf	((c:___fttol@sign1))^00h,c
+	line	52
+	
+l1327:
+	bsf	(0+(15/8)+(c:___fttol@f1))^00h,c,(15)&7
+	line	53
+	
+l1329:
+	movlw	low(0FFFFh)
+	andwf	((c:___fttol@f1))^00h,c
+	movlw	high(0FFFFh)
+	andwf	((c:___fttol@f1+1))^00h,c
+	movlw	low highword(0FFFFh)
+	andwf	((c:___fttol@f1+2))^00h,c
+
+	line	54
+	
+l1331:
+	movf	((c:___fttol@f1))^00h,c,w
+	movwf	((c:___fttol@lval))^00h,c
+	movf	((c:___fttol@f1+1))^00h,c,w
+	movwf	1+((c:___fttol@lval))^00h,c
+	
+	movf	((c:___fttol@f1+2))^00h,c,w
+	movwf	2+((c:___fttol@lval))^00h,c
+	
+	clrf	3+((c:___fttol@lval))^00h,c
+	
+	line	55
+	
+l1333:
+	movlw	(08Eh)&0ffh
+	subwf	((c:___fttol@exp1))^00h,c
+	line	56
+	
+l1335:
+	btfsc	((c:___fttol@exp1))^00h,c,7
+	goto	u620
+	goto	u621
+
+u621:
+	goto	l1347
+u620:
+	line	57
+	
+l1337:
+		movf	((c:___fttol@exp1))^00h,c,w
+	xorlw	80h
+	addlw	-(80h^-15)
+	btfsc	status,0
+	goto	u631
+	goto	u630
+
+u631:
+	goto	l1343
+u630:
+	goto	l1321
+	line	60
+	
+l1343:
+	bcf	status,0
+	rrcf	((c:___fttol@lval+3))^00h,c
+	rrcf	((c:___fttol@lval+2))^00h,c
+	rrcf	((c:___fttol@lval+1))^00h,c
+	rrcf	((c:___fttol@lval))^00h,c
+	line	61
+	
+l1345:
+	incfsz	((c:___fttol@exp1))^00h,c
+	
+	goto	l1343
+	goto	l1357
+	line	63
+	
+l1347:
+		movlw	018h-1
+	cpfsgt	((c:___fttol@exp1))^00h,c
+	goto	u641
+	goto	u640
+
+u641:
+	goto	l1355
+u640:
+	goto	l1321
+	line	66
+	
+l1353:
+	bcf	status,0
+	rlcf	((c:___fttol@lval))^00h,c
+	rlcf	((c:___fttol@lval+1))^00h,c
+	rlcf	((c:___fttol@lval+2))^00h,c
+	rlcf	((c:___fttol@lval+3))^00h,c
+	line	67
+	decf	((c:___fttol@exp1))^00h,c
+	line	65
+	
+l1355:
+	movf	((c:___fttol@exp1))^00h,c,w
+	btfss	status,2
+	goto	u651
+	goto	u650
+u651:
+	goto	l1353
+u650:
+	line	70
+	
+l1357:
+	movf	((c:___fttol@sign1))^00h,c,w
+	btfsc	status,2
+	goto	u661
+	goto	u660
+u661:
+	goto	l1361
+u660:
+	line	71
+	
+l1359:
+	comf	((c:___fttol@lval+3))^00h,c
+	comf	((c:___fttol@lval+2))^00h,c
+	comf	((c:___fttol@lval+1))^00h,c
+	negf	((c:___fttol@lval))^00h,c
+	movlw	0
+	addwfc	((c:___fttol@lval+1))^00h,c
+	addwfc	((c:___fttol@lval+2))^00h,c
+	addwfc	((c:___fttol@lval+3))^00h,c
+	line	72
+	
+l1361:
+	movff	(c:___fttol@lval),(c:?___fttol)
+	movff	(c:___fttol@lval+1),(c:?___fttol+1)
+	movff	(c:___fttol@lval+2),(c:?___fttol+2)
+	movff	(c:___fttol@lval+3),(c:?___fttol+3)
+	line	73
+	
+l470:
+	return	;funcret
+	callstack 0
+GLOBAL	__end_of___fttol
+	__end_of___fttol:
+	signat	___fttol,4220
+	global	___ftdiv
+
+;; *************** function ___ftdiv *****************
+;; Defined at:
+;;		line 54 in file "/opt/microchip/xc8/v2.45/pic/sources/c90/common/ftdiv.c"
+;; Parameters:    Size  Location     Type
+;;  f1              3   11[COMRAM] float 
+;;  f2              3   14[COMRAM] float 
+;; Auto vars:     Size  Location     Type
+;;  f3              3   21[COMRAM] float 
+;;  sign            1   25[COMRAM] unsigned char 
+;;  exp             1   24[COMRAM] unsigned char 
+;;  cntr            1   20[COMRAM] unsigned char 
+;; Return value:  Size  Location     Type
+;;                  3   11[COMRAM] float 
+;; Registers used:
+;;		wreg, status,2, status,0, cstack
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+;;      Params:         6       0       0       0       0       0       0       0       0
+;;      Locals:         6       0       0       0       0       0       0       0       0
+;;      Temps:          3       0       0       0       0       0       0       0       0
+;;      Totals:        15       0       0       0       0       0       0       0       0
+;;Total ram usage:       15 bytes
+;; Hardware stack levels used: 1
+;; Hardware stack levels required when called: 2
+;; This function calls:
+;;		___ftpack
+;; This function is called by:
+;;		_main
+;; This function uses a non-reentrant model
+;;
+psect	text8,class=CODE,space=0,reloc=2,group=1
+	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/ftdiv.c"
+	line	54
+global __ptext8
+__ptext8:
+psect	text8
+	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/ftdiv.c"
+	line	54
+	
+___ftdiv:
+;incstack = 0
+	callstack 28
+	line	63
+	
+l1273:
+	movff	(c:___ftdiv@f1+2),??___ftdiv+0+0
+	clrf	(??___ftdiv+0+0+1)^00h,c
+	clrf	(??___ftdiv+0+0+2)^00h,c
+	rlcf	((c:___ftdiv@f1+1))^00h,c,w
+	rlcf	(??___ftdiv+0+0)^00h,c
+	bnc	u541
+	bsf	(??___ftdiv+0+0+1)^00h,c,0
+u541:
+	movf	(??___ftdiv+0+0)^00h,c,w
+	movwf	((c:___ftdiv@exp))^00h,c
+	movf	((c:___ftdiv@exp))^00h,c,w
+	btfss	status,2
+	goto	u551
+	goto	u550
+u551:
+	goto	l1279
+u550:
+	line	64
+	
+l1275:
+	movlw	low(float24(0.0000000000000000))
+	movwf	((c:?___ftdiv))^00h,c
+	movlw	high(float24(0.0000000000000000))
+	movwf	((c:?___ftdiv+1))^00h,c
+	movlw	low highword(float24(0.0000000000000000))
+	movwf	((c:?___ftdiv+2))^00h,c
+
+	goto	l434
+	line	65
+	
+l1279:
+	movff	(c:___ftdiv@f2+2),??___ftdiv+0+0
+	clrf	(??___ftdiv+0+0+1)^00h,c
+	clrf	(??___ftdiv+0+0+2)^00h,c
+	rlcf	((c:___ftdiv@f2+1))^00h,c,w
+	rlcf	(??___ftdiv+0+0)^00h,c
+	bnc	u561
+	bsf	(??___ftdiv+0+0+1)^00h,c,0
+u561:
+	movf	(??___ftdiv+0+0)^00h,c,w
+	movwf	((c:___ftdiv@sign))^00h,c
+	movf	((c:___ftdiv@sign))^00h,c,w
+	btfss	status,2
+	goto	u571
+	goto	u570
+u571:
+	goto	l1285
+u570:
+	line	66
+	
+l1281:
+	movlw	low(float24(0.0000000000000000))
+	movwf	((c:?___ftdiv))^00h,c
+	movlw	high(float24(0.0000000000000000))
+	movwf	((c:?___ftdiv+1))^00h,c
+	movlw	low highword(float24(0.0000000000000000))
+	movwf	((c:?___ftdiv+2))^00h,c
+
+	goto	l434
+	line	67
+	
+l1285:
+	movlw	low(0)
+	movwf	((c:___ftdiv@f3))^00h,c
+	movlw	high(0)
+	movwf	((c:___ftdiv@f3+1))^00h,c
+	movlw	low highword(0)
+	movwf	((c:___ftdiv@f3+2))^00h,c
+
+	line	68
+	
+l1287:
+	movf	((c:___ftdiv@sign))^00h,c,w
+	addlw	low(089h)
+	subwf	((c:___ftdiv@exp))^00h,c
+	line	69
+	
+l1289:
+	movff	0+((c:___ftdiv@f1)+02h),(c:___ftdiv@sign)
+	line	70
+	
+l1291:
+	movf	(0+((c:___ftdiv@f2)+02h))^00h,c,w
+	xorwf	((c:___ftdiv@sign))^00h,c
+	line	71
+	
+l1293:
+	movlw	(080h)&0ffh
+	andwf	((c:___ftdiv@sign))^00h,c
+	line	72
+	
+l1295:
+	bsf	(0+(15/8)+(c:___ftdiv@f1))^00h,c,(15)&7
+	line	73
+	
+l1297:
+	movlw	low(0FFFFh)
+	andwf	((c:___ftdiv@f1))^00h,c
+	movlw	high(0FFFFh)
+	andwf	((c:___ftdiv@f1+1))^00h,c
+	movlw	low highword(0FFFFh)
+	andwf	((c:___ftdiv@f1+2))^00h,c
+
+	line	74
+	
+l1299:
+	bsf	(0+(15/8)+(c:___ftdiv@f2))^00h,c,(15)&7
+	line	75
+	
+l1301:
+	movlw	low(0FFFFh)
+	andwf	((c:___ftdiv@f2))^00h,c
+	movlw	high(0FFFFh)
+	andwf	((c:___ftdiv@f2+1))^00h,c
+	movlw	low highword(0FFFFh)
+	andwf	((c:___ftdiv@f2+2))^00h,c
+
+	line	76
+	
+l1303:
+	movlw	low(018h)
+	movwf	((c:___ftdiv@cntr))^00h,c
+	line	78
+	
+l1305:
+	bcf	status,0
+	rlcf	((c:___ftdiv@f3))^00h,c
+	rlcf	((c:___ftdiv@f3+1))^00h,c
+	rlcf	((c:___ftdiv@f3+2))^00h,c
+	line	79
+	
+l1307:
+		movf	((c:___ftdiv@f2))^00h,c,w
+	subwf	((c:___ftdiv@f1))^00h,c,w
+	movf	((c:___ftdiv@f2+1))^00h,c,w
+	subwfb	((c:___ftdiv@f1+1))^00h,c,w
+	movf	((c:___ftdiv@f2+2))^00h,c,w
+	subwfb	((c:___ftdiv@f1+2))^00h,c,w
+	btfss	status,0
+	goto	u581
+	goto	u580
+
+u581:
+	goto	l437
+u580:
+	line	80
+	
+l1309:
+	movf	((c:___ftdiv@f2))^00h,c,w
+	subwf	((c:___ftdiv@f1))^00h,c
+	movf	((c:___ftdiv@f2+1))^00h,c,w
+	subwfb	((c:___ftdiv@f1+1))^00h,c
+	movf	((c:___ftdiv@f2+2))^00h,c,w
+	subwfb	((c:___ftdiv@f1+2))^00h,c
+
+	line	81
+	
+l1311:
+	bsf	(0+(0/8)+(c:___ftdiv@f3))^00h,c,(0)&7
+	line	82
+	
+l437:
+	line	83
+	bcf	status,0
+	rlcf	((c:___ftdiv@f1))^00h,c
+	rlcf	((c:___ftdiv@f1+1))^00h,c
+	rlcf	((c:___ftdiv@f1+2))^00h,c
+	line	84
+	
+l1313:
+	decfsz	((c:___ftdiv@cntr))^00h,c
+	
+	goto	l1305
+	line	85
+	
+l1315:
+	movff	(c:___ftdiv@f3),(c:___ftpack@arg)
+	movff	(c:___ftdiv@f3+1),(c:___ftpack@arg+1)
+	movff	(c:___ftdiv@f3+2),(c:___ftpack@arg+2)
+	movff	(c:___ftdiv@exp),(c:___ftpack@exp)
+	movff	(c:___ftdiv@sign),(c:___ftpack@sign)
+	call	___ftpack	;wreg free
+	movff	0+?___ftpack,(c:?___ftdiv)
+	movff	1+?___ftpack,(c:?___ftdiv+1)
+	movff	2+?___ftpack,(c:?___ftdiv+2)
+	line	86
+	
+l434:
+	return	;funcret
+	callstack 0
+GLOBAL	__end_of___ftdiv
+	__end_of___ftdiv:
+	signat	___ftdiv,8315
+	global	___ftpack
+
+;; *************** function ___ftpack *****************
+;; Defined at:
+;;		line 62 in file "/opt/microchip/xc8/v2.45/pic/sources/c90/common/float.c"
+;; Parameters:    Size  Location     Type
+;;  arg             3    0[COMRAM] unsigned um
+;;  exp             1    3[COMRAM] unsigned char 
+;;  sign            1    4[COMRAM] unsigned char 
+;; Auto vars:     Size  Location     Type
+;;		None
+;; Return value:  Size  Location     Type
+;;                  3    0[COMRAM] float 
+;; Registers used:
+;;		wreg, status,2, status,0
+;; Tracked objects:
+;;		On entry : 0/0
+;;		On exit  : 0/0
+;;		Unchanged: 0/0
+;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
+;;      Params:         5       0       0       0       0       0       0       0       0
+;;      Locals:         0       0       0       0       0       0       0       0       0
+;;      Temps:          3       0       0       0       0       0       0       0       0
+;;      Totals:         8       0       0       0       0       0       0       0       0
+;;Total ram usage:        8 bytes
+;; Hardware stack levels used: 1
+;; Hardware stack levels required when called: 1
+;; This function calls:
+;;		Nothing
+;; This function is called by:
+;;		___ftdiv
+;;		___lwtoft
+;; This function uses a non-reentrant model
+;;
+psect	text9,class=CODE,space=0,reloc=2,group=1
+	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/float.c"
+	line	62
+global __ptext9
+__ptext9:
+psect	text9
+	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/float.c"
+	line	62
+	
+___ftpack:
+;incstack = 0
+	callstack 28
+	line	64
+	
+l1137:
+	movf	((c:___ftpack@exp))^00h,c,w
+	btfsc	status,2
+	goto	u351
+	goto	u350
+u351:
+	goto	l1141
+u350:
+	
+l1139:
+	movf	((c:___ftpack@arg))^00h,c,w
+iorwf	((c:___ftpack@arg+1))^00h,c,w
+iorwf	((c:___ftpack@arg+2))^00h,c,w
+	btfss	status,2
+	goto	u361
+	goto	u360
+
+u361:
+	goto	l1147
+u360:
+	line	65
+	
+l1141:
+	movlw	low(float24(0.0000000000000000))
+	movwf	((c:?___ftpack))^00h,c
+	movlw	high(float24(0.0000000000000000))
+	movwf	((c:?___ftpack+1))^00h,c
+	movlw	low highword(float24(0.0000000000000000))
+	movwf	((c:?___ftpack+2))^00h,c
+
+	goto	l368
+	line	67
+	
+l1145:
+	incf	((c:___ftpack@exp))^00h,c
+	line	68
+	bcf	status,0
+	rrcf	((c:___ftpack@arg+2))^00h,c
+	rrcf	((c:___ftpack@arg+1))^00h,c
+	rrcf	((c:___ftpack@arg))^00h,c
+	line	66
+	
+l1147:
+	movlw	low(0FE0000h)
+	andwf	((c:___ftpack@arg))^00h,c,w
+	movwf	(??___ftpack+0+0)^00h,c
+	movlw	0
+	andwf	((c:___ftpack@arg+1))^00h,c,w
+	movwf	1+(??___ftpack+0+0)^00h,c
+	
+	movlw	0FEh
+	andwf	((c:___ftpack@arg+2))^00h,c,w
+	movwf	2+(??___ftpack+0+0)^00h,c
+
+	movf	(??___ftpack+0+0)^00h,c,w
+iorwf	(??___ftpack+0+1)^00h,c,w
+iorwf	(??___ftpack+0+2)^00h,c,w
+	btfss	status,2
+	goto	u371
+	goto	u370
+
+u371:
+	goto	l1145
+u370:
+	goto	l1153
+	line	71
+	
+l1149:
+	incf	((c:___ftpack@exp))^00h,c
+	line	72
+	
+l1151:
+	movlw	low(01h)
+	addwf	((c:___ftpack@arg))^00h,c
+	movlw	high(01h)
+	addwfc	((c:___ftpack@arg+1))^00h,c
+	movlw	low highword(01h)
+	addwfc	((c:___ftpack@arg+2))^00h,c
+
+	line	73
+	bcf	status,0
+	rrcf	((c:___ftpack@arg+2))^00h,c
+	rrcf	((c:___ftpack@arg+1))^00h,c
+	rrcf	((c:___ftpack@arg))^00h,c
+	line	70
+	
+l1153:
+	movlw	low(0FF0000h)
+	andwf	((c:___ftpack@arg))^00h,c,w
+	movwf	(??___ftpack+0+0)^00h,c
+	movlw	0
+	andwf	((c:___ftpack@arg+1))^00h,c,w
+	movwf	1+(??___ftpack+0+0)^00h,c
+	
+	movlw	0FFh
+	andwf	((c:___ftpack@arg+2))^00h,c,w
+	movwf	2+(??___ftpack+0+0)^00h,c
+
+	movf	(??___ftpack+0+0)^00h,c,w
+iorwf	(??___ftpack+0+1)^00h,c,w
+iorwf	(??___ftpack+0+2)^00h,c,w
+	btfss	status,2
+	goto	u381
+	goto	u380
+
+u381:
+	goto	l1149
+u380:
+	goto	l1157
+	line	76
+	
+l1155:
+	decf	((c:___ftpack@exp))^00h,c
+	line	77
+	bcf	status,0
+	rlcf	((c:___ftpack@arg))^00h,c
+	rlcf	((c:___ftpack@arg+1))^00h,c
+	rlcf	((c:___ftpack@arg+2))^00h,c
+	line	75
+	
+l1157:
+	
+	btfsc	((c:___ftpack@arg+1))^00h,c,(15)&7
+	goto	u391
+	goto	u390
+u391:
+	goto	l379
+u390:
+	
+l1159:
+		movlw	02h-0
+	cpfslt	((c:___ftpack@exp))^00h,c
+	goto	u401
+	goto	u400
+
+u401:
+	goto	l1155
+u400:
+	
+l379:
+	line	79
+	
+	btfsc	((c:___ftpack@exp))^00h,c,(0)&7
+	goto	u411
+	goto	u410
+u411:
+	goto	l1163
+u410:
+	line	80
+	
+l1161:
+	bcf	(0+(15/8)+(c:___ftpack@arg))^00h,c,(15)&7
+	line	81
+	
+l1163:
+	bcf status,0
+	rrcf	((c:___ftpack@exp))^00h,c
+
+	line	82
+	movf	((c:___ftpack@exp))^00h,c,w
+	iorwf	((c:___ftpack@arg+2))^00h,c
+
+	line	83
+	
+l1165:
+	movf	((c:___ftpack@sign))^00h,c,w
+	btfsc	status,2
+	goto	u421
+	goto	u420
+u421:
+	goto	l1169
+u420:
+	line	84
+	
+l1167:
+	bsf	(0+(23/8)+(c:___ftpack@arg))^00h,c,(23)&7
+	line	85
+	
+l1169:
+	movff	(c:___ftpack@arg),(c:?___ftpack)
+	movff	(c:___ftpack@arg+1),(c:?___ftpack+1)
+	movff	(c:___ftpack@arg+2),(c:?___ftpack+2)
+	line	86
+	
+l368:
+	return	;funcret
+	callstack 0
+GLOBAL	__end_of___ftpack
+	__end_of___ftpack:
+	signat	___ftpack,12411
 	global	_IntToStr
 
 ;; *************** function _IntToStr *****************
 ;; Defined at:
 ;;		line 1 in file "Libs/Conversions/conversions.c"
 ;; Parameters:    Size  Location     Type
-;;  FromInt         2    8[COMRAM] int 
-;;  ToStr           1   10[COMRAM] PTR unsigned char 
-;;		 -> frequency_txt(8), 
+;;  FromInt         2    7[COMRAM] int 
+;;  ToStr           1    9[COMRAM] PTR unsigned char 
+;;		 -> data_txt(5), 
 ;; Auto vars:     Size  Location     Type
-;;  index           2   13[COMRAM] int 
-;;  num             2   11[COMRAM] int 
+;;  index           2   12[COMRAM] int 
+;;  num             2   10[COMRAM] unsigned int 
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      void 
 ;; Registers used:
@@ -1966,18 +2856,18 @@ GLOBAL	__end_of_enable_pulse
 ;; Hardware stack levels used: 1
 ;; Hardware stack levels required when called: 2
 ;; This function calls:
-;;		___awdiv
-;;		___awmod
+;;		___lwdiv
+;;		___lwmod
 ;; This function is called by:
 ;;		_main
 ;; This function uses a non-reentrant model
 ;;
-psect	text7,class=CODE,space=0,reloc=2,group=0
+psect	text10,class=CODE,space=0,reloc=2,group=0
 	file	"Libs/Conversions/conversions.c"
 	line	1
-global __ptext7
-__ptext7:
-psect	text7
+global __ptext10
+__ptext10:
+psect	text10
 	file	"Libs/Conversions/conversions.c"
 	line	1
 	
@@ -1986,83 +2876,82 @@ _IntToStr:
 	callstack 28
 	line	2
 	
-l1117:
+l1243:
 	line	3
 	
-l1119:
+l1245:
 	movff	(c:IntToStr@FromInt),(c:IntToStr@num)
 	movff	(c:IntToStr@FromInt+1),(c:IntToStr@num+1)
 	line	5
-	movlw	high(03h)
+	movlw	high(05h)
 	movwf	((c:IntToStr@index+1))^00h,c
-	movlw	low(03h)
+	movlw	low(05h)
 	movwf	((c:IntToStr@index))^00h,c
 	line	6
 	
-l1125:
+l1251:
 	movf	((c:IntToStr@ToStr))^00h,c,w
 	addwf	((c:IntToStr@index))^00h,c,w
 	movwf	fsr2l
 	clrf	fsr2h
-	movff	(c:IntToStr@num),(c:___awmod@dividend)
-	movff	(c:IntToStr@num+1),(c:___awmod@dividend+1)
+	movff	(c:IntToStr@num),(c:___lwmod@dividend)
+	movff	(c:IntToStr@num+1),(c:___lwmod@dividend+1)
 	movlw	high(0Ah)
-	movwf	((c:___awmod@divisor+1))^00h,c
+	movwf	((c:___lwmod@divisor+1))^00h,c
 	movlw	low(0Ah)
-	movwf	((c:___awmod@divisor))^00h,c
-	call	___awmod	;wreg free
-	movf	(0+?___awmod)^00h,c,w
+	movwf	((c:___lwmod@divisor))^00h,c
+	call	___lwmod	;wreg free
+	movf	(0+?___lwmod)^00h,c,w
 	addlw	low(030h)
 	movwf	indf2,c
 
 	line	7
 	
-l1127:
-	movff	(c:IntToStr@num),(c:___awdiv@dividend)
-	movff	(c:IntToStr@num+1),(c:___awdiv@dividend+1)
+l1253:
+	movff	(c:IntToStr@num),(c:___lwdiv@dividend)
+	movff	(c:IntToStr@num+1),(c:___lwdiv@dividend+1)
 	movlw	high(0Ah)
-	movwf	((c:___awdiv@divisor+1))^00h,c
+	movwf	((c:___lwdiv@divisor+1))^00h,c
 	movlw	low(0Ah)
-	movwf	((c:___awdiv@divisor))^00h,c
-	call	___awdiv	;wreg free
-	movff	0+?___awdiv,(c:IntToStr@num)
-	movff	1+?___awdiv,(c:IntToStr@num+1)
+	movwf	((c:___lwdiv@divisor))^00h,c
+	call	___lwdiv	;wreg free
+	movff	0+?___lwdiv,(c:IntToStr@num)
+	movff	1+?___lwdiv,(c:IntToStr@num+1)
 	line	5
 	
-l1129:
+l1255:
 	decf	((c:IntToStr@index))^00h,c
 	btfss	status,0
 	decf	((c:IntToStr@index+1))^00h,c
 	
-l1131:
+l1257:
 	btfsc	((c:IntToStr@index+1))^00h,c,7
-	goto	u320
-	goto	u321
+	goto	u490
+	goto	u491
 
-u321:
-	goto	l1125
-u320:
+u491:
+	goto	l1251
+u490:
 	line	10
 	
-l79:
+l93:
 	return	;funcret
 	callstack 0
 GLOBAL	__end_of_IntToStr
 	__end_of_IntToStr:
 	signat	_IntToStr,8313
-	global	___awmod
+	global	___lwmod
 
-;; *************** function ___awmod *****************
+;; *************** function ___lwmod *****************
 ;; Defined at:
-;;		line 7 in file "/opt/microchip/xc8/v2.45/pic/sources/c90/common/awmod.c"
+;;		line 7 in file "/opt/microchip/xc8/v2.45/pic/sources/c90/common/lwmod.c"
 ;; Parameters:    Size  Location     Type
-;;  dividend        2    0[COMRAM] int 
-;;  divisor         2    2[COMRAM] int 
+;;  dividend        2    0[COMRAM] unsigned int 
+;;  divisor         2    2[COMRAM] unsigned int 
 ;; Auto vars:     Size  Location     Type
-;;  sign            1    5[COMRAM] unsigned char 
 ;;  counter         1    4[COMRAM] unsigned char 
 ;; Return value:  Size  Location     Type
-;;                  2    0[COMRAM] int 
+;;                  2    0[COMRAM] unsigned int 
 ;; Registers used:
 ;;		wreg, status,2, status,0
 ;; Tracked objects:
@@ -2071,10 +2960,10 @@ GLOBAL	__end_of_IntToStr
 ;;		Unchanged: 0/0
 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
 ;;      Params:         4       0       0       0       0       0       0       0       0
-;;      Locals:         2       0       0       0       0       0       0       0       0
+;;      Locals:         1       0       0       0       0       0       0       0       0
 ;;      Temps:          0       0       0       0       0       0       0       0       0
-;;      Totals:         6       0       0       0       0       0       0       0       0
-;;Total ram usage:        6 bytes
+;;      Totals:         5       0       0       0       0       0       0       0       0
+;;Total ram usage:        5 bytes
 ;; Hardware stack levels used: 1
 ;; Hardware stack levels required when called: 1
 ;; This function calls:
@@ -2083,177 +2972,116 @@ GLOBAL	__end_of_IntToStr
 ;;		_IntToStr
 ;; This function uses a non-reentrant model
 ;;
-psect	text8,class=CODE,space=0,reloc=2,group=1
-	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/awmod.c"
+psect	text11,class=CODE,space=0,reloc=2,group=1
+	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/lwmod.c"
 	line	7
-global __ptext8
-__ptext8:
-psect	text8
-	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/awmod.c"
+global __ptext11
+__ptext11:
+psect	text11
+	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/lwmod.c"
 	line	7
 	
-___awmod:
+___lwmod:
 ;incstack = 0
 	callstack 28
 	line	12
 	
-l1069:
-	movlw	low(0)
-	movwf	((c:___awmod@sign))^00h,c
+l1195:
+	movf	((c:___lwmod@divisor))^00h,c,w
+iorwf	((c:___lwmod@divisor+1))^00h,c,w
+	btfsc	status,2
+	goto	u461
+	goto	u460
+
+u461:
+	goto	l585
+u460:
 	line	13
 	
-l1071:
-	btfsc	((c:___awmod@dividend+1))^00h,c,7
-	goto	u260
-	goto	u261
-
-u261:
-	goto	l1077
-u260:
+l1197:
+	movlw	low(01h)
+	movwf	((c:___lwmod@counter))^00h,c
 	line	14
-	
-l1073:
-	negf	((c:___awmod@dividend))^00h,c
-	comf	((c:___awmod@dividend+1))^00h,c
-	btfsc	status,0
-	incf	((c:___awmod@dividend+1))^00h,c
+	goto	l1201
 	line	15
 	
-l1075:
-	movlw	low(01h)
-	movwf	((c:___awmod@sign))^00h,c
-	line	17
+l1199:
+	bcf	status,0
+	rlcf	((c:___lwmod@divisor))^00h,c
+	rlcf	((c:___lwmod@divisor+1))^00h,c
+	line	16
+	incf	((c:___lwmod@counter))^00h,c
+	line	14
 	
-l1077:
-	btfsc	((c:___awmod@divisor+1))^00h,c,7
-	goto	u270
-	goto	u271
-
-u271:
-	goto	l1081
-u270:
-	line	18
+l1201:
 	
-l1079:
-	negf	((c:___awmod@divisor))^00h,c
-	comf	((c:___awmod@divisor+1))^00h,c
-	btfsc	status,0
-	incf	((c:___awmod@divisor+1))^00h,c
+	btfss	((c:___lwmod@divisor+1))^00h,c,(15)&7
+	goto	u471
+	goto	u470
+u471:
+	goto	l1199
+u470:
 	line	19
 	
-l1081:
-	movf	((c:___awmod@divisor))^00h,c,w
-iorwf	((c:___awmod@divisor+1))^00h,c,w
-	btfsc	status,2
-	goto	u281
-	goto	u280
+l1203:
+		movf	((c:___lwmod@divisor))^00h,c,w
+	subwf	((c:___lwmod@dividend))^00h,c,w
+	movf	((c:___lwmod@divisor+1))^00h,c,w
+	subwfb	((c:___lwmod@dividend+1))^00h,c,w
+	btfss	status,0
+	goto	u481
+	goto	u480
 
-u281:
-	goto	l1097
-u280:
+u481:
+	goto	l1207
+u480:
 	line	20
 	
-l1083:
-	movlw	low(01h)
-	movwf	((c:___awmod@counter))^00h,c
+l1205:
+	movf	((c:___lwmod@divisor))^00h,c,w
+	subwf	((c:___lwmod@dividend))^00h,c
+	movf	((c:___lwmod@divisor+1))^00h,c,w
+	subwfb	((c:___lwmod@dividend+1))^00h,c
+
 	line	21
-	goto	l1087
+	
+l1207:
+	bcf	status,0
+	rrcf	((c:___lwmod@divisor+1))^00h,c
+	rrcf	((c:___lwmod@divisor))^00h,c
 	line	22
 	
-l1085:
-	bcf	status,0
-	rlcf	((c:___awmod@divisor))^00h,c
-	rlcf	((c:___awmod@divisor+1))^00h,c
+l1209:
+	decfsz	((c:___lwmod@counter))^00h,c
+	
+	goto	l1203
 	line	23
-	incf	((c:___awmod@counter))^00h,c
-	line	21
 	
-l1087:
+l585:
+	line	24
+	movff	(c:___lwmod@dividend),(c:?___lwmod)
+	movff	(c:___lwmod@dividend+1),(c:?___lwmod+1)
+	line	25
 	
-	btfss	((c:___awmod@divisor+1))^00h,c,(15)&7
-	goto	u291
-	goto	u290
-u291:
-	goto	l1085
-u290:
-	line	26
-	
-l1089:
-		movf	((c:___awmod@divisor))^00h,c,w
-	subwf	((c:___awmod@dividend))^00h,c,w
-	movf	((c:___awmod@divisor+1))^00h,c,w
-	subwfb	((c:___awmod@dividend+1))^00h,c,w
-	btfss	status,0
-	goto	u301
-	goto	u300
-
-u301:
-	goto	l1093
-u300:
-	line	27
-	
-l1091:
-	movf	((c:___awmod@divisor))^00h,c,w
-	subwf	((c:___awmod@dividend))^00h,c
-	movf	((c:___awmod@divisor+1))^00h,c,w
-	subwfb	((c:___awmod@dividend+1))^00h,c
-
-	line	28
-	
-l1093:
-	bcf	status,0
-	rrcf	((c:___awmod@divisor+1))^00h,c
-	rrcf	((c:___awmod@divisor))^00h,c
-	line	29
-	
-l1095:
-	decfsz	((c:___awmod@counter))^00h,c
-	
-	goto	l1089
-	line	31
-	
-l1097:
-	movf	((c:___awmod@sign))^00h,c,w
-	btfsc	status,2
-	goto	u311
-	goto	u310
-u311:
-	goto	l1101
-u310:
-	line	32
-	
-l1099:
-	negf	((c:___awmod@dividend))^00h,c
-	comf	((c:___awmod@dividend+1))^00h,c
-	btfsc	status,0
-	incf	((c:___awmod@dividend+1))^00h,c
-	line	33
-	
-l1101:
-	movff	(c:___awmod@dividend),(c:?___awmod)
-	movff	(c:___awmod@dividend+1),(c:?___awmod+1)
-	line	34
-	
-l326:
+l592:
 	return	;funcret
 	callstack 0
-GLOBAL	__end_of___awmod
-	__end_of___awmod:
-	signat	___awmod,8314
-	global	___awdiv
+GLOBAL	__end_of___lwmod
+	__end_of___lwmod:
+	signat	___lwmod,8314
+	global	___lwdiv
 
-;; *************** function ___awdiv *****************
+;; *************** function ___lwdiv *****************
 ;; Defined at:
-;;		line 7 in file "/opt/microchip/xc8/v2.45/pic/sources/c90/common/awdiv.c"
+;;		line 7 in file "/opt/microchip/xc8/v2.45/pic/sources/c90/common/lwdiv.c"
 ;; Parameters:    Size  Location     Type
-;;  dividend        2    0[COMRAM] int 
-;;  divisor         2    2[COMRAM] int 
+;;  dividend        2    0[COMRAM] unsigned int 
+;;  divisor         2    2[COMRAM] unsigned int 
 ;; Auto vars:     Size  Location     Type
-;;  quotient        2    6[COMRAM] int 
-;;  sign            1    5[COMRAM] unsigned char 
-;;  counter         1    4[COMRAM] unsigned char 
+;;  quotient        2    4[COMRAM] unsigned int 
+;;  counter         1    6[COMRAM] unsigned char 
 ;; Return value:  Size  Location     Type
-;;                  2    0[COMRAM] int 
+;;                  2    0[COMRAM] unsigned int 
 ;; Registers used:
 ;;		wreg, status,2, status,0
 ;; Tracked objects:
@@ -2262,10 +3090,10 @@ GLOBAL	__end_of___awmod
 ;;		Unchanged: 0/0
 ;; Data sizes:     COMRAM   BANK0   BANK1   BANK2   BANK3   BANK4   BANK5   BANK6   BANK7
 ;;      Params:         4       0       0       0       0       0       0       0       0
-;;      Locals:         4       0       0       0       0       0       0       0       0
+;;      Locals:         3       0       0       0       0       0       0       0       0
 ;;      Temps:          0       0       0       0       0       0       0       0       0
-;;      Totals:         8       0       0       0       0       0       0       0       0
-;;Total ram usage:        8 bytes
+;;      Totals:         7       0       0       0       0       0       0       0       0
+;;Total ram usage:        7 bytes
 ;; Hardware stack levels used: 1
 ;; Hardware stack levels required when called: 1
 ;; This function calls:
@@ -2274,190 +3102,125 @@ GLOBAL	__end_of___awmod
 ;;		_IntToStr
 ;; This function uses a non-reentrant model
 ;;
-psect	text9,class=CODE,space=0,reloc=2,group=1
-	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/awdiv.c"
+psect	text12,class=CODE,space=0,reloc=2,group=1
+	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/lwdiv.c"
 	line	7
-global __ptext9
-__ptext9:
-psect	text9
-	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/awdiv.c"
+global __ptext12
+__ptext12:
+psect	text12
+	file	"/opt/microchip/xc8/v2.45/pic/sources/c90/common/lwdiv.c"
 	line	7
 	
-___awdiv:
+___lwdiv:
 ;incstack = 0
 	callstack 28
 	line	13
 	
-l1025:
+l1173:
+	movlw	high(0)
+	movwf	((c:___lwdiv@quotient+1))^00h,c
 	movlw	low(0)
-	movwf	((c:___awdiv@sign))^00h,c
+	movwf	((c:___lwdiv@quotient))^00h,c
 	line	14
 	
-l1027:
-	btfsc	((c:___awdiv@divisor+1))^00h,c,7
-	goto	u200
-	goto	u201
+l1175:
+	movf	((c:___lwdiv@divisor))^00h,c,w
+iorwf	((c:___lwdiv@divisor+1))^00h,c,w
+	btfsc	status,2
+	goto	u431
+	goto	u430
 
-u201:
-	goto	l1033
-u200:
+u431:
+	goto	l575
+u430:
 	line	15
 	
-l1029:
-	negf	((c:___awdiv@divisor))^00h,c
-	comf	((c:___awdiv@divisor+1))^00h,c
-	btfsc	status,0
-	incf	((c:___awdiv@divisor+1))^00h,c
+l1177:
+	movlw	low(01h)
+	movwf	((c:___lwdiv@counter))^00h,c
+	line	16
+	goto	l1181
+	line	17
+	
+l1179:
+	bcf	status,0
+	rlcf	((c:___lwdiv@divisor))^00h,c
+	rlcf	((c:___lwdiv@divisor+1))^00h,c
+	line	18
+	incf	((c:___lwdiv@counter))^00h,c
 	line	16
 	
-l1031:
-	movlw	low(01h)
-	movwf	((c:___awdiv@sign))^00h,c
-	line	18
+l1181:
 	
-l1033:
-	btfsc	((c:___awdiv@dividend+1))^00h,c,7
-	goto	u210
-	goto	u211
-
-u211:
-	goto	l1039
-u210:
-	line	19
+	btfss	((c:___lwdiv@divisor+1))^00h,c,(15)&7
+	goto	u441
+	goto	u440
+u441:
+	goto	l1179
+u440:
+	line	21
 	
-l1035:
-	negf	((c:___awdiv@dividend))^00h,c
-	comf	((c:___awdiv@dividend+1))^00h,c
-	btfsc	status,0
-	incf	((c:___awdiv@dividend+1))^00h,c
-	line	20
-	
-l1037:
-	movlw	(01h)&0ffh
-	xorwf	((c:___awdiv@sign))^00h,c
+l1183:
+	bcf	status,0
+	rlcf	((c:___lwdiv@quotient))^00h,c
+	rlcf	((c:___lwdiv@quotient+1))^00h,c
 	line	22
 	
-l1039:
-	movlw	high(0)
-	movwf	((c:___awdiv@quotient+1))^00h,c
-	movlw	low(0)
-	movwf	((c:___awdiv@quotient))^00h,c
+l1185:
+		movf	((c:___lwdiv@divisor))^00h,c,w
+	subwf	((c:___lwdiv@dividend))^00h,c,w
+	movf	((c:___lwdiv@divisor+1))^00h,c,w
+	subwfb	((c:___lwdiv@dividend+1))^00h,c,w
+	btfss	status,0
+	goto	u451
+	goto	u450
+
+u451:
+	goto	l1191
+u450:
 	line	23
 	
-l1041:
-	movf	((c:___awdiv@divisor))^00h,c,w
-iorwf	((c:___awdiv@divisor+1))^00h,c,w
-	btfsc	status,2
-	goto	u221
-	goto	u220
+l1187:
+	movf	((c:___lwdiv@divisor))^00h,c,w
+	subwf	((c:___lwdiv@dividend))^00h,c
+	movf	((c:___lwdiv@divisor+1))^00h,c,w
+	subwfb	((c:___lwdiv@dividend+1))^00h,c
 
-u221:
-	goto	l1061
-u220:
 	line	24
 	
-l1043:
-	movlw	low(01h)
-	movwf	((c:___awdiv@counter))^00h,c
-	line	25
-	goto	l1047
+l1189:
+	bsf	(0+(0/8)+(c:___lwdiv@quotient))^00h,c,(0)&7
 	line	26
 	
-l1045:
+l1191:
 	bcf	status,0
-	rlcf	((c:___awdiv@divisor))^00h,c
-	rlcf	((c:___awdiv@divisor+1))^00h,c
+	rrcf	((c:___lwdiv@divisor+1))^00h,c
+	rrcf	((c:___lwdiv@divisor))^00h,c
 	line	27
-	incf	((c:___awdiv@counter))^00h,c
-	line	25
 	
-l1047:
+l1193:
+	decfsz	((c:___lwdiv@counter))^00h,c
 	
-	btfss	((c:___awdiv@divisor+1))^00h,c,(15)&7
-	goto	u231
-	goto	u230
-u231:
-	goto	l1045
-u230:
+	goto	l1183
+	line	28
+	
+l575:
+	line	29
+	movff	(c:___lwdiv@quotient),(c:?___lwdiv)
+	movff	(c:___lwdiv@quotient+1),(c:?___lwdiv+1)
 	line	30
 	
-l1049:
-	bcf	status,0
-	rlcf	((c:___awdiv@quotient))^00h,c
-	rlcf	((c:___awdiv@quotient+1))^00h,c
-	line	31
-	
-l1051:
-		movf	((c:___awdiv@divisor))^00h,c,w
-	subwf	((c:___awdiv@dividend))^00h,c,w
-	movf	((c:___awdiv@divisor+1))^00h,c,w
-	subwfb	((c:___awdiv@dividend+1))^00h,c,w
-	btfss	status,0
-	goto	u241
-	goto	u240
-
-u241:
-	goto	l1057
-u240:
-	line	32
-	
-l1053:
-	movf	((c:___awdiv@divisor))^00h,c,w
-	subwf	((c:___awdiv@dividend))^00h,c
-	movf	((c:___awdiv@divisor+1))^00h,c,w
-	subwfb	((c:___awdiv@dividend+1))^00h,c
-
-	line	33
-	
-l1055:
-	bsf	(0+(0/8)+(c:___awdiv@quotient))^00h,c,(0)&7
-	line	35
-	
-l1057:
-	bcf	status,0
-	rrcf	((c:___awdiv@divisor+1))^00h,c
-	rrcf	((c:___awdiv@divisor))^00h,c
-	line	36
-	
-l1059:
-	decfsz	((c:___awdiv@counter))^00h,c
-	
-	goto	l1049
-	line	38
-	
-l1061:
-	movf	((c:___awdiv@sign))^00h,c,w
-	btfsc	status,2
-	goto	u251
-	goto	u250
-u251:
-	goto	l1065
-u250:
-	line	39
-	
-l1063:
-	negf	((c:___awdiv@quotient))^00h,c
-	comf	((c:___awdiv@quotient+1))^00h,c
-	btfsc	status,0
-	incf	((c:___awdiv@quotient+1))^00h,c
-	line	40
-	
-l1065:
-	movff	(c:___awdiv@quotient),(c:?___awdiv)
-	movff	(c:___awdiv@quotient+1),(c:?___awdiv+1)
-	line	41
-	
-l313:
+l582:
 	return	;funcret
 	callstack 0
-GLOBAL	__end_of___awdiv
-	__end_of___awdiv:
-	signat	___awdiv,8314
+GLOBAL	__end_of___lwdiv
+	__end_of___lwdiv:
+	signat	___lwdiv,8314
 	global	_isr_routine
 
 ;; *************** function _isr_routine *****************
 ;; Defined at:
-;;		line 79 in file "main.c"
+;;		line 30 in file "main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
@@ -2465,7 +3228,7 @@ GLOBAL	__end_of___awdiv
 ;; Return value:  Size  Location     Type
 ;;                  1    wreg      void 
 ;; Registers used:
-;;		wreg, status,2, status,0
+;;		None
 ;; Tracked objects:
 ;;		On entry : 0/0
 ;;		On exit  : 0/0
@@ -2490,7 +3253,7 @@ global __pintcode
 __pintcode:
 psect	intcode
 	file	"main.c"
-	line	79
+	line	30
 	
 _isr_routine:
 ;incstack = 0
@@ -2504,42 +3267,9 @@ __pintcode_body:
 int_func:
 
 	pop	; remove dummy address from shadow register refresh
-	line	81
+	line	32
 	
-i2l997:
-	btfss	((c:4082))^0f00h,c,2	;volatile
-	goto	i2u18_41
-	goto	i2u18_40
-i2u18_41:
-	goto	i2l49
-i2u18_40:
-	
-i2l999:
-	btfss	((c:4082))^0f00h,c,5	;volatile
-	goto	i2u19_41
-	goto	i2u19_40
-i2u19_41:
-	goto	i2l49
-i2u19_40:
-	line	82
-	
-i2l1001:
-	movlw	high(0CF2Dh)
-	movwf	((c:4054+1))^0f00h,c	;volatile
-	movlw	low(0CF2Dh)
-	movwf	((c:4054))^0f00h,c	;volatile
-	line	83
-	
-i2l1003:
-	bcf	((c:4082))^0f00h,c,2	;volatile
-	line	84
-	
-i2l1005:
-	movlw	(01h)&0ffh
-	xorwf	((c:3977))^0f00h,c	;volatile
-	line	88
-	
-i2l49:
+i2l33:
 	bcf int$flags,1,c ;clear compiler interrupt flag (level 2)
 	retfie f
 	callstack 0

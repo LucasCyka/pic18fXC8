@@ -5696,62 +5696,82 @@ void init_lcd();
 # 5 "Libs/Conversions/conversions.h"
 void IntToStr(int FromInt, char *ToStr);
 
-# 31 "main.c"
-int frequency = 200;
-int frequency_txt[4];
-
-
-
+# 27 "main.c"
 void setup();
-void init_timer();
-
-int main(){
-setup();
-for(;;){
-IntToStr(frequency,frequency_txt);
-lcd_write(1,2,frequency_txt);
-lcd_write(5,2,"Hz");
-
-_delay((unsigned long)((10)*(20000000/4000.0)));
-
-}
-}
-
-void setup(){
-ADCON1 |= 0x0F;
-TRISA = 0;
-LATA = 0;
-init_lcd();
-_delay((unsigned long)((10)*(20000000/4000.0)));
-init_timer();
-
-}
-
-void init_timer(){
-T0CONbits.TMR0ON = 1;
-T0CONbits.T08BIT = 0;
-T0CONbits.T0CS = 0;
-T0CONbits.PSA = 1;
-T0CON |= 0;
-
-
-
-TMR0 = 53037;
-INTCONbits.GIE = 1;
-INTCONbits.PEIE = 1;
-INTCONbits.TMR0IE = 1;
-INTCONbits.TMR0IF = 0;
-
-}
 
 
 void interrupt isr_routine(void){
 
-if(INTCONbits.TMR0IF && INTCONbits.TMR0IE){
-TMR0 = 53037;
-INTCONbits.TMR0IF = 0;
-LATA ^= 1;
 }
+
+unsigned int data = 0;
+unsigned int data2 = 0;
+unsigned int fdata = 0;
+float period = 0;
+unsigned frequency = 0;
+int rounded_frequency = 0;
+
+char data_txt[5];
+
+int main(){
+
+setup();
+
+for(;;){
+
+
+while(!(PIR1bits.CCP1IF));
+
+data = CCPR1;
+PIR1bits.CCP1IF = 0;
+
+while(!(PIR1bits.CCP1IF));
+
+data2 = CCPR1;
+fdata = data2 - data;
+
+frequency = (float)5000000.000/fdata;
+rounded_frequency = frequency;
+IntToStr(rounded_frequency,data_txt);
+
+lcd_write(1,1,data_txt);
+lcd_write(8,1,"Hz");
+
+_delay((unsigned long)((100)*(20000000/4000.0)));
+TMR1 = 0;
+CCPR1 = 0;
+PIR1bits.CCP1IF = 0;
+
+
+
+
+}
+
+
+}
+
+void setup(){
+ADCON0 = 0x0F;
+TRISCbits.RC2 = 1;
+init_lcd();
+
+
+T1CONbits.RD16 = 1;
+T1CONbits.T1CKPS0 = 0;
+T1CONbits.T1CKPS1 = 0;
+T1CONbits.T1OSCEN = 0;
+T1CONbits.TMR1CS = 0;
+T1CONbits.TMR1ON = 1;
+TMR1 = 0x00;
+CCPR1 = 0x00;
+
+
+
+CCP1CON |= 0x05;
+PIE1bits.CCP1IE = 1;
+PIR1bits.CCP1IF = 0;
+T3CONbits.T3CCP2 = 0;
+T3CONbits.T3CCP1 = 0;
 
 
 }

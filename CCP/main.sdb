@@ -1,0 +1,304 @@
+[p GLOBOPT AUTOSTATIC LFSROK ]
+[d version 1.1 ]
+[d edition pro ]
+[d chip 18F4550 ]
+[d frameptr 4065 ]
+"62 /opt/microchip/xc8/v2.45/pic/sources/c90/common/float.c
+[v ___ftpack __ftpack `(f  1 e 3 0 ]
+"86 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftadd.c
+[v ___ftadd __ftadd `(f  1 e 3 0 ]
+"54 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftdiv.c
+[v ___ftdiv __ftdiv `(f  1 e 3 0 ]
+"62 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftmul.c
+[v ___ftmul __ftmul `(f  1 e 3 0 ]
+"19 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftsub.c
+[v ___ftsub __ftsub `(f  1 e 3 0 ]
+"44 /opt/microchip/xc8/v2.45/pic/sources/c90/common/fttol.c
+[v ___fttol __fttol `(l  1 e 4 0 ]
+"7 /opt/microchip/xc8/v2.45/pic/sources/c90/common/lwdiv.c
+[v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
+"7 /opt/microchip/xc8/v2.45/pic/sources/c90/common/lwmod.c
+[v ___lwmod __lwmod `(ui  1 e 2 0 ]
+"28 /opt/microchip/xc8/v2.45/pic/sources/c90/common/lwtoft.c
+[v ___lwtoft __lwtoft `(f  1 e 3 0 ]
+"10 /opt/microchip/xc8/v2.45/pic/sources/c90/common/sprcadd.c
+[v ___fladd __fladd `(d  1 e 3 0 ]
+"245
+[v ___flsub __flsub `(d  1 e 3 0 ]
+"11 /opt/microchip/xc8/v2.45/pic/sources/c90/common/sprcdiv.c
+[v ___fldiv __fldiv `(d  1 e 3 0 ]
+"8 /opt/microchip/xc8/v2.45/pic/sources/c90/common/sprcmul.c
+[v ___flmul __flmul `(d  1 e 3 0 ]
+"15 /opt/microchip/xc8/v2.45/pic/sources/c90/common/Umul32.c
+[v ___lmul __lmul `(ul  1 e 4 0 ]
+"91 /opt/microchip/xc8/v2.45/pic/sources/c90/common/Umul64.c
+[v ___omul __omul `(ul  1 e 4 0 ]
+"1 /home/lucas/PIC/C/CCP/Libs/Conversions/conversions.c
+[v _IntToStr IntToStr `(v  1 e 1 0 ]
+"8 /home/lucas/PIC/C/CCP/Libs/LCD/lcd.c
+[v _enable_pulse enable_pulse `(v  1 e 1 0 ]
+"15
+[v _lcd_send_cmd lcd_send_cmd `(v  1 e 1 0 ]
+"21
+[v _lcd_write lcd_write `(v  1 e 1 0 ]
+"33
+[v _init_lcd init_lcd `(v  1 e 1 0 ]
+"30 /home/lucas/PIC/C/CCP/main.c
+[v _isr_routine isr_routine `II(v  1 e 1 0 ]
+"43
+[v _main main `(i  1 e 2 0 ]
+"80
+[v _setup setup `(v  1 e 1 0 ]
+"3263 /opt/microchip/xc8/v2.45/pic/include/proc/pic18f4550.h
+[v _LATD LATD `VEuc  1 e 1 @3980 ]
+"3375
+[v _LATE LATE `VEuc  1 e 1 @3981 ]
+[s S84 . 1 `uc 1 TRISC0 1 0 :1:0 
+`uc 1 TRISC1 1 0 :1:1 
+`uc 1 TRISC2 1 0 :1:2 
+`uc 1 . 1 0 :3:3 
+`uc 1 TRISC6 1 0 :1:6 
+`uc 1 TRISC7 1 0 :1:7 
+]
+"3875
+[s S91 . 1 `uc 1 RC0 1 0 :1:0 
+`uc 1 RC1 1 0 :1:1 
+`uc 1 RC2 1 0 :1:2 
+`uc 1 . 1 0 :3:3 
+`uc 1 RC6 1 0 :1:6 
+`uc 1 RC7 1 0 :1:7 
+]
+[u S98 . 1 `S84 1 . 1 0 `S91 1 . 1 0 ]
+[v _TRISCbits TRISCbits `VES98  1 e 1 @3988 ]
+"4001
+[v _TRISD TRISD `VEuc  1 e 1 @3989 ]
+"4223
+[v _TRISE TRISE `VEuc  1 e 1 @3990 ]
+[s S171 . 1 `uc 1 TMR1IE 1 0 :1:0 
+`uc 1 TMR2IE 1 0 :1:1 
+`uc 1 CCP1IE 1 0 :1:2 
+`uc 1 SSPIE 1 0 :1:3 
+`uc 1 TXIE 1 0 :1:4 
+`uc 1 RCIE 1 0 :1:5 
+`uc 1 ADIE 1 0 :1:6 
+`uc 1 SPPIE 1 0 :1:7 
+]
+"4408
+[s S180 . 1 `uc 1 . 1 0 :4:0 
+`uc 1 TX1IE 1 0 :1:4 
+`uc 1 RC1IE 1 0 :1:5 
+`uc 1 . 1 0 :1:6 
+`uc 1 PSPIE 1 0 :1:7 
+]
+[u S186 . 1 `S171 1 . 1 0 `S180 1 . 1 0 ]
+[v _PIE1bits PIE1bits `VES186  1 e 1 @3997 ]
+[s S28 . 1 `uc 1 TMR1IF 1 0 :1:0 
+`uc 1 TMR2IF 1 0 :1:1 
+`uc 1 CCP1IF 1 0 :1:2 
+`uc 1 SSPIF 1 0 :1:3 
+`uc 1 TXIF 1 0 :1:4 
+`uc 1 RCIF 1 0 :1:5 
+`uc 1 ADIF 1 0 :1:6 
+`uc 1 SPPIF 1 0 :1:7 
+]
+"4492
+[s S37 . 1 `uc 1 . 1 0 :4:0 
+`uc 1 TX1IF 1 0 :1:4 
+`uc 1 RC1IF 1 0 :1:5 
+`uc 1 . 1 0 :1:6 
+`uc 1 PSPIF 1 0 :1:7 
+]
+[u S43 . 1 `S28 1 . 1 0 `S37 1 . 1 0 ]
+[v _PIR1bits PIR1bits `VES43  1 e 1 @3998 ]
+[s S205 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 NOT_T3SYNC 1 0 :1:2 
+]
+"5486
+[s S208 . 1 `uc 1 TMR3ON 1 0 :1:0 
+`uc 1 TMR3CS 1 0 :1:1 
+`uc 1 nT3SYNC 1 0 :1:2 
+`uc 1 T3CCP1 1 0 :1:3 
+`uc 1 T3CKPS 1 0 :2:4 
+`uc 1 T3CCP2 1 0 :1:6 
+`uc 1 RD16 1 0 :1:7 
+]
+[s S216 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 T3SYNC 1 0 :1:2 
+`uc 1 . 1 0 :1:3 
+`uc 1 T3CKPS0 1 0 :1:4 
+`uc 1 T3CKPS1 1 0 :1:5 
+]
+[s S222 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 T3NSYNC 1 0 :1:2 
+]
+[s S225 . 1 `uc 1 . 1 0 :3:0 
+`uc 1 SOSCEN3 1 0 :1:3 
+`uc 1 . 1 0 :3:4 
+`uc 1 RD163 1 0 :1:7 
+]
+[s S230 . 1 `uc 1 . 1 0 :7:0 
+`uc 1 T3RD16 1 0 :1:7 
+]
+[u S233 . 1 `S205 1 . 1 0 `S208 1 . 1 0 `S216 1 . 1 0 `S222 1 . 1 0 `S225 1 . 1 0 `S230 1 . 1 0 ]
+[v _T3CONbits T3CONbits `VES233  1 e 1 @4017 ]
+"6327
+[v _CCP1CON CCP1CON `VEuc  1 e 1 @4029 ]
+"6489
+[v _CCPR1 CCPR1 `VEus  1 e 2 @4030 ]
+"6666
+[v _ADCON0 ADCON0 `VEuc  1 e 1 @4034 ]
+[s S120 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 NOT_T1SYNC 1 0 :1:2 
+]
+"7448
+[s S123 . 1 `uc 1 TMR1ON 1 0 :1:0 
+`uc 1 TMR1CS 1 0 :1:1 
+`uc 1 nT1SYNC 1 0 :1:2 
+`uc 1 T1OSCEN 1 0 :1:3 
+`uc 1 T1CKPS 1 0 :2:4 
+`uc 1 T1RUN 1 0 :1:6 
+`uc 1 RD16 1 0 :1:7 
+]
+[s S131 . 1 `uc 1 . 1 0 :2:0 
+`uc 1 T1SYNC 1 0 :1:2 
+`uc 1 . 1 0 :1:3 
+`uc 1 T1CKPS0 1 0 :1:4 
+`uc 1 T1CKPS1 1 0 :1:5 
+]
+[s S137 . 1 `uc 1 . 1 0 :3:0 
+`uc 1 SOSCEN 1 0 :1:3 
+`uc 1 . 1 0 :3:4 
+`uc 1 T1RD16 1 0 :1:7 
+]
+[u S142 . 1 `S120 1 . 1 0 `S123 1 . 1 0 `S131 1 . 1 0 `S137 1 . 1 0 ]
+[v _T1CONbits T1CONbits `VES142  1 e 1 @4045 ]
+"7518
+[v _TMR1 TMR1 `VEus  1 e 2 @4046 ]
+"34 /home/lucas/PIC/C/CCP/main.c
+[v _data data `ui  1 e 2 0 ]
+"35
+[v _data2 data2 `ui  1 e 2 0 ]
+"36
+[v _fdata fdata `ui  1 e 2 0 ]
+"38
+[v _frequency frequency `ui  1 e 2 0 ]
+"39
+[v _rounded_frequency rounded_frequency `i  1 e 2 0 ]
+"41
+[v _data_txt data_txt `[5]uc  1 e 5 0 ]
+"43
+[v _main main `(i  1 e 2 0 ]
+{
+"78
+} 0
+"80
+[v _setup setup `(v  1 e 1 0 ]
+{
+"104
+} 0
+"33 /home/lucas/PIC/C/CCP/Libs/LCD/lcd.c
+[v _init_lcd init_lcd `(v  1 e 1 0 ]
+{
+"47
+} 0
+"21
+[v _lcd_write lcd_write `(v  1 e 1 0 ]
+{
+"25
+[v lcd_write@index index `i  1 a 2 11 ]
+"21
+[v lcd_write@row row `i  1 p 2 3 ]
+[v lcd_write@line line `i  1 p 2 5 ]
+[v lcd_write@txt txt `*.35Cuc  1 p 2 7 ]
+"31
+} 0
+"15
+[v _lcd_send_cmd lcd_send_cmd `(v  1 e 1 0 ]
+{
+[v lcd_send_cmd@cmd cmd `i  1 p 2 1 ]
+"19
+} 0
+"8
+[v _enable_pulse enable_pulse `(v  1 e 1 0 ]
+{
+"13
+} 0
+"28 /opt/microchip/xc8/v2.45/pic/sources/c90/common/lwtoft.c
+[v ___lwtoft __lwtoft `(f  1 e 3 0 ]
+{
+[v ___lwtoft@c c `ui  1 p 2 8 ]
+"31
+} 0
+"44 /opt/microchip/xc8/v2.45/pic/sources/c90/common/fttol.c
+[v ___fttol __fttol `(l  1 e 4 0 ]
+{
+"47
+[v ___fttol@lval lval `ul  1 a 4 36 ]
+"46
+[v ___fttol@exp1 exp1 `uc  1 a 1 40 ]
+[v ___fttol@sign1 sign1 `uc  1 a 1 35 ]
+"44
+[v ___fttol@f1 f1 `f  1 p 3 26 ]
+"73
+} 0
+"54 /opt/microchip/xc8/v2.45/pic/sources/c90/common/ftdiv.c
+[v ___ftdiv __ftdiv `(f  1 e 3 0 ]
+{
+"60
+[v ___ftdiv@f3 f3 `f  1 a 3 21 ]
+"59
+[v ___ftdiv@sign sign `uc  1 a 1 25 ]
+[v ___ftdiv@exp exp `uc  1 a 1 24 ]
+[v ___ftdiv@cntr cntr `uc  1 a 1 20 ]
+"54
+[v ___ftdiv@f1 f1 `f  1 p 3 11 ]
+[v ___ftdiv@f2 f2 `f  1 p 3 14 ]
+"86
+} 0
+"62 /opt/microchip/xc8/v2.45/pic/sources/c90/common/float.c
+[v ___ftpack __ftpack `(f  1 e 3 0 ]
+{
+[v ___ftpack@arg arg `um  1 p 3 0 ]
+[v ___ftpack@exp exp `uc  1 p 1 3 ]
+[v ___ftpack@sign sign `uc  1 p 1 4 ]
+"86
+} 0
+"1 /home/lucas/PIC/C/CCP/Libs/Conversions/conversions.c
+[v _IntToStr IntToStr `(v  1 e 1 0 ]
+{
+"2
+[v IntToStr@index index `i  1 a 2 12 ]
+"3
+[v IntToStr@num num `ui  1 a 2 10 ]
+"1
+[v IntToStr@FromInt FromInt `i  1 p 2 7 ]
+[v IntToStr@ToStr ToStr `*.30uc  1 p 1 9 ]
+"10
+} 0
+"7 /opt/microchip/xc8/v2.45/pic/sources/c90/common/lwmod.c
+[v ___lwmod __lwmod `(ui  1 e 2 0 ]
+{
+"10
+[v ___lwmod@counter counter `uc  1 a 1 4 ]
+"7
+[v ___lwmod@dividend dividend `ui  1 p 2 0 ]
+[v ___lwmod@divisor divisor `ui  1 p 2 2 ]
+"25
+} 0
+"7 /opt/microchip/xc8/v2.45/pic/sources/c90/common/lwdiv.c
+[v ___lwdiv __lwdiv `(ui  1 e 2 0 ]
+{
+"10
+[v ___lwdiv@quotient quotient `ui  1 a 2 4 ]
+"11
+[v ___lwdiv@counter counter `uc  1 a 1 6 ]
+"7
+[v ___lwdiv@dividend dividend `ui  1 p 2 0 ]
+[v ___lwdiv@divisor divisor `ui  1 p 2 2 ]
+"30
+} 0
+"30 /home/lucas/PIC/C/CCP/main.c
+[v _isr_routine isr_routine `II(v  1 e 1 0 ]
+{
+"32
+} 0

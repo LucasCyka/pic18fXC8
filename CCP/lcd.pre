@@ -1,25 +1,5 @@
 
-# 1 "main.c"
-
-
-# 2
-#pragma config PLLDIV = 5
-#pragma config CPUDIV = OSC1_PLL2
-#pragma config USBDIV = 2
-
-
-#pragma config FOSC = HS
-#pragma config FCMEN = OFF
-#pragma config IESO = OFF
-
-
-#pragma config PWRT = OFF
-#pragma config BOR = ON
-#pragma config BORV = 3
-#pragma config VREGEN = OFF
-
-
-#pragma config WDT = OFF
+# 1 "Libs/LCD/lcd.c"
 
 # 18 "/opt/microchip/xc8/v2.45/pic/include/xc.h"
 extern const char __xc8_OPTIM_SPEED;
@@ -5693,65 +5673,45 @@ void lcd_send_cmd(int cmd);
 void lcd_write(int row, int line, const char txt[]);
 void init_lcd();
 
-# 5 "Libs/Conversions/conversions.h"
-void IntToStr(int FromInt, char *ToStr);
+# 8 "Libs/LCD/lcd.c"
+void enable_pulse(){
+LATE &= 251;
+_delay((unsigned long)((5)*(20000000/4000.0)));
+LATE |= 4;
+_delay((unsigned long)((5)*(20000000/4000.0)));
+}
 
-# 31 "main.c"
-int frequency = 200;
-int frequency_txt[4];
+void lcd_send_cmd(int cmd){
+LATE &= 254;
+LATD = cmd;
+enable_pulse();
+}
 
+void lcd_write(int row, int line, const char txt[]){
+lcd_send_cmd((128+ (line - 1) * 64) + (row - 1));
 
+LATE |= 1;
+for(int index = 0; txt[index] != 0; index++){
+LATD = txt[index];
+enable_pulse();
 
-void setup();
-void init_timer();
+}
 
-int main(){
-setup();
-for(;;){
-IntToStr(frequency,frequency_txt);
-lcd_write(1,2,frequency_txt);
-lcd_write(5,2,"Hz");
+}
+
+void init_lcd(){
+TRISD = 0;
+TRISE &= 248;
+
+LATD = 0;
+LATE &= 248;
 
 _delay((unsigned long)((10)*(20000000/4000.0)));
 
-}
-}
+lcd_send_cmd(0x38);
+lcd_send_cmd(0x0C);
 
-void setup(){
-ADCON1 |= 0x0F;
-TRISA = 0;
-LATA = 0;
-init_lcd();
-_delay((unsigned long)((10)*(20000000/4000.0)));
-init_timer();
+
 
 }
 
-void init_timer(){
-T0CONbits.TMR0ON = 1;
-T0CONbits.T08BIT = 0;
-T0CONbits.T0CS = 0;
-T0CONbits.PSA = 1;
-T0CON |= 0;
-
-
-
-TMR0 = 53037;
-INTCONbits.GIE = 1;
-INTCONbits.PEIE = 1;
-INTCONbits.TMR0IE = 1;
-INTCONbits.TMR0IF = 0;
-
-}
-
-
-void interrupt isr_routine(void){
-
-if(INTCONbits.TMR0IF && INTCONbits.TMR0IE){
-TMR0 = 53037;
-INTCONbits.TMR0IF = 0;
-LATA ^= 1;
-}
-
-
-}

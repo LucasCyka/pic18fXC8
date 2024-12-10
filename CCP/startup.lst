@@ -1,7 +1,7 @@
 
 
 Microchip MPLAB XC8 Assembler V2.45 build 20230818022343 
-                                                                                                           Tue Nov 26 19:15:17 2024
+                                                                                                           Tue Dec 10 16:16:28 2024
 
 
      1                           	processor	18F4550
@@ -122,7 +122,7 @@ Microchip MPLAB XC8 Assembler V2.45 build 20230818022343
    116                           	psect	init
    117   00000E                     start:
    118                           	callstack 0
-   119   00000E  EF48  F005         	goto	start_initialization	;jump to C runtime clear & initialization
+   119   00000E  EFCD  F006         	goto	start_initialization	;jump to C runtime clear & initialization
    120                           
    121                           	psect	text
    122   000000                     intlevel0:
@@ -201,13 +201,13 @@ Microchip MPLAB XC8 Assembler V2.45 build 20230818022343
 
 
 Microchip Technology PIC18 Macro Assembler V2.45 build 20230818022343 
-Symbol Table                                                                                               Tue Nov 26 19:15:17 2024
+Symbol Table                                                                                               Tue Dec 10 16:16:28 2024
 
-                __S1 001C                 ___sp 0000                 _main 099C                 start 000E  
+                __S1 003F                 ___sp 0000                 _main 0806                 start 000E  
               __HRAM 0000                __LRAM 0001               isa$std 0001     ___inthi_stack_hi 0000  
    ___inthi_stack_lo 0000         __mediumconst 0000               stackhi 0000               stacklo 0000  
          __accesstop 0060           ___inthi_sp 0000           ___intlo_sp 0000           ___stack_hi 0000  
          ___stack_lo 0000     ___intlo_stack_hi 0000     ___intlo_stack_lo 0000              __ramtop 0800  
-start_initialization 0A90            ___heap_hi 0000            ___heap_lo 0000          __smallconst 0800  
+start_initialization 0D9A            ___heap_hi 0000            ___heap_lo 0000          __smallconst 0800  
            isa$xinst 0000             intlevel0 0000             intlevel1 0000             intlevel2 0000  
            intlevel3 0000             reset_vec 0000  
