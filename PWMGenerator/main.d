@@ -1,0 +1,1 @@
+ main.d  main.p1:  main.c Libs/Conversions/conversions.h Libs/ADC/adc.h Libs/LCD/lcd.h

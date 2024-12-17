@@ -1,0 +1,1 @@
+ adc.d  adc.p1:  Libs/ADC/adc.c Libs/ADC/adc.h

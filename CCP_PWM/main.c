@@ -59,8 +59,8 @@ void setup(){
     //CCP module config
     PR2     = pr2val;
     CCPR1L  = dc >> 2; //8 msb here
-    CCP1CON &= 11001111;
+    CCP1CON &= 11001111; //clear lsbits
     CCP1CON |= (dc & 0b11) << 4; //2 lsb here
-    CCP1CON |=  0b00001111;
+    CCP1CON |=  0b00001111; //pwm mode
 
 }
