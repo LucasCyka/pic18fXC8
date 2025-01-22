@@ -455,22 +455,26 @@ TOSH equ 0FFEh ;#
 TOSU equ 0FFFh ;# 
 	debug_source C
 	FNROOT	_main
-	global	_LATA
-_LATA	set	0xF89
+	global	_LATAbits
+_LATAbits	set	0xF89
 	global	_TRISA
 _TRISA	set	0xF92
 	global	_ADCON1
 _ADCON1	set	0xFC1
+	global	_TRISD
+_TRISD	set	0xF95
+	global	_LATD
+_LATD	set	0xF8C
 ; #config settings
 	config pad_punits      = on
 	config apply_mask      = off
 	config ignore_cmsgs    = off
 	config default_configs = off
 	config default_idlocs  = off
-	config PLLDIV = "5"
+	config PLLDIV = "1"
 	config CPUDIV = "OSC1_PLL2"
 	config USBDIV = "2"
-	config FOSC = "HS"
+	config FOSC = "XT_XT"
 	config FCMEN = "OFF"
 	config IESO = "OFF"
 	config PWRT = "OFF"
@@ -478,6 +482,8 @@ _ADCON1	set	0xFC1
 	config BORV = "3"
 	config VREGEN = "OFF"
 	config WDT = "OFF"
+	config MCLRE = "OFF"
+	config LVP = "OFF"
 	file	"main.as"
 	line	#
 psect	cinit,class=CODE,delta=1,reloc=2
@@ -597,29 +603,31 @@ __pcstackCOMRAM:
 ;!CODE                 0      0       0       0        0.0%
 ;!COMRAM              5F      2       2       1        2.1%
 ;!STACK                0      0       0       2        0.0%
-;!DATA                 0      0       0       3        0.0%
-;!BITBANK0            A0      0       0       4        0.0%
-;!BANK0               A0      0       0       5        0.0%
-;!BITBANK1           100      0       0       6        0.0%
-;!BANK1              100      0       0       7        0.0%
-;!BITBANK2           100      0       0       8        0.0%
-;!BANK2              100      0       0       9        0.0%
-;!BITBANK3           100      0       0      10        0.0%
-;!BANK3              100      0       0      11        0.0%
-;!BITBANK4           100      0       0      12        0.0%
-;!BANK4              100      0       0      13        0.0%
-;!BITBANK5           100      0       0      14        0.0%
-;!BANK5              100      0       0      15        0.0%
-;!BITBANK6           100      0       0      16        0.0%
-;!BANK6              100      0       0      17        0.0%
-;!BITBANK7           100      0       0      18        0.0%
-;!BANK7              100      0       0      19        0.0%
-;!BITBIGSFRh          3E      0       0      20        0.0%
-;!BITBIGSFRlh         2E      0       0      21        0.0%
-;!BITBIGSFRllh         8      0       0      22        0.0%
-;!BITBIGSFRlll        29      0       0      23        0.0%
-;!ABS                  0      0       0      24        0.0%
-;!BIGRAM             7FF      0       0      25        0.0%
+;!ABS                  0      0       0       3        0.0%
+;!DATA                 0      0       0       4        0.0%
+;!BITBANK0            A0      0       0       5        0.0%
+;!BANK0               A0      0       0       6        0.0%
+;!BITBANK1           100      0       0       7        0.0%
+;!BANK1              100      0       0       8        0.0%
+;!BITBANK2           100      0       0       9        0.0%
+;!BANK2              100      0       0      10        0.0%
+;!BITBANK3           100      0       0      11        0.0%
+;!BANK3              100      0       0      12        0.0%
+;!BITBANK4           100      0       0      13        0.0%
+;!BANK4              100      0       0      14        0.0%
+;!BITBANK5           100      0       0      15        0.0%
+;!BANK5              100      0       0      16        0.0%
+;!BITBANK6           100      0       0      17        0.0%
+;!BANK6              100      0       0      18        0.0%
+;!BITBANK7           100      0       0      19        0.0%
+;!BANK7              100      0       0      20        0.0%
+;!BITBIGSFRh          3E      0       0      21        0.0%
+;!BITBIGSFRlhh        2B      0       0      22        0.0%
+;!BITBIGSFRlhl         2      0       0      23        0.0%
+;!BITBIGSFRllhh        5      0       0      24        0.0%
+;!BITBIGSFRllhl        2      0       0      25        0.0%
+;!BITBIGSFRlll        29      0       0      26        0.0%
+;!BIGRAM             7FF      0       0      27        0.0%
 ;!BIGSFR               0      0       0     200        0.0%
 ;!BITSFR               0      0       0     200        0.0%
 ;!SFR                  0      0       0     200        0.0%
@@ -628,13 +636,13 @@ __pcstackCOMRAM:
 
 ;; *************** function _main *****************
 ;; Defined at:
-;;		line 25 in file "main.c"
+;;		line 30 in file "main.c"
 ;; Parameters:    Size  Location     Type
 ;;		None
 ;; Auto vars:     Size  Location     Type
 ;;		None
 ;; Return value:  Size  Location     Type
-;;                  2   12[None  ] int 
+;;                  2   16[None  ] int 
 ;; Registers used:
 ;;		wreg, status,2
 ;; Tracked objects:
@@ -655,31 +663,38 @@ __pcstackCOMRAM:
 ;;
 psect	text0,class=CODE,space=0,reloc=2,group=0
 	file	"main.c"
-	line	25
+	line	30
 global __ptext0
 __ptext0:
 psect	text0
 	file	"main.c"
-	line	25
+	line	30
 	
 _main:
 ;incstack = 0
 	callstack 31
-	line	26
-	
-l763:
-	movlw	low(0Fh)
-	movwf	((c:4033))^0f00h,c	;volatile
-	line	27
-	movlw	low(0)
-	movwf	((c:3986))^0f00h,c	;volatile
-	line	30
-	
-l765:
-	setf	((c:3977))^0f00h,c	;volatile
 	line	31
 	
 l767:
+	movlw	low(0Fh)
+	movwf	((c:4033))^0f00h,c	;volatile
+	line	32
+	movlw	low(0)
+	movwf	((c:3986))^0f00h,c	;volatile
+	line	33
+	movlw	low(0)
+	movwf	((c:3989))^0f00h,c	;volatile
+	line	34
+	
+l769:
+	bsf	((c:3977))^0f00h,c,5	;volatile
+	line	38
+	
+l771:
+	setf	((c:3980))^0f00h,c	;volatile
+	line	39
+	
+l773:
 	asmopt push
 asmopt off
 movlw  13
@@ -697,12 +712,12 @@ decfsz	wreg,f
 	nop2
 asmopt pop
 
-	line	32
+	line	40
 	
-l769:
+l775:
 	movlw	low(0)
-	movwf	((c:3977))^0f00h,c	;volatile
-	line	33
+	movwf	((c:3980))^0f00h,c	;volatile
+	line	41
 	asmopt push
 asmopt off
 movlw  13
@@ -720,12 +735,12 @@ decfsz	wreg,f
 	nop2
 asmopt pop
 
-	line	34
-	goto	l765
+	line	43
+	goto	l771
 	global	start
 	goto	start
 	callstack 0
-	line	36
+	line	45
 GLOBAL	__end_of_main
 	__end_of_main:
 	signat	_main,90

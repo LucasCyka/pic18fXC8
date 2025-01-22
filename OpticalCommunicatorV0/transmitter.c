@@ -17,29 +17,42 @@
 // CONFIG2H
 #pragma config WDT = OFF        // Watchdog Timer Disabled
 
-#pragma config MCLRE = OFF  
+#pragma config MCLRE = OFF      // 
 
-#pragma config LVP   = OFF
+#pragma config LVP   = OFF      //low voltage programming off
 
 
-#define _XTAL_FREQ 20000000 //20mhz
+#define _XTAL_FREQ 4000000 //4Mhz
 
 #include<xc.h>
-#include <proc/pic18f4550.h>
+#include <proc/pic18f2550.h>
 
-int main(){
-    ADCON1 = 0x0F;
-    TRISA  = 0;
-    TRISD  = 0;
-    LATAbits.LATA5 = 1; //leds
 
+//global variables
+char message[] = "My message";
+unsigned char guardRail = 0b10111010;
+int Tspeed = 1; //transmission speed in bits per second 
+
+
+//function prototypes
+void setup();
+
+void main(){
+
+    setup();
 
     for(;;){
-        LATD = 255;
-        __delay_ms(500);
-        LATD = 0;
-        __delay_ms(500);
-       
+
+        //transmit guard rail 1
+
+
+
     }
+
+}
+
+
+void setup(){
+    ADCON1 |= 0x0F;
 
 }
